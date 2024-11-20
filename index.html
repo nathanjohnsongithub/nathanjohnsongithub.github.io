@@ -18,27 +18,28 @@
 
   <main class="container mx-auto py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
     <!-- Memory 1 -->
+
     <div class="relative group" data-aos="fade-up">
-        <img src="images/first_date.jpg" alt="Memory 1" class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105">
-        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <div class="text-center">
-                <h3 class="text-white text-2xl font-semibold mb-2">First date!!!</h3>
-                <p class="text-white text-lg">We spent the whole night lying under the stars, talking about everything and nothing at all. It was a magical experience!</p>
-            </div>
-        </div>
+      <img src="images/first_date.jpg" alt="Memory 1" class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <div class="text-center">
+              <h3 class="text-white text-2xl font-semibold mb-2">First date!!!</h3>
+              <p class="text-white text-lg">We spent the whole night lying under the stars, talking about everything and nothing at all. It was a magical experience!</p>
+          </div>
+      </div>
     </div>
 
-    <!-- Memory 2 -->
-    <div class="relative group" data-aos="fade-up" data-aos-delay="100">
-        <img src="images/photo2.jpg" alt="Memory 2" class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105">
-        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <div class="text-center">
-                <h3 class="text-white text-2xl font-semibold mb-2">Baking Together</h3>
-                <p class="text-white text-lg">We had so much fun baking cookies for the first time together. The kitchen was filled with laughter, and the cookies turned out delicious!</p>
-            </div>
-        </div>
+    <div class="memory relative group w-full h-full" data-aos="fade-up">
+      <img src="images/first_date.jpg" alt="Memory 1" class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105 w-full h-auto">
+      <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity memory-overlay hidden">
+        <p class="text-white text-lg font-semibold text-center px-4">
+          A detailed description about this memory that fits perfectly when hovered or clicked.
+        </p>
+      </div>
     </div>
-
+    
+    </main>
+    
     <!-- Add more scrapbook items -->
   </main>
 
@@ -49,5 +50,6 @@
   <script>
     AOS.init();
   </script>
+  <script src="script.js"></script> 
 </body>
 </html>

@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .memory-overlay {
+      @apply hidden; /* Use Tailwind classes when possible */
+    }
+  
+    .memory.show .memory-overlay {
+      @apply flex;
+    }
+  }
