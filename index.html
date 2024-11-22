@@ -51,8 +51,9 @@
 
         /* Mobile-specific styles */
         @media (hover: none) and (pointer: coarse) {
-            .memory:active {
-                transform: scale(1.02) !important;
+            .memory.active {
+                transform: scale(1.05) !important;
+                z-index: 10;
             }
         }
 
@@ -88,7 +89,7 @@
             </div>
         </div>
 
-        <div class="memory relative group w-full h-full" 
+                <div class="memory relative group w-full h-full" 
              data-aos="fade-up"
              data-aos-duration="1000"
              data-aos-offset="100"
@@ -230,7 +231,7 @@
     <script>
         // Initialize AOS
         AOS.init({
-            once: true,
+            once: false, // Changed to false so animation repeats
             duration: 1000,
             easing: 'ease-out-cubic',
         });
@@ -242,25 +243,62 @@
                     (navigator.msMaxTouchPoints > 0));
         }
 
+        let lastClickedMemory = null;
+
+        // Function to check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Function to reset memory
+        function resetMemory(memory) {
+            memory.classList.remove('active');
+            memory.querySelector('.memory-overlay').classList.remove('active');
+        }
+
         // Initialize memory cards
         document.addEventListener('DOMContentLoaded', function() {
             const memories = document.querySelectorAll('.memory');
             
-            memories.forEach(memory => {
-                if (isTouchDevice()) {
-                    // For touch devices - toggle on click
+            if (isTouchDevice()) {
+                // For touch devices
+                memories.forEach(memory => {
                     memory.addEventListener('click', function(e) {
+                        // Reset previous memory if exists
+                        if (lastClickedMemory && lastClickedMemory !== this) {
+                            resetMemory(lastClickedMemory);
+                        }
+                        
+                        // Toggle current memory
                         this.classList.toggle('active');
                         this.querySelector('.memory-overlay').classList.toggle('active');
+                        
+                        // Update last clicked memory
+                        lastClickedMemory = this.classList.contains('active') ? this : null;
                     });
-                } else {
-                    // For desktop - reset on mouse leave
+                });
+
+                // Check visibility on scroll
+                window.addEventListener('scroll', function() {
+                    if (lastClickedMemory && !isInViewport(lastClickedMemory)) {
+                        resetMemory(lastClickedMemory);
+                        lastClickedMemory = null;
+                    }
+                });
+            } else {
+                // For desktop - reset on mouse leave
+                memories.forEach(memory => {
                     memory.addEventListener('mouseleave', function(e) {
-                        this.classList.remove('active');
-                        this.querySelector('.memory-overlay').classList.remove('active');
+                        resetMemory(this);
                     });
-                }
-            });
+                });
+            }
         });
     </script>
 </body>
