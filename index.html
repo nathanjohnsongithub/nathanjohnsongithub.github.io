@@ -1,55 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Scrapbook</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-  <link href="./styles.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Scrapbook - Nathan & Hannah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base memory card styles */
+        .memory {
+            transition: transform 0.3s ease-in-out;
+            transform-origin: center;
+        }
+
+        .memory-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .memory-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .memory img {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .memory.active img {
+            filter: brightness(0.7);
+        }
+
+        /* Desktop-specific styles */
+        @media (hover: hover) and (pointer: fine) {
+            .memory:hover {
+                transform: scale(1.05);
+                z-index: 10;
+            }
+
+            .memory:hover .memory-overlay {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .memory:hover img {
+                filter: brightness(0.7);
+            }
+        }
+
+        /* Mobile-specific styles */
+        @media (hover: none) and (pointer: coarse) {
+            .memory:active {
+                transform: scale(1.02);
+            }
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-pink-100 to-purple-200 text-gray-800">
-
-  <header class="text-center py-10 bg-gradient-to-r from-pink-500 to-purple-500 text-white">
-    <h1 class="text-4xl font-bold mb-2">Our Scrapbook</h1>
-    <p class="text-lg">A collection of our most cherished moments</p>
-  </header>
-
-  <main class="container mx-auto py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-    <!-- Memory 1 -->
-
-    <div class="relative group" data-aos="fade-up">
-      <img src="images/first_date.jpg" alt="Memory 1" class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105">
-      <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-          <div class="text-center">
-              <h3 class="text-white text-2xl font-semibold mb-2">First date!!!</h3>
-              <p class="text-white text-lg">We spent the whole night lying under the stars, talking about everything and nothing at all. It was a magical experience!</p>
-          </div>
-      </div>
+<body>
+    <div class="text-center py-10 bg-gradient-to-r from-pink-500 to-purple-500 text-white">
+        <h1 id="our-scrapbook" class="text-4xl font-bold mb-2">Our Scrapbook</h1>
+        <p>A collection of our most cherished moments</p>
     </div>
 
-    <div class="memory relative group w-full h-full" data-aos="fade-up">
-      <img src="images/first_date.jpg" alt="Memory 1" class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105 w-full h-auto">
-      <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity memory-overlay hidden">
-        <p class="text-white text-lg font-semibold text-center px-4">
-          A detailed description about this memory that fits perfectly when hovered or clicked.
-        </p>
-      </div>
-    </div>
-    
+    <main class="container mx-auto py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up">
+            <img src="images/first_date.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">First date!!!</h3>
+                    <p class="text-white text-lg">
+                        We spent the whole night lying under the stars, talking about everything and nothing at all. It was a magical experience!
+                    </p>
+                </div>
+            </div>
+        </div>
     </main>
-    
-    <!-- Add more scrapbook items -->
-  </main>
 
-  <footer class="text-center py-5 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-    <p class="text-sm">Made with ❤️ by Nathan for Hannah</p>
-  </footer>
+    <footer class="text-center py-4">
+        Made with ❤️ by Nathan for Hannah
+    </footer>
 
-  <script>
-    AOS.init();
-  </script>
-  <script src="script.js"></script> 
+    <script>
+        // Detect if device is touch-enabled
+        const isTouchDevice = () => {
+            return (('ontouchstart' in window) ||
+                    (navigator.maxTouchPoints > 0) ||
+                    (navigator.msMaxTouchPoints > 0));
+        }
+
+        // Initialize memory cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const memories = document.querySelectorAll('.memory');
+            
+            memories.forEach(memory => {
+                if (isTouchDevice()) {
+                    // For touch devices - toggle on click
+                    memory.addEventListener('click', function(e) {
+                        this.classList.toggle('active');
+                        this.querySelector('.memory-overlay').classList.toggle('active');
+                    });
+                } else {
+                    // For desktop - reset on mouse leave
+                    memory.addEventListener('mouseleave', function(e) {
+                        this.classList.remove('active');
+                        this.querySelector('.memory-overlay').classList.remove('active');
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

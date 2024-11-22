@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-    .memory-overlay {
-      @apply hidden; /* Use Tailwind classes when possible */
+.group:hover .memory-overlay {
+    opacity: 1; /* Make visible on hover */
     }
-  
-    .memory.show .memory-overlay {
-      @apply flex;
-    }
-  }
