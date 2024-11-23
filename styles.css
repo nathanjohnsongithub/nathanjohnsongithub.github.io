@@ -684,8 +684,8 @@ video {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.to-purple-500 {
-  --tw-gradient-to: #a855f7 var(--tw-gradient-to-position);
+.to-red-500 {
+  --tw-gradient-to: #ef4444 var(--tw-gradient-to-position);
 }
 
 .px-4 {
