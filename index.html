@@ -67,6 +67,15 @@
     <div class="text-center py-10 bg-gradient-to-r from-pink-500 to-red-500 text-white">
         <h1 id="our-scrapbook" class="text-4xl font-bold mb-2">Our Scrapbook <3</h1>
         <p>A collection of our most cherished moments all within a website. (I don't know how i made this)</p>
+        <div id="countdown">
+            <h2 class="text-3xl font-bold my-2">When I'll see you again in Chicago ❤️</h2>
+            <div id="time">
+                <span id="days" class="text-xl"></span> days,
+                <span id="hours" class="text-xl"></span> hours,
+                <span id="minutes" class="text-xl"></span> minutes, and
+                <span id="seconds" class="text-xl"></span> seconds left!
+            </div>
+        </div>
     </div>
 
     <main class="container mx-auto py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
@@ -475,8 +484,51 @@
                 </div>
             </div>
         </div>
+<!-- 
+        <div class="memory relative group w-full h-full" 
+            data-aos="fade-up"
+            data-aos-duration="1000"
+            data-aos-offset="100"
+            data-aos-delay="50">
+        <img src="images/hannah_nathan_dancing_cartoon.jpg" 
+                alt="Memory 1" 
+                class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+        <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+            <div class="text-center px-4">
+                <h3 id="first-date" class="text-white text-2xl font-semibold mb-2"></h3>
+                <p class="text-white text-lg">
+                </p>
+                <a href="note.html" class="mt-2 inline-block bg-white text-pink-500 py-1 px-3 rounded hover:bg-pink-100">
+                    A Note to Hannah
+                </a>
+            </div>
+        </div>
+    </div> -->
+
+
 
     </main>
+
+    <div class="memory relative group w-3/5 mx-auto my-8" 
+    data-aos="fade-up"
+    data-aos-duration="1000"
+    data-aos-offset="100"
+    data-aos-delay="50">
+   <img src="images/hannah_nathan_dancing_cartoon.jpg" 
+        alt="Final Memory" 
+        class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+   <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+       <div class="text-center px-4">
+           <h3 class="text-white text-2xl font-semibold mb-2"></h3>
+           <a href="note.html" class="mt-2 inline-block bg-white text-pink-500 py-1 px-3 rounded hover:bg-pink-100">
+               A Note to Hannah
+           </a>
+       </div>
+   </div>
+</div>
+
 
     <footer class="text-center py-4">
         Made with ❤️ by Nathan for Hannah
@@ -556,5 +608,37 @@
             }
         });
     </script>
+    <script>
+        // Set the date we're counting down to
+        var countDownDate = new Date("2025-05-03").getTime(); // Replace YYYY-MM-DD with your target date
+    
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+    
+            // Get today's date and time
+            var now = new Date().getTime();
+            
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+            
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Output the result in elements with id="days", id="hours", id="minutes" and id="seconds"
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+            
+            // If the count down is over, write some text 
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("time").innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    </script>    
 </body>
 </html>
