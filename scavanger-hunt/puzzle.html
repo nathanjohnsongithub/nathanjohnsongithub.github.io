@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Scrapbook - Puzzle time!</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fdf2f8;
+      background-image: 
+        radial-gradient(#e879f9 0.5px, transparent 0.5px), 
+        radial-gradient(#e879f9 0.5px, #fdf2f8 0.5px);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+    }
+    
+    .title-font {
+      font-family: 'Dancing Script', cursive;
+    }
+    
+    .puzzle-container {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 15px;
+      background: white;
+      max-width: 450px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    .puzzle-board {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      border: 3px solid #f472b6;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    
+    .puzzle-piece {
+      aspect-ratio: 1/1;
+      background-image: url('/nathanjohnsongithub.github.io/images/london.jpeg');
+      background-size: 400% 400%;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      overflow: hidden;
+    }
+    
+    .puzzle-piece:hover {
+      transform: scale(0.98);
+      z-index: 2;
+    }
+    
+    .puzzle-piece::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      pointer-events: none;
+    }
+    
+    .selected {
+      outline: 3px solid #f59e0b;
+      z-index: 2;
+      transform: scale(0.95);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+    }
+    
+    .btn-check {
+      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+      box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+      transition: all 0.3s ease;
+      transform: translateY(0);
+    }
+    
+    .btn-check:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(236, 72, 153, 0.4);
+    }
+    
+    .btn-check:active {
+      transform: translateY(1px);
+    }
+    
+    .counter {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      color: #be185d;
+    }
+    
+    .heart-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.03;
+    }
+    
+    @media (max-width: 480px) {
+      .puzzle-container {
+        max-width: 340px;
+        padding: 10px;
+      }
+      .puzzle-board {
+        max-width: 320px;
+      }
+    }
+    
+    /* Confetti animation for winning */
+    @keyframes confetti-slow {
+      0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0); }
+      100% { transform: translate3d(25px, 105vh, 0) rotateX(360deg) rotateY(180deg); }
+    }
+    
+    @keyframes confetti-medium {
+      0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0); }
+      100% { transform: translate3d(100px, 105vh, 0) rotateX(100deg) rotateY(360deg); }
+    }
+    
+    @keyframes confetti-fast {
+      0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0); }
+      100% { transform: translate3d(-50px, 105vh, 0) rotateX(10deg) rotateY(250deg); }
+    }
+    
+    .confetti {
+      position: absolute;
+      z-index: 1;
+      top: -10px;
+      border-radius: 0%;
+    }
+    
+    .confetti--animation-slow {
+      animation: confetti-slow 2.5s linear 1 forwards;
+    }
+    
+    .confetti--animation-medium {
+      animation: confetti-medium 2s linear 1 forwards;
+    }
+    
+    .confetti--animation-fast {
+      animation: confetti-fast 1.5s linear 1 forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="relative min-h-screen flex flex-col">
+    <!-- Background hearts pattern -->
+    <div class="heart-bg">
+      <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <pattern id="heart-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M10,6 Q10,0 15,0 T20,6 Q20,12 10,18 Q0,12 0,6 Q0,0 5,0 T10,6 Z" fill="#fda4af" />
+        </pattern>
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#heart-pattern)" />
+      </svg>
+    </div>
+  
+    <!-- Header -->
+    <div class="text-center py-6 md:py-10 bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 text-white shadow-lg">
+      <h1 class="title-font text-3xl md:text-5xl font-bold mb-2 animate__animated animate__heartBeat">Puzzle time!</h1>
+      <p class="text-lg md:text-xl text-pink-100">You've made it! And yes, you need to complete a puzzle. Get fucked</p>
+    </div>
+    
+    <!-- Main content -->
+    <div class="flex-grow flex flex-col items-center justify-center p-4 md:p-8">
+      <div class="puzzle-container animate__animated animate__fadeIn">
+        <div class="flex justify-between items-center mb-4">
+          <div class="counter text-lg" id="moves-counter">Moves: 0</div>
+          <div class="counter text-lg" id="time-counter">Time: 0:00</div>
+        </div>
+        <div class="puzzle-board">
+          <!-- Puzzle will be inserted here by JS -->
+          <div id="puzzle" class="grid grid-cols-4 gap-0 w-full"></div>
+        </div>
+        <div class="mt-6 flex justify-center">
+          <button id="check-btn" class="btn-check px-6 py-3 text-white rounded-full text-lg font-medium">
+            Check Puzzle
+          </button>
+          <button id="shuffle-btn" class="ml-3 px-4 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300">
+            Shuffle
+          </button>
+        </div>
+      </div>
+      
+      <!-- Instruction Card -->
+      <div class="mt-8 bg-white p-4 rounded-lg shadow-md max-w-md animate__animated animate__fadeIn animate__delay-1s">
+        <h3 class="text-lg font-semibold text-pink-600 mb-2">How to Play:</h3>
+        <ol class="list-decimal pl-5 text-gray-700 space-y-1">
+          <li>Click on a puzzle piece to select it</li>
+          <li>Click on another piece to swap their positions</li>
+          <li>Arrange all pieces to complete the image</li>
+          <li>Click "Check Puzzle" when you think you've solved it!</li>
+          <li>Ps. I have no damn clue if this works on mobile it already took too damn long to make...</li>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="text-center py-4 bg-white bg-opacity-80 text-pink-600 mt-6">
+      <p class="title-font text-lg">Made with ❤️ by Nathan for Hannah</p>
+    </footer>
+  </div>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+      const gridSize = 4; // 4x4 puzzle grid
+      const puzzleContainer = document.getElementById('puzzle');
+      let pieces = [];
+      let moveCounter = 0;
+      let timer = 0;
+      let timerInterval;
+      let gameStarted = false;
+      
+      const movesCounterEl = document.getElementById('moves-counter');
+      const timeCounterEl = document.getElementById('time-counter');
+      
+      // Start the timer
+      function startTimer() {
+        if (!gameStarted) {
+          gameStarted = true;
+          timerInterval = setInterval(function() {
+            timer++;
+            const minutes = Math.floor(timer / 60);
+            const seconds = timer % 60;
+            timeCounterEl.textContent = `Time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+          }, 1000);
+        }
+      }
+      
+      // Update moves counter
+      function updateMoves() {
+        moveCounter++;
+        movesCounterEl.textContent = `Moves: ${moveCounter}`;
+        
+        // Start timer on first move
+        if (moveCounter === 1) {
+          startTimer();
+        }
+      }
+      
+      // Create puzzle pieces with correct background positioning and store original positions
+      for(let row = 0; row < gridSize; row++){
+        for(let col = 0; col < gridSize; col++){
+          let piece = document.createElement('div');
+          piece.classList.add('puzzle-piece');
+          // Save original positions as data attributes
+          piece.dataset.originalRow = row;
+          piece.dataset.originalCol = col;
+          // Set background position as percentages for better responsiveness
+          piece.style.backgroundPosition = `${col * 33.33}% ${row * 33.33}%`;
+          pieces.push(piece);
+        }
+      }
+      
+      // Shuffle the pieces using Fisher-Yates shuffle
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+      
+      function shufflePuzzle() {
+        // Clear the puzzle container
+        while (puzzleContainer.firstChild) {
+          puzzleContainer.removeChild(puzzleContainer.firstChild);
+        }
+        
+        // Shuffle the pieces
+        pieces = shuffle([...pieces]);
+        
+        // Append the shuffled pieces to the puzzle container
+        pieces.forEach(piece => puzzleContainer.appendChild(piece));
+        
+        // Reset game state
+        moveCounter = 0;
+        timer = 0;
+        gameStarted = false;
+        clearInterval(timerInterval);
+        movesCounterEl.textContent = `Moves: ${moveCounter}`;
+        timeCounterEl.textContent = `Time: 0:00`;
+      }
+      
+      // Initial shuffle
+      shufflePuzzle();
+      
+      // Shuffle button
+      document.getElementById('shuffle-btn').addEventListener('click', function() {
+        shufflePuzzle();
+      });
+      
+      // Allow swapping two pieces on click/touch
+      let firstSelected = null;
+      
+      // Helper function to handle selection
+      function handleSelection(piece) {
+        if(!firstSelected) {
+          firstSelected = piece;
+          firstSelected.classList.add('selected');
+        } else if(firstSelected === piece) {
+          // Deselect if the same piece is clicked again
+          firstSelected.classList.remove('selected');
+          firstSelected = null;
+        } else {
+          // Swap the two pieces in the DOM using a temporary placeholder
+          let temp = document.createElement("div");
+          puzzleContainer.insertBefore(temp, firstSelected);
+          puzzleContainer.insertBefore(firstSelected, piece);
+          puzzleContainer.insertBefore(piece, temp);
+          puzzleContainer.removeChild(temp);
+          // Remove selection outline
+          firstSelected.classList.remove('selected');
+          firstSelected = null;
+          
+          // Update moves counter
+          updateMoves();
+        }
+      }
+      
+      // Add event delegation for puzzle pieces
+      puzzleContainer.addEventListener('click', function(e) {
+        const piece = e.target.closest('.puzzle-piece');
+        if (piece) {
+          handleSelection(piece);
+        }
+      });
+      
+      // For touch device users
+      puzzleContainer.addEventListener('touchend', function(e) {
+        const piece = e.target.closest('.puzzle-piece');
+        if (piece) {
+          e.preventDefault();
+          handleSelection(piece);
+        }
+      });
+      
+      // Function to check if the puzzle is solved using the original positions stored in data attributes
+      function checkPuzzle() {
+        const currentPieces = Array.from(puzzleContainer.children);
+        let solved = true;
+        currentPieces.forEach((piece, index) => {
+          const expectedRow = Math.floor(index / gridSize);
+          const expectedCol = index % gridSize;
+          if(parseInt(piece.dataset.originalRow) !== expectedRow || parseInt(piece.dataset.originalCol) !== expectedCol) {
+            solved = false;
+          }
+        });
+        return solved;
+      }
+      
+      // Create confetti effect
+      function createConfetti() {
+        const colors = ['#ec4899', '#8b5cf6', '#f59e0b', '#10b981', '#3b82f6'];
+        const confettiCount = 100;
+        
+        for (let i = 0; i < confettiCount; i++) {
+          const confetti = document.createElement('div');
+          const position = Math.random() * 100;
+          
+          confetti.className = 'confetti';
+          confetti.style.left = position + 'vw';
+          confetti.style.width = (Math.random() * 10 + 5) + 'px';
+          confetti.style.height = (Math.random() * 10 + 5) + 'px';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          
+          // Add different animation speeds
+          const speed = ['slow', 'medium', 'fast'][Math.floor(Math.random() * 3)];
+          confetti.classList.add(`confetti--animation-${speed}`);
+          
+          document.body.appendChild(confetti);
+          
+          // Remove confetti after animation completes
+          setTimeout(() => {
+            document.body.removeChild(confetti);
+          }, 2500);
+        }
+      }
+      
+      // Show success message
+      function showSuccessMessage() {
+        // Create a modal
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 flex items-center justify-center z-50 animate__animated animate__fadeIn';
+        modal.innerHTML = `
+          <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+          <div class="bg-white p-6 rounded-lg shadow-xl z-10 max-w-md mx-4 animate__animated animate__zoomIn text-center">
+            <h2 class="text-2xl font-bold text-pink-600 title-font mb-4">Puzzle Solved! 🎉</h2>
+            <p class="text-gray-700 mb-3">You've completed the scavenger hunt congrats!!!!</p>
+            <p class="text-gray-700 mb-4">You completed the puzzle in ${moveCounter} moves and ${Math.floor(timer / 60)}:${(timer % 60).toString().padStart(2, '0')}!</p>
+            
+            <div class="mt-4 mb-4">
+              <a href="memory.html" class="memory-link pulse-animation">
+                Click to See the special surprise
+              </a>
+            </div>
+            
+            <div class="flex justify-center mt-4">  
+              <button id="close-modal" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                Close
+              </button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close modal on button click
+        document.getElementById('close-modal').addEventListener('click', function() {
+          document.body.removeChild(modal);
+        });
+      }
+      
+      // Check Puzzle button event
+      document.getElementById('check-btn').addEventListener('click', function(){
+        if(checkPuzzle()){
+          // Stop the timer
+          clearInterval(timerInterval);
+          
+          // Create confetti effect
+          createConfetti();
+          
+          // Show success message
+          showSuccessMessage();
+        } else {
+          // Show a hint message
+          const hintMessage = document.createElement('div');
+          hintMessage.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-md animate__animated animate__fadeIn animate__faster';
+          hintMessage.innerHTML = `<p>Not quite there yet. Keep trying!</p>`;
+          document.body.appendChild(hintMessage);
+          
+          // Remove after 3 seconds
+          setTimeout(() => {
+            hintMessage.classList.add('animate__fadeOut');
+            setTimeout(() => {
+              document.body.removeChild(hintMessage);
+            }, 500);
+          }, 2500);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
