@@ -1,0 +1,27 @@
+{
+  "name": "nathanjohnsongithub.github.io",
+  "version": "1.0.0",
+  "description": "This repo contains an older static scrapbook (`index.html`) and a new import flow that can upload old memories into a Supabase `memories` bucket and `public.memories` table.",
+  "main": "auth-guard.js",
+  "scripts": {
+    "build-css": "npx tailwindcss -i ./input.css -o ./styles.css",
+    "watch-css": "npx tailwindcss -i ./input.css -o ./styles.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathanjohnsongithub/nathanjohnsongithub.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nathanjohnsongithub/nathanjohnsongithub.github.io/issues"
+  },
+  "homepage": "https://github.com/nathanjohnsongithub/nathanjohnsongithub.github.io#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "tailwindcss": "^4.1.13"
+  }
+}

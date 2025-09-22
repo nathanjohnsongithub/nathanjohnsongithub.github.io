@@ -2,8 +2,13 @@
 module.exports = {
   content: [
     "./index.html",
-    "./script.js", // Ensure this includes the script if you're using dynamic classes
-    // Add other paths as necessary
+    "./legacy.html",
+    "./login.html",
+    "./memories.html",
+    "./note.html",
+    "./scavanger-hunt/**/*.html",
+    "./script.js",
+    "./auth-guard.js"
   ],
   theme: {
     extend: {},

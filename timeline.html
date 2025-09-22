@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Our Journey Together — Timeline</title>
+
+	<!-- Match index.html libraries -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
+	<script src="https://cdn.tailwindcss.com"></script>
+
+	<style>
+		:root{
+			/* shared theme tokens (purple -> red -> white -> yellow/orange) */
+			--bg-start: #ef4444;   /* red */
+			--bg-mid:   #ef4444;   /* red */
+			--bg-white: #ffffff;   /* white */
+			--bg-end:   #f59e0b;   /* orange */
+			--brand:    #ef4444;   /* primary accent (red) */
+			--accent:   #d22c2c;   /* subtle accent tuned closer to the warm gradient (orange-tinted) */
+		}
+
+		* { box-sizing: border-box; }
+
+		/* Layered gradient + subtle noise background (purple -> red -> white -> orange) */
+		body {
+			background:
+				radial-gradient(1200px 800px at 15% -10%, rgba(124,58,237,0.12) 0%, transparent 60%),
+				radial-gradient(1200px 800px at 85% 10%,  rgba(245,158,11,0.08) 0%, transparent 60%),
+				linear-gradient(180deg, var(--bg-start) 0%, var(--bg-mid) 30%, var(--bg-white) 60%, var(--bg-end) 100%);
+			position: relative;
+			min-height: 100vh;
+			margin: 0;
+			padding: 0;
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			line-height: 1.6;
+			color: #374151;
+			overflow-x: hidden;
+		}
+
+		/* Tiny noise texture (match index.html) */
+		body::before{
+			content:"";
+			position: fixed;
+			inset: 0;
+			pointer-events: none;
+			background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0 0 0 .015 .03 0 0 0'/></feComponentTransfer></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+			background-size: 300px 300px;
+			opacity: .35;
+			mix-blend-mode: multiply;
+		}
+
+		/* Ensure header layers stack like index.html */
+		header { position: relative; z-index: 20; }
+		header .backdrop-blur-md { position: relative; z-index: 30; }
+		header [aria-hidden="true"] { z-index: 10; }
+
+		/* Timeline styles (unchanged structure, just themed) */
+		.timeline-container {
+			position: relative;
+			/* horizontal position of the central timeline line (default: centered) */
+			--timeline-x: 50%;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 40px 20px 0;
+		}
+ 		.timeline-container::before {
+			content: '';
+			/* absolute so it stretches with the timeline container's height */
+			position: absolute;
+ 			left: var(--timeline-x);
+			top: 0;
+			bottom: 0;
+			width: 6px;
+			transform: translateX(-50%);
+			border-radius: 999px; /* pill */
+			/* glassy translucent core with subtle tint from the theme stops */
+			background: linear-gradient(180deg,
+				rgba(255,255,255,0.65) 0%,
+				rgba(255,255,255,0.18) 30%,
+				rgba(124,58,237,0.06) 48%,
+				rgba(239,68,68,0.06) 70%,
+				rgba(245,158,11,0.06) 100%
+			);
+			border: 1px solid rgba(255,255,255,0.6);
+			box-shadow: 0 12px 40px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.7);
+			backdrop-filter: blur(8px);
+			-webkit-backdrop-filter: blur(8px);
+			z-index: 6;
+		}
+
+        /* Outer arrow (white border) */
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%) translateY(65%);
+            width: 32px;
+            height: 28px;
+            background: #fff; /* border color */
+            clip-path: polygon(50% 100%, 0 0, 100% 0); /* down-pointing arrow */
+            box-shadow: 0 6px 18px rgba(124, 58, 237, 0.12);
+            z-index: 7;
+        }
+
+        /* Inner arrow (gradient fill) */
+        .timeline-arrow {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%) translateY(65%);
+            width: 24px;   /* slightly smaller so border shows */
+            height: 20px;
+            background: linear-gradient(180deg, var(--bg-start), var(--bg-mid), var(--bg-end));
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            z-index: 8;
+        }
+
+        /* Align both arrows with the shifted line on mobile */
+        @media (max-width: 768px) {
+            .timeline-container::after,
+            .timeline-arrow { left: 30px; }
+        }
+
+
+
+		.timeline-item {
+			position: relative;
+			z-index: 10; /* ensure items sit above the baseline line, markers will be higher */
+			width: 50%;
+			padding: 30px;
+			margin-bottom: 60px;
+			opacity: 0;
+			transform: translateY(30px);
+			transition: all 0.6s ease;
+		}
+		.timeline-item.animate { opacity: 1; transform: translateY(0); }
+		.timeline-item.left { left: 0; text-align: right; padding-right: 50px; }
+		.timeline-item.right { left: 50%; text-align: left; padding-left: 50px; }
+
+		.timeline-marker {
+			position: absolute;
+			top: 40px;
+			width: 24px;
+			height: 24px;
+			background: linear-gradient(180deg, var(--bg-start), var(--bg-mid), var(--bg-end));
+			border: 4px solid white;
+			border-radius: 50%;
+			box-shadow: 0 8px 22px rgba(251,146,60,0.12);
+			z-index: 50; /* render above the central line */
+		}
+		.timeline-item.left .timeline-marker { right: -12px; }
+		.timeline-item.right .timeline-marker { left: -12px; }
+
+		.timeline-content {
+			background: rgba(255, 255, 255, 0.85);
+			backdrop-filter: blur(12px);
+			border-radius: 20px;
+			padding: 30px;
+			border: 1px solid rgba(255, 255, 255, 0.4);
+			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+			position: relative;
+			overflow: hidden;
+		}
+
+		/* highlight on hover/focus to match background tint but remain distinct */
+		.timeline-content:focus,
+		.timeline-content:hover {
+			outline: none;
+			border-color: rgba(251,146,60,0.18);
+			box-shadow: 0 18px 50px rgba(251,146,60,0.08);
+		}
+
+		/* Inline expansion area for each timeline card */
+		.timeline-extra {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.35s ease, padding 0.25s ease;
+			padding-top: 0;
+		}
+
+		.timeline-item.expanded .timeline-extra {
+			max-height: 1200px; /* large enough to reveal content */
+			padding-top: 16px;
+		}
+
+		.timeline-content::before {
+			content: '';
+			position: absolute;
+			top: 0; left: 0; right: 0;
+			height: 4px;
+			background: linear-gradient(90deg, var(--bg-start) 50%, var(--bg-mid) 40%, var(--bg-end) 100%);
+		}
+		.timeline-date {
+			color: var(--accent);
+			font-weight: 700;
+			font-size: 0.95rem;
+			margin-bottom: 12px;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+		.timeline-title {
+			font-size: 1.4rem;
+			font-weight: 800;
+			margin-bottom: 16px;
+			color: #1f2937;
+			line-height: 1.3;
+		}
+		.timeline-description {
+			color: #6b7280;
+			line-height: 1.7;
+			font-size: 1rem;
+			margin-bottom: 16px;
+		}
+		.timeline-image {
+			width: 100%;
+			max-width: 320px;
+			height: 220px;
+			object-fit: cover;
+			border-radius: 16px;
+			margin: 16px 0 0 0;
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+			transition: transform 0.3s ease;
+		}
+		.timeline-image:hover { transform: scale(1.02); }
+
+		@media (max-width: 768px) {
+			.timeline-container { --timeline-x: 30px; }
+			.timeline-container { padding: 20px 16px; }
+				.timeline-container::before { left: var(--timeline-x); }
+			.timeline-item {
+				--item-pl: 74px; /* keep this in sync with padding-left */
+				width: 100%;
+				left: 0 !important;
+				text-align: left !important;
+				padding: 20px 20px 20px var(--item-pl) !important;
+				margin-bottom: 40px;
+			}
+				.timeline-marker {
+					/* center marker over the vertical line: marker is 20px wide, so offset by 10px */
+					left: clamp(6px, calc(var(--timeline-x) - 22px), 9999px) !important;
+					right: auto !important;
+					width: 20px; height: 20px;
+					/* remove translateX to avoid double-shifting */
+					transform: none;
+				}
+				/* ensure markers aren't clipped by any ancestor on narrow viewports */
+				.timeline-container, .timeline-item { overflow: visible; }
+			.timeline-content { padding: 24px; }
+			.timeline-title { font-size: 1.2rem; }
+		}
+
+/* Improve modal panel animation smoothness: hint to compositor and reduce repaints */
+[data-panel] {
+	will-change: transform;
+	backface-visibility: hidden;
+	transform-style: preserve-3d;
+	-webkit-font-smoothing: antialiased;
+}
+		@media (max-width: 480px) {
+			.timeline-container { padding: 16px 12px; }
+			.timeline-item {
+				--item-pl: 60px; /* match padding-left below */
+				padding: 16px 16px 16px var(--item-pl) !important;
+			}
+			.timeline-content { padding: 20px; }
+		}
+
+		/* Modal backdrop fade (tiny fade for smoother handoff) */
+		.modal-backdrop {
+			opacity: 0;
+			transition: opacity 200ms cubic-bezier(.22,.9,.36,1);
+			pointer-events: none;
+		}
+		.modal-backdrop.show {
+			opacity: 1;
+			pointer-events: auto;
+		}
+
+		/* Locked/reveal teaser styles for future card */
+		.locked-preview { position: relative; margin-top: 8px; }
+		.locked-blur {
+			height: 140px;
+			border-radius: 14px;
+			background: linear-gradient(90deg, rgba(124,58,237,0.08), rgba(239,68,68,0.06), rgba(245,158,11,0.06));
+			filter: blur(6px);
+		}
+		.lock-overlay {
+			position: absolute; inset: 0;
+			display: flex; align-items: center; justify-content: center;
+			gap: 8px; font-weight: 700; color: #334155;
+			background: rgba(255,255,255,0.55);
+			backdrop-filter: blur(4px);
+			border-radius: 14px;
+			text-transform: uppercase; letter-spacing: .6px;
+		}
+		.timeline-item.expanded .locked-preview { display: none; }
+
+		@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+		.chef-emoji { display: inline-block; animation: bob 1.6s ease-in-out infinite; }
+
+		/* Unlock hint appears after first reveal */
+		.unlock-hint { display: none; margin-top: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(251,146,60,0.35); background: rgba(255,255,255,0.7); color: #334155; font-weight: 600; }
+		.timeline-item.expanded .unlock-hint { display: flex; align-items: center; justify-content: center; gap: 8px; }
+	</style>
+</head>
+<body>
+	<!-- Header (glassy card + gradient blob, matching index.html) -->
+	<header class="relative">
+		<!-- decorative gradient blob -->
+		<div aria-hidden="true"
+				 class="pointer-events-none absolute inset-x-0 -top-24 h-72
+								bg-gradient-to-r from-orange-200 via-amber-200 to-yellow-200 blur-3xl opacity-60"></div>
+
+		<div class="relative mx-auto max-w-5xl px-6 pt-20 pb-10">
+			<!-- Glass card -->
+			<div class="backdrop-blur-md bg-white/50 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,.08)] ring-1 ring-white/60">
+				<div class="px-8 py-10 text-center">
+					<!-- Keep page-appropriate title but match typography -->
+					<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+						Our Journey Together <span aria-hidden="true">✨</span>
+					</h1>
+					<p class="mt-3 text-slate-600 max-w-2xl mx-auto">
+						A timeline of our beautiful story
+					</p>
+
+					<!-- Buttons styled exactly like index.html -->
+					<div class="mt-6 flex justify-center gap-3">
+						<a href="/index.html"
+							 class="inline-flex items-center rounded-xl px-5 py-2.5 text-gray-700 font-medium
+										bg-white/70 hover:bg-white/90 focus:outline-none focus:ring-2
+									   focus:ring-offset-2 focus:ring-gray-300 transition border border-gray-200">
+							← Back to Memories
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<!-- Timeline Content -->
+	<main class="pb-16 pt-0">
+		<div class="timeline-container">
+		  <!-- Timeline Item 1 -->
+		  <!-- Example: this item overrides theme using explicit color attrs -->
+		  <div class="timeline-item left" data-aos="fade-right"
+			  data-bg-start="#b71616" data-bg-mid="#b71616" data-bg-end="#b71616" data-accent="#c71616" data-brand="#b71616">
+				<div class="timeline-marker"></div>
+			 <div class="timeline-content cursor-pointer ring-1 ring-transparent hover:ring-amber-300/50 transition"
+				 role="button" tabindex="0"
+				 data-modal-open="memory-first-meeting"
+				 data-expands-from
+				 aria-label="Open memory: First Meeting">
+					<div class="timeline-date">January 2023</div>
+					<h3 class="timeline-title">First Meeting</h3>
+					<p class="timeline-description">
+						The day our paths crossed and everything changed. A chance encounter that would become the beginning of our beautiful story.
+					</p>
+					<img src="./images/first_date.jpg" alt="First meeting" class="timeline-image" />
+					<p class="mt-2 text-sm text-slate-500">Click to expand…</p>
+					<div class="timeline-extra" aria-hidden="true">
+						<div class="rounded-xl p-4 mt-4" style="background: linear-gradient(90deg, rgba(124,58,237,0.06), rgba(239,68,68,0.04), rgba(245,158,11,0.04)); border: 1px solid rgba(255, 255, 255, 0.5);">
+							<h3 class="font-semibold" style="color: var(--accent); margin-bottom: .25rem;">Anecdote</h3>
+							<p style="color: rgba(31,41,55,0.9);">
+								We talked until the café lights dimmed, then walked outside just to keep the conversation going.
+							</p>
+						</div>
+
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+							<img src="./images/first_date.jpg" class="w-full h-44 object-cover rounded-xl" alt="First meeting 1">
+							<img src="./images/5k.jpg" class="w-full h-44 object-cover rounded-xl" alt="First meeting 2">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Timeline Item 2 -->
+			<!-- Example: this item uses a named preset -->
+			<div class="timeline-item right" data-aos="fade-left" data-theme="romance">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content cursor-pointer ring-1 ring-transparent hover:ring-amber-300/50 transition"
+				 role="button" tabindex="0"
+				 data-modal-open="memory-first-date"
+				 data-expands-from
+				 aria-label="Open memory: First Date">
+					<div class="timeline-date">February 2023</div>
+					<h3 class="timeline-title">First Date</h3>
+					<p class="timeline-description">
+						Our first official date - nervous butterflies, endless conversations, and the realization that we had something special.
+					</p>
+					<img src="./images/ice_cream_comedy_club.jpg" alt="First date" class="timeline-image" />
+					<p class="mt-2 text-sm text-slate-500">Click to expand…</p>
+					<div class="timeline-extra" aria-hidden="true">
+						<div class="rounded-xl p-4 mt-4" style="background: linear-gradient(90deg, rgba(124,58,237,0.04), rgba(239,68,68,0.03), rgba(245,158,11,0.03)); border: 1px solid rgba(255,255,255,0.5);">
+							<h3 class="font-semibold" style="color: var(--accent); margin-bottom: .25rem;">Anecdote</h3>
+							<p style="color: rgba(31,41,55,0.9);">
+								We laughed over our shared dessert choices and traded stories about the worst meals we'd ever had.
+							</p>
+						</div>
+
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+							<img src="./images/ice_cream_comedy_club.jpg" class="w-full h-44 object-cover rounded-xl" alt="First date 1">
+							<img src="./images/parking_garage.jpg" class="w-full h-44 object-cover rounded-xl" alt="First date 2">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Timeline Item 3 -->
+			<div class="timeline-item left" data-aos="fade-right">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">March 2023</div>
+					<h3 class="timeline-title">Becoming Official</h3>
+					<p class="timeline-description">
+						The moment we decided to make it official. No more wondering, no more games - just us, together, ready to see where this journey would take us.
+					</p>
+				</div>
+			</div>
+
+			<!-- Timeline Item 4 -->
+			<div class="timeline-item right" data-aos="fade-left">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">April 2023</div>
+					<h3 class="timeline-title">Meeting the Family</h3>
+					<p class="timeline-description">
+						The big step of meeting each other's families. Nervous introductions that turned into warm welcomes and the beginning of extended family bonds.
+					</p>
+				</div>
+			</div>
+
+			<!-- Timeline Item 5 -->
+			<div class="timeline-item left" data-aos="fade-right">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">May 2023</div>
+					<h3 class="timeline-title">First Adventure</h3>
+					<p class="timeline-description">
+						Our first big adventure together - exploring new places, making memories, and learning that we make the perfect travel companions.
+					</p>
+					<img src="./images/5k.jpg" alt="First adventure" class="timeline-image" />
+				</div>
+			</div>
+
+			<!-- Timeline Item 6 -->
+			<div class="timeline-item right" data-aos="fade-left">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">June 2023</div>
+					<h3 class="timeline-title">Summer of Love</h3>
+					<p class="timeline-description">
+						Long summer days filled with laughter, spontaneous dates, and falling deeper in love with each passing moment.
+					</p>
+					<img src="./images/sunset.jpg" alt="Summer memories" class="timeline-image" />
+				</div>
+			</div>
+
+			<!-- Timeline Item 7 -->
+			<div class="timeline-item left" data-aos="fade-right">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">July 2023</div>
+					<h3 class="timeline-title">Moving In Together</h3>
+					<p class="timeline-description">
+						Taking the next big step - combining our lives, our belongings, and our daily routines. Learning to share space and build a home together.
+					</p>
+				</div>
+			</div>
+
+			<!-- Timeline Item 8 -->
+			<div class="timeline-item right" data-aos="fade-left">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">August 2023</div>
+					<h3 class="timeline-title">First "I Love You"</h3>
+					<p class="timeline-description">
+						Those three little words that changed everything. The moment when what we felt finally had a name, and our hearts were completely open.
+					</p>
+				</div>
+			</div>
+
+			<!-- Timeline Item 9 -->
+			<div class="timeline-item left" data-aos="fade-right">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">September 2023</div>
+					<h3 class="timeline-title">Overcoming Challenges</h3>
+					<p class="timeline-description">
+						Every relationship faces tests. This was ours - learning to communicate, to support each other, and to grow stronger together through difficult times.
+					</p>
+				</div>
+			</div>
+
+			<!-- Timeline Item 10 -->
+			<div class="timeline-item right" data-aos="fade-left">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">October 2023</div>
+					<h3 class="timeline-title">Halloween Fun</h3>
+					<p class="timeline-description">
+						Our first Halloween together - choosing costumes, trick-or-treating, and discovering we share the same silly sense of humor.
+					</p>
+					<img src="./images/halloween.jpg" alt="Halloween memories" class="timeline-image" />
+				</div>
+			</div>
+
+			<!-- Timeline Item 11 -->
+			<div class="timeline-item left" data-aos="fade-right">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">November 2023</div>
+					<h3 class="timeline-title">Thanksgiving Together</h3>
+					<p class="timeline-description">
+						Sharing what we're grateful for - and realizing that having each other topped every list. A holiday filled with love, family, and new traditions.
+					</p>
+				</div>
+			</div>
+
+			<!-- Timeline Item 12 -->
+			<div class="timeline-item right" data-aos="fade-left">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">December 2023</div>
+					<h3 class="timeline-title">First Christmas</h3>
+					<p class="timeline-description">
+						The magic of our first Christmas together - gift shopping, decorating, and creating traditions that we'll carry forward for years to come.
+					</p>
+				</div>
+			</div>
+
+			<!-- Timeline Item 13 -->
+			<div class="timeline-item left" data-aos="fade-right">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">January 2024</div>
+					<h3 class="timeline-title">One Year Anniversary</h3>
+					<p class="timeline-description">
+						Celebrating our first year together - looking back at how far we've come and forward to all the adventures that await us.
+					</p>
+				</div>
+			</div>
+
+			<!-- Timeline Item 14 -->
+			<div class="timeline-item right" data-aos="fade-left">
+				<div class="timeline-marker"></div>
+				<div class="timeline-content">
+					<div class="timeline-date">Present Day</div>
+					<h3 class="timeline-title">Still Writing Our Story</h3>
+					<p class="timeline-description">
+						Here we are today - still learning, still growing, still falling more in love every day. Our timeline continues, and the best is yet to come.
+					</p>
+					<img src="./images/dancing.jpg" alt="Present day" class="timeline-image" />
+				</div>
+			</div>
+
+			<!-- Timeline Item 15: Future Surprise Date Night -->
+			<div class="timeline-item left" data-aos="fade-right" 
+			  data-bg-start="#b71616" data-bg-mid="#b71616" data-bg-end="#b71616" data-accent="#c71616" data-brand="#b71616">
+
+				<div class="timeline-marker"></div>
+				<div class="timeline-content cursor-pointer ring-1 ring-transparent hover:ring-amber-300/50 transition"
+					 role="button" tabindex="0" data-expands-from data-modal-open="memory-future-date-night"
+					 data-images='["./images/dancing.jpg","./images/tiramisu.jpg"]'
+					 aria-label="Open memory: Surprise Date Night for our 1 year anniversary">
+					<div class="timeline-date">October 24th, 2025</div>
+					<div class="locked-preview">
+						<div class="locked-blur"></div>
+						<div class="lock-overlay">
+							<span aria-hidden="true">🔒</span>
+							<span>Tap to Reveal</span>
+						</div>
+					</div>
+
+					<div class="timeline-extra" aria-hidden="true">
+						<h3 class="timeline-title">Surprise Date Night for our 1 year anniversary: Cooking and Dancing Class</h3>
+						<p class="timeline-description">Tapas and Spanish dancing cooking class — can’t wait to make memories together.</p>
+						<div class="mt-2 text-3xl">
+							<span class="chef-emoji" role="img" aria-label="chef hat">👨‍🍳</span>
+							<span class="chef-emoji" style="animation-delay:.2s" role="img" aria-label="paella">🥘</span>
+						</div>
+						<div class="unlock-hint" data-unlock-hint>
+							<span aria-hidden="true">👉</span>
+							<span>Click to see more details…</span>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="timeline-arrow"></div>
+		</div>
+	</main>
+
+	<!-- Modal: Future Surprise Date Night -->
+	<div id="memory-future-date-night" class="fixed inset-0 z-50 hidden">
+		<!-- overlay -->
+		<div class="absolute inset-0 bg-black/50 backdrop-blur-sm modal-backdrop" data-modal-close></div>
+
+		<!-- panel -->
+		<div class="absolute inset-x-0 bottom-0 md:static md:mx-auto md:mt-24 w-full md:max-w-3xl px-0 md:px-4">
+			<div data-panel
+				 class="bg-white/90 backdrop-blur-xl shadow-2xl ring-1 ring-white/60
+						rounded-t-2xl md:rounded-2xl
+						w-full md:w-auto
+						max-h-[85vh] overflow-y-auto
+						transform transition-transform duration-300 will-change-transform">
+				<div class="flex items-center justify-between px-6 py-4">
+					<h2 class="text-xl md:text-2xl font-extrabold text-slate-900">Surprise Date Night — Cooking & Dancing</h2>
+					<button class="inline-flex items-center justify-center rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100"
+						data-modal-close aria-label="Close">
+						✕
+					</button>
+				</div>
+
+				<div class="px-6 pb-6 space-y-4 text-slate-700">
+					<p class="text-slate-600">
+						Booked for October 2025: Tapas and Spanish dancing cooking class. Can’t wait to make memories together.
+					</p>
+					<div class="text-4xl">
+						<span class="chef-emoji" role="img" aria-label="chef hat">👨‍🍳</span>
+						<span class="chef-emoji" style="animation-delay:.2s" role="img" aria-label="utensils">🍴</span>
+						<span class="chef-emoji" style="animation-delay:.4s" role="img" aria-label="paella">🥘</span>
+					</div>
+
+					<!-- dynamic gallery will be populated from data-images on the trigger -->
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 hidden" data-dynamic-gallery></div>
+
+					<div class="flex justify-end gap-3 pt-2">
+						<button class="rounded-xl px-4 py-2 bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
+							data-modal-close>Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal: First Meeting -->
+	<div id="memory-first-meeting" class="fixed inset-0 z-50 hidden">
+		<!-- overlay -->
+		<div class="absolute inset-0 bg-black/50 backdrop-blur-sm modal-backdrop" data-modal-close></div>
+
+		<!-- panel -->
+		<!-- Bottom sheet on mobile; centered panel on md+ -->
+		<div class="absolute inset-x-0 bottom-0 md:static md:mx-auto md:mt-24 w-full md:max-w-3xl px-0 md:px-4">
+			<div data-panel
+					 class="bg-white/90 backdrop-blur-xl shadow-2xl ring-1 ring-white/60
+									rounded-t-2xl md:rounded-2xl
+									w-full md:w-auto
+									max-h-[85vh] overflow-y-auto
+									transform transition-transform duration-300 will-change-transform">
+				<div class="flex items-center justify-between px-6 py-4">
+					<h2 class="text-xl md:text-2xl font-extrabold text-slate-900">First Meeting</h2>
+					<button class="inline-flex items-center justify-center rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100"
+						data-modal-close aria-label="Close">
+						✕
+					</button>
+				</div>
+
+				<div class="px-6 pb-6 space-y-4 text-slate-700">
+					<p class="text-slate-600">
+						A few more details from that night—little things we never want to forget.
+					</p>
+
+					<!-- media grid -->
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<img src="./images/first_date.jpg" class="w-full h-56 object-cover rounded-xl" alt="First meeting 1">
+						<img src="./images/5k.jpg" class="w-full h-56 object-cover rounded-xl" alt="First meeting 2">
+					</div>
+
+					<div class="rounded-xl p-4" style="background: linear-gradient(90deg, rgba(124,58,237,0.06), rgba(239,68,68,0.04), rgba(245,158,11,0.04)); border: 1px solid rgba(255,255,255,0.6);">
+						<h3 class="font-semibold" style="color: var(--accent); margin-bottom: .25rem;">Anecdote</h3>
+						<p style="color: rgba(31,41,55,0.9);">
+							We talked until the café lights dimmed, then walked outside just to keep the conversation going.
+						</p>
+					</div>
+
+					<div class="flex justify-end gap-3 pt-2">
+						<button class="rounded-xl px-4 py-2 bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
+							data-modal-close>Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<!-- Modal: First Date -->
+		<div id="memory-first-date" class="fixed inset-0 z-50 hidden">
+			<!-- overlay -->
+			<div class="absolute inset-0 bg-black/50 backdrop-blur-sm modal-backdrop" data-modal-close></div>
+
+			<!-- panel -->
+			<div class="absolute inset-x-0 bottom-0 md:static md:mx-auto md:mt-24 w-full md:max-w-3xl px-0 md:px-4">
+				<div data-panel
+					 class="bg-white/90 backdrop-blur-xl shadow-2xl ring-1 ring-white/60
+							rounded-t-2xl md:rounded-2xl
+							w-full md:w-auto
+							max-h-[85vh] overflow-y-auto
+							transform transition-transform duration-300 will-change-transform">
+					<div class="flex items-center justify-between px-6 py-4">
+						<h2 class="text-xl md:text-2xl font-extrabold text-slate-900">First Date</h2>
+						<button class="inline-flex items-center justify-center rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100"
+							data-modal-close aria-label="Close">
+							✕
+						</button>
+					</div>
+
+					<div class="px-6 pb-6 space-y-4 text-slate-700">
+						<p class="text-slate-600">
+							A few more details from that night—little things we never want to forget.
+						</p>
+
+						<!-- media grid -->
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+							<img src="./images/ice_cream_comedy_club.jpg" class="w-full h-56 object-cover rounded-xl" alt="First date 1">
+							<img src="./images/parking_garage.jpg" class="w-full h-56 object-cover rounded-xl" alt="First date 2">
+						</div>
+
+						<div class="rounded-xl p-4" style="background: linear-gradient(90deg, rgba(124,58,237,0.06), rgba(239,68,68,0.04), rgba(245,158,11,0.04)); border: 1px solid rgba(255,255,255,0.6);">
+							<h3 class="font-semibold" style="color: var(--accent); margin-bottom: .25rem;">Anecdote</h3>
+							<p style="color: rgba(31,41,55,0.9);">
+								We laughed over our shared dessert choices and traded stories about the worst meals we'd ever had.
+							</p>
+						</div>
+
+						<div class="flex justify-end gap-3 pt-2">
+							<button class="rounded-xl px-4 py-2 bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
+								data-modal-close>Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Scripts (match index.html for AOS) -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+	<script>
+		AOS.init({
+			duration: 800,
+			easing: 'ease-in-out',
+			once: true,
+			offset: 120,
+			delay: 100
+		});
+
+		// Simple scroll animation trigger
+		const timelineItems = document.querySelectorAll('.timeline-item');
+		function animateOnScroll() {
+			timelineItems.forEach(item => {
+				const rect = item.getBoundingClientRect();
+				const windowHeight = window.innerHeight;
+				if (rect.top < windowHeight * 0.8) item.classList.add('animate');
+			});
+		}
+		animateOnScroll();
+		let scrollTimeout;
+		window.addEventListener('scroll', () => {
+			if (!scrollTimeout) {
+				scrollTimeout = setTimeout(() => { animateOnScroll(); scrollTimeout = null; }, 16);
+			}
+		});
+
+		// Smooth scrolling
+		document.documentElement.style.scrollBehavior = 'smooth';
+
+		// Preload timeline images
+		document.querySelectorAll('.timeline-image').forEach(img => {
+			const pre = new Image();
+			pre.src = img.src;
+		});
+
+		// Inline expansion toggles for timeline items
+	document.querySelectorAll('[data-expands-from]').forEach(trigger => {
+			const item = trigger.closest('.timeline-item');
+			if (!item) return;
+			const extra = item.querySelector('.timeline-extra');
+			if (!extra) return;
+
+			// ensure hidden initially
+			extra.setAttribute('aria-hidden', 'true');
+
+			const toggle = (e) => {
+				const isExpanded = item.classList.toggle('expanded');
+				extra.setAttribute('aria-hidden', (!isExpanded).toString());
+			};
+
+			trigger.addEventListener('click', (e) => {
+				// prevent double-activation when clicking a focused form control inside
+				if (e.target.closest('a,button')) return;
+				// If this trigger also opens a modal, don't expand inline — let the modal handle the popout.
+				if (trigger.hasAttribute('data-modal-open')) return;
+				toggle(e);
+			});
+
+			trigger.addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault();
+					if (trigger.hasAttribute('data-modal-open')) return;
+					toggle(e);
+				}
+			});
+		});
+	</script>
+
+	<script>
+	(function () {
+	  const MOBILE = window.matchMedia('(max-width: 767px)');
+
+	  // Open
+	  document.querySelectorAll('[data-modal-open]').forEach(trigger => {
+	    const id = trigger.getAttribute('data-modal-open');
+	    const source = trigger.closest('[data-expands-from]');
+
+	    const open = () => {
+	      // If this trigger belongs to a locked/reveal card and it's not yet expanded,
+	      // perform the inline reveal first (don't open the modal on the first tap/click).
+	      const item = trigger.closest('.timeline-item');
+	      const content = trigger.closest('.timeline-content');
+	      const lockedPreview = content?.querySelector('.locked-preview');
+	      const extra = item?.querySelector('.timeline-extra');
+	      if (lockedPreview && item && extra && !item.classList.contains('expanded')) {
+	        item.classList.add('expanded');
+	        extra.setAttribute('aria-hidden', 'false');
+	        return; // stop here; next click will open the modal
+	      }
+
+	      const overlay = document.getElementById(id);
+	      const panel = overlay.querySelector('[data-panel]');
+	      if (!overlay || !panel) return;
+
+	      // Hide any unlock hint when modal opens
+	      content?.querySelector('[data-unlock-hint]')?.classList.add('hidden');
+
+	      // Populate dynamic gallery (if present) from data-images on trigger/source
+	      try {
+	        const srcEl = content || trigger;
+	        const raw = srcEl?.getAttribute('data-images') || '';
+	        const gallery = overlay.querySelector('[data-dynamic-gallery]');
+	        if (gallery) {
+	          let imgs = [];
+	          if (raw) {
+	            try { imgs = JSON.parse(raw); }
+	            catch {
+	              // fallback: comma or space separated
+	              imgs = raw.split(/[\s,]+/).filter(Boolean);
+	            }
+	          }
+	          // Normalize to array of strings
+	          if (!Array.isArray(imgs)) imgs = [];
+	          gallery.innerHTML = '';
+	          if (imgs.length) {
+	            gallery.classList.remove('hidden');
+	            imgs.forEach((url, i) => {
+	              const img = document.createElement('img');
+	              img.src = url;
+	              img.loading = 'lazy';
+	              img.alt = 'Photo ' + (i + 1);
+	              img.className = 'w-full h-56 object-cover rounded-xl';
+	              gallery.appendChild(img);
+	            });
+	          } else {
+	            gallery.classList.add('hidden');
+	          }
+	        }
+	      } catch {}
+
+	      overlay.classList.remove('hidden');
+	      document.body.style.overflow = 'hidden';
+
+					const backdrop = overlay.querySelector('[data-modal-close]');
+					if (MOBILE.matches) {
+						// Bottom sheet: slide up
+						if (backdrop) requestAnimationFrame(() => backdrop.classList.add('show'));
+						panel.classList.add('translate-y-full');
+						requestAnimationFrame(() => panel.classList.remove('translate-y-full'));
+						panel.addEventListener('transitionend', () => {
+							overlay.querySelector('[data-modal-close]')?.focus();
+						}, { once: true });
+						return;
+					}
+
+	      // Desktop: FLIP (card -> centered panel)
+	      // 1) Force final layout
+	      panel.style.transform = '';
+	      panel.style.transition = 'none';
+	      panel.getBoundingClientRect(); // reflow
+
+	      const final = panel.getBoundingClientRect();
+	      const from = (source || trigger).getBoundingClientRect();
+
+	      // 2) Compute delta
+	      const dx = from.left - final.left;
+	      const dy = from.top - final.top;
+	      const sx = from.width / final.width;
+	      const sy = from.height / final.height;
+
+	      // 3) Set initial transform (from state)
+	      panel.style.transformOrigin = 'top left';
+	      panel.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+
+				// 4) Animate to identity
+				// Use a double RAF to ensure the initial transform is flushed to the compositor
+				// before we enable the transition. Increase duration and use a smoother ease-out curve.
+				requestAnimationFrame(() => requestAnimationFrame(() => {
+					panel.style.transition = 'transform 480ms cubic-bezier(.22,1,.36,1)';
+					panel.style.transform = '';
+				}));
+
+		 			panel.addEventListener('transitionend', () => {
+		 				overlay.querySelector('[data-modal-close]')?.focus();
+		 			}, { once: true });
+	    };
+
+	    trigger.addEventListener('click', open);
+	    trigger.addEventListener('keydown', e => {
+	      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+	    });
+	  });
+
+	  // Close (works for both layouts)
+	  function closeModal(id) {
+	    const overlay = document.getElementById(id);
+	    if (!overlay) return;
+	    const panel = overlay.querySelector('[data-panel]');
+	    const trigger = document.querySelector('[data-modal-open="'+id+'"]');
+	    const source = trigger?.closest('[data-expands-from]');
+
+		if (!MOBILE.matches && panel && source) {
+			// Use a clone-based reverse-FLIP so the shrinking panel animation
+			// lives outside the overlay stacking context and can't sit above
+			// the timeline. Steps:
+			// 1) Measure panel (final) and source (target card).
+			// 2) Clone the panel, position the clone fixed at the panel's rect in the
+			//    viewport, hide the overlay immediately, then animate the clone to
+			//    the source rect. Remove clone on finish.
+			const final = panel.getBoundingClientRect();
+			const to = source.getBoundingClientRect();
+
+			// clone panel node (deep clone)
+			const clone = panel.cloneNode(true);
+			// Remove any ids to avoid duplicates
+			clone.removeAttribute('id');
+			clone.style.position = 'fixed';
+			clone.style.left = final.left + 'px';
+			clone.style.top = final.top + 'px';
+			clone.style.width = final.width + 'px';
+			clone.style.height = final.height + 'px';
+			clone.style.margin = '0';
+			clone.style.zIndex = '9999';
+			clone.style.pointerEvents = 'none';
+			clone.style.transformOrigin = 'top left';
+			clone.style.willChange = 'transform, opacity';
+			clone.style.boxSizing = 'border-box';
+
+			// Insert into DOM above everything
+			document.body.appendChild(clone);
+
+			// Hide the original overlay immediately so underlying page (timeline)
+			// is visible while the clone animates.
+			overlay.classList.add('hidden');
+			document.body.style.overflow = '';
+
+			// Compute transform needed to move clone -> source rect
+			const dx = to.left - final.left;
+			const dy = to.top - final.top;
+			const sx = to.width / final.width;
+			const sy = to.height / final.height;
+
+			// Ensure the clone has no transition then flush layout
+			clone.style.transition = 'none';
+			clone.getBoundingClientRect();
+
+			// Animate the clone to the card (reverse FLIP)
+			requestAnimationFrame(() => requestAnimationFrame(() => {
+				clone.style.transition = 'transform 420ms cubic-bezier(.22,1,.36,1), opacity 260ms ease';
+				clone.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+				clone.style.opacity = '1';
+			}));
+
+			clone.addEventListener('transitionend', () => {
+				// remove clone and restore focus
+				clone.remove();
+				trigger?.focus();
+			}, { once: true });
+
+		} else if (panel) {
+	      // Bottom sheet slide down
+	      panel.classList.add('translate-y-full');
+	      panel.addEventListener('transitionend', () => {
+	        overlay.classList.add('hidden');
+	        panel.classList.remove('translate-y-full');
+	        document.body.style.overflow = '';
+	        trigger?.focus();
+	      }, { once: true });
+	    } else {
+	      overlay.classList.add('hidden');
+	      document.body.style.overflow = '';
+	      trigger?.focus();
+	    }
+	  }
+
+		// wire up close buttons and overlay backdrops for all memory modals
+		document.querySelectorAll('[id^="memory-"] [data-modal-close], [id^="memory-"] .modal-backdrop')
+			.forEach(el => el.addEventListener('click', (ev) => {
+					const overlay = ev.target.closest('[id^="memory-"]');
+					if (overlay) closeModal(overlay.id);
+			}));
+
+	  document.addEventListener('keydown', (e) => {
+	    if (e.key === 'Escape') {
+			// close any open memory modal
+			document.querySelectorAll('[id^="memory-"]')
+				.forEach(m => { if (!m.classList.contains('hidden')) closeModal(m.id); });
+		}
+	  });
+	})();
+	</script>
+
+<!-- Per-item theming: allows each .timeline-item to override theme variables.
+		 Usage:
+			 - Add data attributes to a .timeline-item: data-bg-start, data-bg-mid, data-bg-end, data-brand, data-accent
+			 - Or use a preset name via data-theme="presetName" (built-in presets: 'romance', 'sunset', 'mint').
+		 This script reads those attributes and applies inline CSS custom properties on the .timeline-item so
+		 descendant elements (marker, content::before, date) inherit the values.
+-->
+<script>
+(() => {
+	const PRESETS = {
+		romance: {
+			'--bg-start': '#7c3aed',
+			'--bg-mid': '#ef4444',
+			'--bg-end': '#f59e0b',
+			'--brand': '#ef4444',
+			'--accent': '#fb923c'
+		},
+		sunset: {
+			'--bg-start': '#f97316',
+			'--bg-mid': '#fb923c',
+			'--bg-end': '#f59e0b',
+			'--brand': '#fb923c',
+			'--accent': '#b45309'
+		},
+		mint: {
+			'--bg-start': '#10b981',
+			'--bg-mid': '#06b6d4',
+			'--bg-end': '#60a5fa',
+			'--brand': '#06b6d4',
+			'--accent': '#065f46'
+		}
+	};
+
+	function applyThemeToItem(item) {
+		// If a preset is specified, start from that
+		const themeName = item.getAttribute('data-theme');
+		if (themeName && PRESETS[themeName]) {
+			Object.entries(PRESETS[themeName]).forEach(([k, v]) => item.style.setProperty(k, v));
+		}
+
+		// Override with explicit data attributes if present
+		const map = {
+			'data-bg-start': '--bg-start',
+			'data-bg-mid': '--bg-mid',
+			'data-bg-end': '--bg-end',
+			'data-brand': '--brand',
+			'data-accent': '--accent'
+		};
+
+		Object.entries(map).forEach(([attr, prop]) => {
+			const val = item.getAttribute(attr);
+			if (val) item.style.setProperty(prop, val);
+		});
+	}
+
+	// Apply on DOMContentLoaded so static markup is ready
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', () => document.querySelectorAll('.timeline-item').forEach(applyThemeToItem));
+	} else {
+		document.querySelectorAll('.timeline-item').forEach(applyThemeToItem);
+	}
+})();
+</script>
+</body>
+</html>

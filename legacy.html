@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Scrapbook - Nathan & Hannah</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base memory card styles */
+        .memory {
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+
+        .memory-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .memory-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .memory img {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .memory.active img {
+            filter: brightness(0.7);
+        }
+
+        /* Desktop-specific styles */
+        @media (hover: hover) and (pointer: fine) {
+            .memory[data-aos].aos-animate:hover {
+                transform: translate3d(0, 0, 0) scale(1.05) !important;
+                z-index: 10;
+            }
+
+            .memory:hover .memory-overlay {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .memory:hover img {
+                filter: brightness(0.7);
+            }
+        }
+
+        /* Mobile-specific styles */
+        @media (hover: none) and (pointer: coarse) {
+            .memory.active {
+                transform: scale(1.05) !important;
+                z-index: 10;
+            }
+        }
+
+        /* Override AOS default styles to work with hover */
+        [data-aos][data-aos].aos-animate {
+            transform: translate3d(0, 0, 0);
+        }
+    </style>
+</head>
+<body>
+    <div class="text-center py-10 bg-gradient-to-r from-pink-500 to-red-500 text-white">
+        <h1 id="our-scrapbook" class="text-4xl font-bold mb-2">Our Scrapbook <3</h1>
+        <p>A collection of our most cherished moments all within a website. (I don't know how i made this)</p>
+
+        <br> <br>
+        <div class="mt-6 flex items-center justify-center gap-3">
+            <a href="scavanger-hunt/start.html" class="text-2xl inline-block bg-black bg-opacity-0 text-white py-1 px-3 rounded hover:bg-black hover:bg-opacity-50">Ooh what is this new button?</a>
+            <a href="/index.html" class="text-2xl inline-block bg-white/10 border border-white/30 text-white py-1 px-3 rounded hover:bg-white/20">Back to new site →</a>
+        </div>        
+    </div>
+
+    <a href="/scavanger-hunt/hunt1.html" class="block no-underline">
+        <main class="container mx-auto py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+            <div class="memory relative group w-full h-full" 
+                data-aos="fade-up"
+                data-aos-duration="1000"
+                data-aos-offset="100"
+                data-aos-delay="50">
+                <img src="images/first_date.jpg" 
+                    alt="Memory 1" 
+                    class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+                <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                    <div class="text-center px-4">
+                        <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Our First date ❤️</h3>
+                        <p class="text-white text-lg">
+                            I can't believe that this was almost and entire 2 months ago at the time of typing this. I'm so happy I asked you to do more than A Sushi dinner and I cannot lie, I was really nervous... but it was a amazing date and an amazing day :))) 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/kitty_cat.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">The kitten...</h3>
+                    <p class="text-white text-lg">
+                        As we do we ended up going the the pier and we met the cutest little kitten (thank god you did not name it) But it was such a special moment for me to see you interact with an animal, which shows how caring you are. 
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <a href="/scavanger-hunt/hunt3.html" class="block no-underline">
+            <div class="memory relative group w-full h-full" 
+                data-aos="fade-up"
+                data-aos-duration="1000"
+                data-aos-offset="100"
+                data-aos-delay="50">
+                <img src="images/parking_garage.jpg" 
+                    alt="Memory 1" 
+                    class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+                <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                    <div class="text-center px-4">
+                        <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Parking garage yap <3</h3>
+                        <p class="text-white text-lg">
+                        I'm so sorry for the absolutely horrible photo that the gay cowboy driving a tesla took of us but it was a really special moment for me because it was the first picture I sent my mother of you, and I specifically remember you asked me the dead body in the dells question. It was just a memorable and fun experience (like all the experiences)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/ice_cream_comedy_club.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Ice cream and comedy</h3>
+                    <p class="text-white text-lg">
+                      Look at your gigantic ass looking at that even more gigantic menu. This was a really fun time (and long ass travel time) but it was an amazing sundae and even more amazing company (corny) I sadly don't have any pictures of the comedy club but it was a magical and mystical saturday date ❤️
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/sunset.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Hannah Sunrise!</h3>
+                    <p class="text-white text-lg">
+                        I just love the photo of you and it was one of the earlier times you slept over. I had a wonderful time as always and I thought you looked magical as ever with the sunrise. Crazy we used to wakeup and see sunrises like that without it being cold as balls, it will be back soon enough.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/halloween.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Random Halloween photo</h3>
+                    <p class="text-white text-lg">
+                        Nothing super specific about this photo more about the night overall (except for you ordering mcdonalds (huge)). Something about this night though is we had a fight? / miscommunication / I fucked up. And I'm not gonna lie i was crashing TF out in the backyard with my roommates and then i poured my heart out to you because I genuinely thought i fucked up on something i cared about so much which is why I was so damn emotional. Thankfully you were amazing about everything and it worked out :)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/mountian.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Mountain Date!!!</h3>
+                    <p class="text-white text-lg">
+                        I cannot lie, this was a super meaning-full date for me just because I had been wanting to go here for soooo long and when I originally planned on going I was lowkey in a bad point so it was just a really cool moment because it showed how far i've and how amazing life can be (genuinely).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/cute_dog_pic.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Dog!!!</h3>
+                    <p class="text-white text-lg">
+                        I really like this picture of you, which is why i included it. But it also shows just how friendly you are by being able to talk to the owner and get there number, it shows how personable you are, which is something I love about you.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <a href="/scavanger-hunt/hunt4.html" class="block no-underline">
+            <div class="memory relative group w-full h-full" 
+                data-aos="fade-up"
+                data-aos-duration="1000"
+                data-aos-offset="100"
+                data-aos-delay="50">
+                <img src="images/dancing.jpg" 
+                    alt="Memory 1" 
+                    class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+                <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                    <div class="text-center px-4">
+                        <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Nadia's Birthday</h3>
+                        <p class="text-white text-lg">
+                            This was such an amazing time because we got to go out and drink together! For the first time. We also got to dance and just have a good time and live, we also got photobooth pictures (we need some more). It was a really enjoyable night for me because I love seeing you be social, which you were at the pregame, and just spending time and enjoying life with you is so precious to me, which is why this was such a stunning night (among 1000% other reasons)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+            
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/pole_pick.JPG" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Pole Pick!</h3>
+                    <p class="text-white text-lg">
+                        I just think that the context behind this photo is so funny and it's a reminded that I think you're genuinely hilarious ❤️
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <a href="/scavanger-hunt/puzzle.html" class="block no-underline">   
+            <div class="memory relative group w-full h-full" 
+                data-aos="fade-up"
+                data-aos-duration="1000"
+                data-aos-offset="100"
+                data-aos-delay="50">
+                <img src="images/planeterium.jpg" 
+                    alt="Memory 1" 
+                    class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+                <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                    <div class="text-center px-4">
+                        <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">The picnic date</h3>
+                        <p class="text-white text-lg">
+                            This was honestly such a great day, I got to look at something beautiful (skyline(actually you)) with my girlfriend while a bunch of people took pictures infront of us for two hours somehow. This date truly had everything you need, views, food, and yap. What more could someone need. but truthfully I don't think there is a set moment I fell in love with you, but this date 100% got me a lot closer if not already confirmed my beliefs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="/scavanger-hunt/hunt2.html" class="block no-underline">       
+            <div class="memory relative group w-full h-full" 
+                data-aos="fade-up"
+                data-aos-duration="1000"
+                data-aos-offset="100"
+                data-aos-delay="50">
+                <img src="images/tiramisu.jpg" 
+                    alt="Memory 1" 
+                    class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+                <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                    <div class="text-center px-4">
+                        <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Dinner date</h3>
+                        <p class="text-white text-lg">
+                            I wanted to include this picture, even though you're not in it, because this was one of my favorite dates, and I know you really like the picture... anyways, no clue how I cooked that steak as well as I did and or how I did anything to that culinary ability but I'm glad you enjoyed the food and I cherish this date especially because I love cooking for people, especially ones I care about so much. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/chinatown.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Pottery and Chinatown</h3>
+                    <p class="text-white text-lg">
+                        This was genuinely, swear to god, on asian, on of my favorite moments with you, the picture behind this text. Truthfully everything about the day was perfect, I got to keep learning more about you, and this moment just has such a special place in my heart. I'm not sure if it was the music, or the view, or you laying on my chest, or the loud ass train that was going for 87% of the time. Whatever it was, I loved every moment of it. 
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/me_rooftop.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">...</h3>
+                    <p class="text-white text-lg">
+                        Please ignore any spelling errors and instead enjoy this scandalous photo of me :) 
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/hannah_phone_steal.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Random thief selfie!!</h3>
+                    <p class="text-white text-lg">
+                        I just included this picture because I 1. think its cute and 2. it shows that you're not always serious and you an joke around with me which is something that I love so much about you 💗 This was also the day I got back from the dells which is funny because I already missed you so much in just the short time we we're apart for that weekend, and now look at us... but its exciting and I know we will be back together before we both know it.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/hannah_with_remy.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">REMY!!! 🐕</h3>
+                    <p class="text-white text-lg">
+                        Holy Hannah Remy photo!!!! my two favorite girls in the whole entire world together! What more could a guy want in his life. This was the last time that you got to see Remy and what's funny to me is how much she loves you, I think it shows that you're such a welcoming person to be around that Remy instantly loves you so much, and I would say Remy loves me a lot and she did not give a shit about me when you we're in the room. I think it says a lot about my lovely girlfriend :))
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory relative group w-full h-full" 
+            data-aos="fade-up"
+            data-aos-duration="1000"
+            data-aos-offset="100"
+            data-aos-delay="50">
+            <img src="images/bar_pic.jpg" 
+                alt="Memory 1" 
+                class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Look at us 😍</h3>
+                    <p class="text-white text-lg">
+                        Obviously I love this photo because we both look amazing, but it was also something that we both posted that was so upfront about the relationship and I loved it. Besides that I was being a debby downer that night but I think I picked it up later on, overall I'm incredibly happy I went and that I got to meet (most) of your friend!!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/hannah_gym_selfie.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Gym selfie 💪</h3>
+                    <p class="text-white text-lg">
+                        I don't have a ton to say about this photo, I just really like it. One thing I don't feel like I tell you enough is that you're very serious about the gym, and I'm really attracted to this because 1. it shows you car about yourself and that you have some work-ethic (which you have 100000%), but its also just something that is big into my life so its great we can bound over it. It's also fun making you splits and talking with you about things so thats also why I put this photo in here.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <a href="/scavanger-hunt/hunt5.html" class="block no-underline">
+            <div class="memory relative group w-full h-full" 
+                data-aos="fade-up"
+                data-aos-duration="1000"
+                data-aos-offset="100"
+                data-aos-delay="50">
+                <img src="images/iceskating.jpg" 
+                    alt="Memory 1" 
+                    class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+                <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                    <div class="text-center px-4">
+                        <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Ice skating with love!</h3>
+                        <p class="text-white text-lg">
+                            Obviously this was a very fun day, and a stressful one somehow, because we we're cramming in the christkindle market and then sushi after (gigantic asses) I really put this in here because we look so happy and I think you (and me) both look great. It serves as a reminder for all the amazing dates we went on an how goddamn fat we are together (all you can eat sushi, common)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/nathan_selife.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Me :)</h3>
+                    <p class="text-white text-lg">
+                        Nothing much here, just a picture I thought you might enjoy, I love you and miss you so much Hannah 💗💗💗💗 
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="memory relative group w-full h-full" 
+             data-aos="fade-up"
+             data-aos-duration="1000"
+             data-aos-offset="100"
+             data-aos-delay="50">
+            <img src="images/Hannah_selfie.jpg" 
+                 alt="Memory 1" 
+                 class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+            <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="text-center px-4">
+                    <h3 id="first-date" class="text-white text-2xl font-semibold mb-2">Amazing photo of You (holy shit)</h3>
+                    <p class="text-white text-lg">
+                        I just picked this photo because you look amazing. I'm not sure if you know but the second I saw you, I thought you we're so beautiful and I feel like you don't thing you're attractive a lot of the time. One I first saw you I thought there was never I chance that I girl that gorgeous would ever want to be with me, and this isn't a Nathan has low self-esteem it just you're that goddamn attractive. I'm so happy and blessed to call you my girlfriend, I hope you like the new photos in here!!💗💗  
+                    </p>
+                </div>
+            </div>
+        </div>  
+    </main>
+
+    <div class="memory relative group w-3/5 mx-auto my-8" 
+    data-aos="fade-up"
+    data-aos-duration="1000"
+    data-aos-offset="100"
+    data-aos-delay="50">
+   <img src="images/hannah_nathan_dancing_cartoon.jpg" 
+        alt="Final Memory" 
+        class="rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform w-full h-auto hover:shadow-xl">
+
+   <div class="memory-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+       <div class="text-center px-4">
+           <h3 class="text-white text-2xl font-semibold mb-2"></h3>
+           <a href="note.html" class="mt-2 inline-block bg-black bg-opacity-40 text-white py-1 px-3 rounded hover:bg-pink-100">
+               A note to Hannah
+           </a>
+       </div>
+   </div>
+</div>
+
+
+    <footer class="text-center py-4">
+        Made with ❤️ by Nathan for Hannah
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            once: false, // Changed to false so animation repeats
+            duration: 1000,
+            easing: 'ease-out-cubic',
+        });
+
+        // Detect if device is touch-enabled
+        const isTouchDevice = () => {
+            return (('ontouchstart' in window) ||
+                    (navigator.maxTouchPoints > 0) ||
+                    (navigator.msMaxTouchPoints > 0));
+        }
+
+        let lastClickedMemory = null;
+
+        // Function to check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Function to reset memory
+        function resetMemory(memory) {
+            memory.classList.remove('active');
+            memory.querySelector('.memory-overlay').classList.remove('active');
+        }
+
+        // Initialize memory cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const memories = document.querySelectorAll('.memory');
+            
+            if (isTouchDevice()) {
+                // For touch devices
+                memories.forEach(memory => {
+                    memory.addEventListener('click', function(e) {
+                        // Reset previous memory if exists
+                        if (lastClickedMemory && lastClickedMemory !== this) {
+                            resetMemory(lastClickedMemory);
+                        }
+                        
+                        // Toggle current memory
+                        this.classList.toggle('active');
+                        this.querySelector('.memory-overlay').classList.toggle('active');
+                        
+                        // Update last clicked memory
+                        lastClickedMemory = this.classList.contains('active') ? this : null;
+                    });
+                });
+
+                // Check visibility on scroll
+                window.addEventListener('scroll', function() {
+                    if (lastClickedMemory && !isInViewport(lastClickedMemory)) {
+                        resetMemory(lastClickedMemory);
+                        lastClickedMemory = null;
+                    }
+                });
+            } else {
+                // For desktop - reset on mouse leave
+                memories.forEach(memory => {
+                    memory.addEventListener('mouseleave', function(e) {
+                        resetMemory(this);
+                    });
+                });
+            }
+        });
+    </script>
+    <script>
+        // Set the date we're counting down to
+        var countDownDate = new Date("2025-05-03").getTime(); // Replace YYYY-MM-DD with your target date
+    
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+    
+            // Get today's date and time
+            var now = new Date().getTime();
+            
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+            
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Output the result in elements with id="days", id="hours", id="minutes" and id="seconds"
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+            
+            // If the count down is over, write some text 
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("time").innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    </script>    
+</body>
+</html>

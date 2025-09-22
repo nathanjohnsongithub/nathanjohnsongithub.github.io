@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow p-6 w-full max-w-md">
+    <h1 class="text-2xl font-semibold mb-4 text-center">Enter password</h1>
+    <div class="space-y-3">
+      <input id="pw" type="password" class="w-full rounded border px-3 py-2" placeholder="Password" />
+      <button id="go" class="w-full px-4 py-2 bg-sky-600 text-white rounded">Continue</button>
+      <p id="err" class="text-red-600 hidden"></p>
+    </div>
+  </div>
+
+  <script>
+    // If already authenticated, bounce to return or default
+    (function(){
+      const has = document.cookie.split(';').some(c=>c.trim().startsWith('mem_auth_mark='));
+      if (has) {
+        const params = new URLSearchParams(location.search);
+        const ret = params.get('return');
+        location.replace(ret ? decodeURIComponent(ret) : '/index.html');
+      }
+    })();
+
+    const go = document.getElementById('go');
+    const input = document.getElementById('pw');
+    const err = document.getElementById('err');
+
+    go.addEventListener('click', async function(){
+      err.classList.add('hidden');
+      const password = input.value;
+      if (!password) { err.textContent = 'Enter password'; err.classList.remove('hidden'); return; }
+      try{
+        const r = await fetch('/api/verify-password', { method: 'POST', headers: {'Content-Type':'application/json'}, credentials: 'same-origin', body: JSON.stringify({ password }) });
+        if (!r.ok) {
+          const j = await r.json().catch(()=>({}));
+          err.textContent = j.error || 'Invalid password';
+          err.classList.remove('hidden');
+          return;
+        }
+  const params = new URLSearchParams(location.search);
+  const ret = params.get('return');
+  location.replace(ret ? decodeURIComponent(ret) : '/index.html');
+      } catch (e) {
+        err.textContent = 'Network error';
+        err.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
