@@ -6,3 +6,4 @@ npm-debug.log*
 .vscode/ 
 .vercel
 passwd.txt
+.DS_Store
