@@ -149,13 +149,16 @@
 			--tl-bg-start: #ef4444; /* red */
 			--tl-bg-end:   #f59e0b; /* orange */
 			--tl-accent:   #fb923c; /* accent */
+			/* --bg-stop controls how far the colored radial gradients should extend (percentage)
+			   We'll compute this from JS based on number of memories. Default ~30% */
+			--bg-stop: 50%;
 		}
 
-		/* Page background = larger, lower radial gradients so color reaches further down the page */
-		body {
+			/* Page background = larger, lower radial gradients so color reaches further down the page */
+			body {
 			background:
-				radial-gradient(1600px 2500px at 10% 0%, var(--bg-start) 0%, transparent 60%),
-				radial-gradient(1600px 2500px at 90% 10%,  var(--bg-end) 0%, transparent 65%),
+				radial-gradient(1600px 2500px at 10% 0%, var(--bg-start) 0%, transparent var(--bg-stop)),
+				radial-gradient(1600px 2500px at 90% 10%,  var(--bg-end) 0%, transparent calc(var(--bg-stop) + 5%)),
 				linear-gradient(180deg, #ffffff 6%, #fafbff 100%);
 			position: relative;
 			min-height: 140vh; /* increase baseline to encourage gradients to cover longer pages */
@@ -225,18 +228,6 @@
 									bg-[var(--brand)] hover:opacity-50 focus:outline-none focus:ring-2
 									focus:ring-offset-2 focus:ring-gray-300 transition border border-gray-200">
 							Visit the old site
-						</a>
-						<!-- <a href="/timeline.html"
-							 class="inline-flex items-center rounded-xl px-5 py-2.5 text-gray-800 font-medium
-									bg-[var(--brand)] hover:opacity-60 focus:outline-none focus:ring-2
-									focus:ring-offset-2 focus:ring-[var(--brand)] transition">
-							View Timeline
-						</a> -->
-						<a href="/good-morning.html"
-							 class="inline-flex items-center rounded-xl px-5 py-2.5 text-gray-800 font-medium
-									bg-[var(--brand)] hover:opacity-40 focus:outline-none focus:ring-2
-									focus:ring-offset-2 focus:ring-[var(--brand)] transition">
-							Good Morning
 						</a>
 					</div>
 					<!-- Timeline -->
@@ -698,6 +689,9 @@
 
 							// Reinitialize memory interactions
 							initializeMemoryInteractions();
+
+							// Force the background gradient to always extend to 50% regardless of item count
+							document.documentElement.style.setProperty('--bg-stop', '50%');
 
 							// Attach submit handler for this addCard AFTER interactions are initialized
 							const form = addCard.querySelector('#add-memory-form');
