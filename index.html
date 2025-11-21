@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nathan Johnson — Personal Site</title>
+  <meta name="description" content="Simple and sleek single-page portfolio for Nathan Johnson.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #e7dfd3;
+      --text: #4a4a4a;
+      --soft: #ffeded;
+      --accent: #ac9899;
+      --shadow: rgba(74, 74, 74, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+
+    #waveCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem clamp(1.5rem, 4vw, 3rem) 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero {
+      width: 100%;
+      padding-top: 4rem;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(255,255,255,0.6);
+      color: var(--accent);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      margin: 0 0 1rem;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #334155;
+    }
+    
+    /* Subheading for expanded project details */
+    .project-details h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 1.5rem 0 0.5rem;
+        color: var(--text);
+    }
+    
+    .project-details p {
+        margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      max-width: 48ch;
+      font-size: 1.15rem;
+      margin-bottom: 2.5rem;
+      color: #5d5d5d;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 0.85rem 2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(172, 152, 153, 0.35);
+    }
+
+    .btn.primary:hover {
+      background: #9a8687;
+      transform: translateY(-2px);
+    }
+
+    .btn.ghost {
+      border-color: rgba(172, 152, 153, 0.5);
+      background: rgba(255,255,255,0.3);
+      color: var(--accent);
+    }
+
+    .btn.ghost:hover {
+      background: rgba(255,255,255,0.6);
+    }
+
+    section {
+      padding: 4rem 0;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 30px rgba(172, 152, 153, 0.08);
+      padding: clamp(2.5rem, 4vw, 4rem);
+      margin-bottom: 3.5rem;
+      position: relative;
+      overflow: hidden; 
+      will-change: height; /* Hint to browser for smoother expansion */
+      transition: transform 0.5s ease, height 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Updated timing for smoothness */
+    }
+    
+    .panel:not(.has-expanded-card):hover {
+        transform: scale(1.01);
+    }
+    
+    .panel.has-expanded-card {
+        transform: none !important;
+    }
+
+    .section-heading {
+      max-width: 720px;
+      margin-bottom: 3rem;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: #6e6e6e;
+      font-weight: 300;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: relative;
+    }
+
+    .project-card {
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 1;
+      transition:
+        transform 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+        box-shadow 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+        background 0.65s ease,
+        padding 0.65s ease,
+        border-radius 0.65s ease;
+    }
+
+    .project-card:not(.expanded):hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 10px 15px -3px rgba(172, 152, 153, 0.1);
+    }
+
+    /* --- EXPANDED STATE STYLES --- */
+    
+    .panel.has-expanded-card .section-heading,
+    .panel.has-expanded-card .project-card:not(.expanded) {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .panel.has-expanded-card .section-heading {
+      max-height: 0;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .panel.has-expanded-card .project-grid {
+      margin-top: 0;
+      /* Prevent grid collapse from affecting panel momentarily */
+      min-height: 1px; 
+    }
+
+    /* The expanded card takes over */
+    .project-card.expanded {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0; /* Force full width */
+      width: 100%;
+      height: auto; 
+      min-height: 100%;
+      z-index: 10;
+      border-radius: 24px; /* Match panel border radius closer */
+      background: rgba(255, 255, 255, 0.95); /* Slightly more opaque */
+      margin: 0;
+      padding: clamp(2rem, 5vw, 4rem);
+      overflow-y: visible;
+      cursor: default;
+      transform: none !important;
+      box-shadow: none; /* Remove shadow as it is inside the panel now */
+      border: none;
+    }
+
+    .project-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      opacity: 1;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .project-meta {
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .project-link {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+    }
+
+    .project-link::after {
+      content: '→';
+      transition: transform 0.2s ease;
+      color: var(--accent);
+    }
+
+    .project-card:not(.expanded) .project-link {
+      margin-top: auto;
+    }
+
+    .project-card:not(.expanded):hover .project-link::after {
+      transform: translateX(4px);
+    }
+
+    .project-card.is-fading-summary .project-summary {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .project-card.summary-hidden .project-summary {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .project-card.expanded .project-summary {
+      display: none;
+    }
+
+    .project-details {
+      display: none;
+      opacity: 0;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding-top: 2rem;
+      transform: translateY(20px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .project-card.expanded .project-details {
+      display: block;
+    }
+
+    .project-card.show-details .project-details {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .project-card.expanded .project-link {
+      display: none;
+    }
+
+    /* Back Button */
+    .close-btn {
+      display: none;
+      margin-bottom: 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .project-card.expanded .close-btn {
+      display: inline-flex;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* --- TIMELINE & REST --- */
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.75rem;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(172, 152, 153, 0.3);
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      padding-left: 1rem;
+    }
+
+    .timeline-marker {
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #e7dfd3;
+      position: absolute;
+      left: 0.05rem;
+      top: 1.5rem;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
+    }
+
+    .timeline-content {
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 16px;
+      padding: 1.5rem;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: background 0.3s ease;
+    }
+    
+    .timeline-content:hover {
+        background: rgba(255, 255, 255, 0.65);
+    }
+
+    .timeline-date {
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 0 1.5rem;
+      font-size: 0.85rem;
+      color: #888;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 700px) {
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .timeline {
+        padding-left: 1rem;
+      }
+
+      .timeline::before {
+        left: 0.5rem;
+      }
+
+      .timeline-marker {
+        left: 0.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="waveCanvas" aria-hidden="true"></canvas>
+  <main class="page">
+    <header id="top">
+      <div class="hero">
+        <span class="hero-eyebrow">Portfolio 2025</span>
+        <h1>Nathan Johnson</h1>
+        <p>Creative Developer crafting digital experiences that feel organic, calm, and human. Moving away from rigid grids into fluid, interactive storytelling.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#projects">View Experiments</a>
+          <a class="btn ghost" href="#timeline">Contact Me</a>
+        </div>
+      </div>
+    </header>
+
+    <section id="projects" class="panel">
+      <div class="section-heading">
+        <span class="eyebrow">Selected work</span>
+        <h2>Projects worth sharing</h2>
+        <p>Explorations in flow fields, generative design, and user experience.</p>
+      </div>
+      <div class="project-grid">
+        
+        <article class="project-card">
+          <button class="close-btn">← Back to projects</button>
+          <div class="project-summary">
+            <span class="project-meta">Case study</span>
+            <h3>Project Alpha</h3>
+            <p>Brief synopsis for a flagship build. Mention the stack, the problem, and the measurable outcome.</p>
+            <a class="project-link" href="#">Learn more</a>
+          </div>
+          
+          <div class="project-details">
+             <h4>The Challenge</h4>
+             <p>We needed to redesign the legacy dashboard to improve user retention by 40%. The existing system was cluttered and slow.</p>
+             <br>
+             <h4>The Solution</h4>
+             <p>I implemented a new React-based architecture with server-side rendering to reduce load times. We also introduced a "Zen Mode" to declutter the UI.</p>
+             <br>
+             <h4>Tech Stack</h4>
+             <p>Next.js, Tailwind CSS, PostgreSQL, Redis.</p>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <button class="close-btn">← Back to projects</button>
+          <div class="project-summary">
+            <span class="project-meta">Product</span>
+            <h3>Project Beta</h3>
+            <p>Use this slot for an open source tool, personal experiment, or client project you are proud of.</p>
+            <a class="project-link" href="#">Learn more</a>
+          </div>
+          
+          <div class="project-details">
+             <h4>Overview</h4>
+             <p>An open-source library for generating organic noise textures in the browser using WebGL.</p>
+             <br>
+             <h4>Impact</h4>
+             <p>Downloaded over 10k times on npm and used by creative agencies worldwide.</p>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <button class="close-btn">← Back to projects</button>
+          <div class="project-summary">
+            <span class="project-meta">Collaboration</span>
+            <h3>Project Gamma</h3>
+            <p>Share the most recent collaboration, highlight your role, and tease out the interesting challenge.</p>
+            <a class="project-link" href="#">Learn more</a>
+          </div>
+          
+          <div class="project-details">
+             <h4>Role</h4>
+             <p>Lead Frontend Developer working with a team of 3 designers and 2 backend engineers.</p>
+             <br>
+             <h4>Outcome</h4>
+             <p>Delivered the MVP two weeks ahead of schedule, securing Series A funding for the startup.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="timeline" class="panel">
+      <div class="section-heading">
+        <span class="eyebrow">Experience</span>
+        <h2>Where I’ve been building</h2>
+        <p>Engineering, research, and leadership work across fintech, HPC, and campus communities.</p>
+      </div>
+      <div class="timeline">
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">Jun 2025 – Aug 2025 · Enova International · Chicago, IL</p>
+            <h3>Software Engineering Intern</h3>
+            <ul>
+              <li>Completed a Small & Medium Business Engineering internship modernizing legacy systems via cloud-native architecture.</li>
+              <li>Migrated core business functionality into Go + AWS Lambda microservices backed by Salesforce Apex and Terraform.</li>
+              <li>Partnered with cross-functional teams to deliver fault-tolerant, production-ready solutions that scale with the platform.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">Jan 2025 – Present · TrueLayer · London, UK</p>
+            <h3>Business Development Intern</h3>
+            <ul>
+              <li>Support a leading Pay-by-Bank/Open Banking provider by identifying commercial opportunities in fast-moving markets.</li>
+              <li>Analyze partner data to surface strategic plays that grow A2A adoption.</li>
+              <li>Collaborate across technical and non-technical teams, reinforcing communication and problem-solving skills.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">May 2024 – Aug 2024 · Argonne National Laboratory · Lemont, IL</p>
+            <h3>Computational Research Aide — Sophomore</h3>
+            <ul>
+              <li>Accelerated ARCHES HPC workloads by offloading GPU computations using SYCL.</li>
+              <li>Optimized OpenMP parallelism to improve scalability and efficiency across large clusters.</li>
+              <li>Used MAQAO profiling to uncover bottlenecks and implement multi-threaded optimizations.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">May 2023 – Aug 2023 · Argonne National Laboratory · Lemont, IL</p>
+            <h3>Computational Research Aide</h3>
+            <ul>
+              <li>Developed Python-based HPC workflows and integrated C/C++ libraries for performance-critical modules.</li>
+              <li>Employed cProfile and mpi4py for benchmarking and parallel execution, boosting distributed performance.</li>
+              <li>Improved multi-node strategies to enhance throughput across the lab’s clusters.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">Aug 2023 – Dec 2024 · Loyola University Chicago · Chicago, IL</p>
+            <h3>Loyola AI Club President</h3>
+            <ul>
+              <li>Led a machine-learning movie recommendation initiative using Pandas, NumPy, and Scikit-learn.</li>
+              <li>Organized weekly meetings, competitions, and guest speakers to expand member engagement.</li>
+              <li>Grew active membership while strengthening leadership and communication skills.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Nathan Johnson · Built with intention.</p>
+  </footer>
+
+  <script>
+    // --- Footer Year ---
+    const year = new Date().getFullYear();
+    document.getElementById('year').textContent = year;
+
+    // --- Project Expansion Logic with staged fades ---
+    const projectSection = document.getElementById('projects');
+    const SUMMARY_FADE_DURATION = 350;
+    const PANEL_TRANSITION_DURATION = 600; 
+    let initialProjectSectionHeight = 0;
+    let initialScrollY = 0;
+    let isProjectAnimating = false;
+    let detailRevealTimeout = null;
+
+    const toNumber = (value) => Number.parseFloat(value) || 0;
+    const getPanelExtras = () => {
+      const styles = window.getComputedStyle(projectSection);
+      return (
+        toNumber(styles.paddingTop) +
+        toNumber(styles.paddingBottom) +
+        toNumber(styles.borderTopWidth) +
+        toNumber(styles.borderBottomWidth)
+      );
+    };
+
+    function expandProject(card) {
+      // 1. Capture original layout state
+      initialProjectSectionHeight = projectSection.getBoundingClientRect().height;
+      initialScrollY = window.scrollY;
+
+      // 2. Lock the height immediately to prevent collapse
+      projectSection.style.height = `${initialProjectSectionHeight}px`;
+
+      // 3. Force a browser reflow to ensure the locked height is registered 
+      // BEFORE we change the position of the card. This is crucial for seamlessness.
+      void projectSection.offsetHeight;
+
+      // 4. Apply expansion classes
+      projectSection.classList.add('has-expanded-card');
+      card.classList.add('expanded');
+
+      // 5. Calculate target height and animate
+      requestAnimationFrame(() => {
+        // Calculate the height the content actually needs
+        const newCardContentHeight = card.scrollHeight;
+        const targetHeight = newCardContentHeight + getPanelExtras();
+        
+        projectSection.style.height = `${targetHeight}px`;
+        
+        // Only scroll if the top of the section is cut off
+        const rect = projectSection.getBoundingClientRect();
+        if (rect.top < 0) {
+            window.scrollTo({
+                top: window.scrollY + rect.top - 40,
+                behavior: 'smooth'
+            });
+        }
+      });
+
+      // Reveal the details content
+      if (detailRevealTimeout) clearTimeout(detailRevealTimeout);
+      detailRevealTimeout = setTimeout(() => {
+        card.classList.add('show-details');
+        // Recalculate height just in case content rendering changed size
+        const finalHeight = card.scrollHeight + getPanelExtras();
+        projectSection.style.height = `${finalHeight}px`;
+        
+        isProjectAnimating = false;
+        detailRevealTimeout = null;
+      }, PANEL_TRANSITION_DURATION);
+    }
+
+    function closeProject() {
+      const expandedCard = projectSection.querySelector('.project-card.expanded');
+      if (!expandedCard || isProjectAnimating) return;
+
+      isProjectAnimating = true;
+      if (detailRevealTimeout) {
+        clearTimeout(detailRevealTimeout);
+        detailRevealTimeout = null;
+      }
+      
+      // Fade out details first
+      expandedCard.classList.remove('show-details');
+
+      setTimeout(() => {
+        // Animate height back to original
+        projectSection.style.height = `${initialProjectSectionHeight}px`;
+
+        const onTransitionEnd = (event) => {
+          if (event.propertyName !== 'height') return;
+          projectSection.removeEventListener('transitionend', onTransitionEnd);
+          cleanup();
+        };
+
+        const cleanup = () => {
+            projectSection.classList.remove('has-expanded-card');
+            expandedCard.classList.remove('expanded');
+            
+            // Clear explicit height to let Grid logic take over again
+            projectSection.style.height = '';
+            
+            expandedCard.classList.remove('summary-hidden');
+            requestAnimationFrame(() => {
+                expandedCard.classList.remove('is-fading-summary');
+            });
+
+            // Only scroll back if we moved significantly
+            const currentScroll = window.scrollY;
+            if (Math.abs(currentScroll - initialScrollY) > 50) {
+                 window.scrollTo({
+                    top: initialScrollY,
+                    behavior: 'smooth'
+                 });
+            }
+            
+            isProjectAnimating = false;
+        };
+
+        projectSection.addEventListener('transitionend', onTransitionEnd);
+        
+        // Fallback in case transitionend doesn't fire
+        setTimeout(() => {
+            projectSection.removeEventListener('transitionend', onTransitionEnd);
+            cleanup();
+        }, PANEL_TRANSITION_DURATION + 50);
+
+      }, 300); // Wait for details fade out
+    }
+
+    function startProjectExpansion(card) {
+      if (projectSection.classList.contains('has-expanded-card') || isProjectAnimating) return;
+      isProjectAnimating = true;
+      
+      // Start fade out of summary text
+      card.classList.add('is-fading-summary');
+
+      setTimeout(() => {
+        card.classList.add('summary-hidden');
+        expandProject(card);
+      }, SUMMARY_FADE_DURATION);
+    }
+
+    document.querySelectorAll('.project-link').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const card = link.closest('.project-card');
+        startProjectExpansion(card);
+      });
+    });
+
+    document.querySelectorAll('.close-btn').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeProject();
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      const expandedCard = projectSection.querySelector('.project-card.expanded');
+      if (expandedCard) {
+        projectSection.style.height = `${expandedCard.scrollHeight + getPanelExtras()}px`;
+      }
+    });
+
+    // --- FLOW FIELD ANIMATION (Unchanged) ---
+    const canvas = document.getElementById('waveCanvas');
+    const ctx = canvas.getContext('2d');
+    const mouse = { x: -1000, y: -1000 };
+
+    const particleCount = 4000; 
+    const particleSize = 1.3;
+    const flowScale = 0.003;
+    const speed = 1.8; 
+    const fadeRate = 0.08; 
+
+    const colors = [
+      'rgba(255, 237, 237, 0.8)',
+      'rgba(172, 152, 153, 0.75)',
+      'rgba(236, 210, 207, 0.7)',
+      'rgba(235, 223, 211, 0.7)'
+    ];
+
+    const bgColor = 'rgb(235, 223, 211)'; 
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let particles = [];
+    let time = 0;
+    let animationFrameId;
+
+    const noise = (x, y, z) => {
+      const p = 50 * Math.sin(x * 0.01 + z) + 50 * Math.cos(y * 0.01 + z);
+      return Math.sin(x * 0.005 + p * 0.01 + z) + Math.cos(y * 0.005 + p * 0.01 + z);
+    };
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+      
+      initParticles();
+      
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    function handleMouseMove(event) {
+      mouse.x = event.clientX;
+      mouse.y = event.clientY;
+    }
+
+    function handleMouseLeave() {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    }
+
+    class Particle {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(randomizeAge = false) {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.age = randomizeAge ? Math.random() * 100 : 0;
+        this.lifespan = 150 + Math.random() * 150;
+        this.speedModifier = 0.8 + Math.random() * 0.4;
+      }
+
+      update() {
+        const angle = noise(this.x * flowScale, this.y * flowScale, time * 0.0005) * Math.PI * 2;
+
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        let interactionX = 0;
+        let interactionY = 0;
+        
+        const radius = 120; 
+        const maxForce = 3; 
+
+        if (dist < radius) {
+            const force = (radius - dist) / radius;
+            const pushAngle = Math.atan2(dy, dx);
+            
+            interactionX = Math.cos(pushAngle) * force * maxForce;
+            interactionY = Math.sin(pushAngle) * force * maxForce;
+        }
+
+        this.x += Math.cos(angle) * speed * this.speedModifier + interactionX;
+        this.y += Math.sin(angle) * speed * this.speedModifier + interactionY;
+        this.age += 1;
+
+        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height || this.age > this.lifespan) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, particleSize, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < particleCount; i += 1) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animateFlowField() {
+      ctx.fillStyle = `rgba(235, 223, 211, ${fadeRate})`;
+      ctx.fillRect(0, 0, width, height);
+
+      particles.forEach((particle) => {
+        particle.update();
+        particle.draw();
+      });
+
+      time += 1;
+      animationFrameId = requestAnimationFrame(animateFlowField);
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
+    animateFlowField();
+
+    function cleanup() {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('pagehide', cleanup);
+      window.removeEventListener('beforeunload', cleanup);
+    }
+
+    window.addEventListener('pagehide', cleanup);
+    window.addEventListener('beforeunload', cleanup);
+  </script>
+</body>
+</html>
