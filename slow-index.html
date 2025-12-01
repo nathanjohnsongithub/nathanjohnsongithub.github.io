@@ -125,75 +125,44 @@
       font-weight: 300;
     }
 
-    .hero-socials {
+    .hero-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.85rem;
-      margin-top: 2.5rem;
+      gap: 1rem;
     }
 
-    .social-link {
+    .btn {
       border-radius: 999px;
-      padding: 0.85rem 1.5rem;
+      padding: 0.85rem 2rem;
       font-size: 0.9rem;
       font-weight: 500;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.6rem;
-      border: 1px solid rgba(172, 152, 153, 0.4);
-      background: rgba(255,255,255,0.5);
-      color: var(--accent);
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
       cursor: pointer;
-      box-shadow: 0 10px 30px rgba(172, 152, 153, 0.15);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
-    .social-link svg,
-    .social-link .icon {
-      width: 1.1rem;
-      height: 1.1rem;
-      fill: currentColor;
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(172, 152, 153, 0.35);
     }
 
-    .social-link:hover,
-    .social-link:focus-visible {
-      background: rgba(255,255,255,0.85);
-      box-shadow: 0 15px 35px rgba(172, 152, 153, 0.2);
-      outline: none;
+    .btn.primary:hover {
+      background: #9a8687;
+      transform: translateY(-2px);
     }
 
-    .social-link.is-email {
-      border-style: solid;
-      background: rgba(255, 255, 255, 0.5);
-      transition: padding-right 0.3s ease, background 0.3s ease, border-color 0.3s ease;
-      overflow: hidden;
+    .btn.ghost {
+      border-color: rgba(172, 152, 153, 0.5);
+      background: rgba(255,255,255,0.3);
+      color: var(--accent);
     }
 
-    .social-link.is-email .copy-label {
-      max-width: 0;
-      opacity: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      transition: max-width 0.3s ease, opacity 0.3s ease, margin-left 0.3s ease;
-      font-size: 0.85rem;
-      font-family: inherit;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      color: var(--text);
-    }
-
-    .social-link.is-email.show-feedback {
-      padding-right: 2.25rem;
-      background: rgba(255,255,255,0.85);
-      box-shadow: 0 15px 35px rgba(172, 152, 153, 0.2);
-      border-color: rgba(172, 152, 153, 0.6);
-    }
-
-    .social-link.is-email.show-feedback .copy-label {
-      max-width: 180px;
-      opacity: 1;
-      margin-left: 0.6rem;
+    .btn.ghost:hover {
+      background: rgba(255,255,255,0.6);
     }
 
     section {
@@ -212,7 +181,7 @@
       position: relative;
       overflow: hidden; 
       will-change: height; /* Hint to browser for smoother expansion */
-      transition: transform 0.5s ease, height 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Updated timing for smoothness */
+      transition: transform 1.5s ease, height 2s cubic-bezier(0.25, 1, 0.5, 1); /* Updated timing for smoothness */
     }
     
     .panel:not(.has-expanded-card):hover {
@@ -229,7 +198,7 @@
       text-align: center;
       margin-left: auto;
       margin-right: auto;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity 1s ease, transform 1s ease;
     }
 
     .section-heading p {
@@ -252,7 +221,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 1.5s ease, transform 1.5s ease;
       position: relative;
     }
 
@@ -268,14 +237,14 @@
       position: relative;
       z-index: 1;
       transition:
-        transform 0.6s cubic-bezier(0.2, 0, 0.2, 1),
-        width 0.6s cubic-bezier(0.2, 0, 0.2, 1),
-        height 0.6s cubic-bezier(0.2, 0, 0.2, 1),
-        top 0.6s cubic-bezier(0.2, 0, 0.2, 1),
-        left 0.6s cubic-bezier(0.2, 0, 0.2, 1),
-        background-color 0.6s ease,
-        box-shadow 0.6s ease,
-        border-radius 0.6s ease;
+        transform 2s cubic-bezier(0.2, 0, 0.2, 1),
+        width 2s cubic-bezier(0.2, 0, 0.2, 1),
+        height 2s cubic-bezier(0.2, 0, 0.2, 1),
+        top 2s cubic-bezier(0.2, 0, 0.2, 1),
+        left 2s cubic-bezier(0.2, 0, 0.2, 1),
+        background-color 2s ease,
+        box-shadow 2s ease,
+        border-radius 2s ease;
     }
 
     .project-card:not(.expanded):hover {
@@ -290,13 +259,13 @@
     .project-grid.has-expanded-card .project-card:not(.expanded) {
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 1s ease;
     }
 
     .panel.has-expanded-card .section-heading {
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 1s ease;
     }
 
     .panel.has-expanded-card .project-grid {
@@ -323,7 +292,7 @@
       flex-direction: column;
       gap: 0.75rem;
       opacity: 1;
-      transition: opacity 0.3s ease;
+      transition: opacity 1s ease;
     }
     
     .project-card.fading-out .project-summary {
@@ -380,7 +349,7 @@
       margin-top: 0; /* Reset margin as it's the main content now */
       border-top: none;
       padding-top: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 1.2s ease;
     }
 
     .project-card.expanded .project-details {
@@ -491,14 +460,8 @@
     }
 
     @media (max-width: 700px) {
-      .hero-socials {
+      .hero-actions {
         flex-direction: column;
-        align-items: stretch;
-      }
-
-      .hero-socials .social-link {
-        width: 100%;
-        justify-content: center;
       }
 
       .timeline {
@@ -523,23 +486,9 @@
         <span class="hero-eyebrow">Portfolio 2025</span>
         <h1>Nathan Johnson</h1>
         <p>Creative Developer crafting digital experiences that feel organic, calm, and human. Moving away from rigid grids into fluid, interactive storytelling.</p>
-        <div class="hero-socials" aria-label="Connect with me">
-          <a class="social-link" href="https://github.com/nathanjohnsongithub" target="_blank" rel="noreferrer noopener" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.94.58.11.79-.25.79-.56 0-.28-.01-1.2-.02-2.18-3.2.7-3.88-1.4-3.88-1.4-.53-1.35-1.29-1.72-1.29-1.72-1.06-.73.08-.72.08-.72 1.18.08 1.8 1.22 1.8 1.22 1.04 1.78 2.74 1.27 3.41.97.1-.76.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.72 0-1.27.45-2.31 1.19-3.13-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.19.92-.26 1.9-.4 2.88-.4.98 0 1.96.14 2.88.4 2.2-1.5 3.17-1.19 3.17-1.19.64 1.59.24 2.76.12 3.05.74.82 1.19 1.86 1.19 3.13 0 4.45-2.69 5.42-5.26 5.71.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.68.8.56C20.21 21.39 23.5 17.09 23.5 12 23.5 5.65 18.35.5 12 .5Z" />
-            </svg>
-          </a>
-          <a class="social-link" href="https://www.linkedin.com/in/nathan-johnson-compsci/" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
-              <path d="M4.5 3.75a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm-1.5 5h3v11.5h-3V8.75Zm6 0h2.91v1.47h.04c.41-.78 1.43-1.6 2.95-1.6 3.16 0 3.75 2.08 3.75 4.78v6.85h-3v-6.1c0-1.45-.02-3.3-2.01-3.3-2.02 0-2.33 1.58-2.33 3.2v6.2h-3V8.75Z" />
-            </svg>
-          </a>
-          <button class="social-link is-email" type="button" data-email="njohnson14@luc.edu" aria-label="Copy email">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.35l9 5.65 9-5.65V7H3zm18 3.15-7.62 4.78a2 2 0 0 1-2.76 0L3 10.15V17a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-6.85z"/>
-            </svg>
-            <span class="copy-label" aria-hidden="true">Email copied to clipboard</span>
-          </button>
+        <div class="hero-actions">
+          <a class="btn primary" href="#projects">View Experiments</a>
+          <a class="btn ghost" href="#timeline">Contact Me</a>
         </div>
       </div>
     </header>
@@ -689,7 +638,7 @@
   </main>
 
   <footer>
-    <p>© <span id="year"></span> Nathan Johnson.</p>
+    <p>© <span id="year"></span> Nathan Johnson · Built with intention.</p>
   </footer>
 
   <script>
@@ -722,7 +671,7 @@
       projectSection.classList.add('has-expanded-card'); // Hides heading
 
       // Wait for fade out (300ms matches CSS transition)
-      await new Promise(r => setTimeout(r, 300));
+      await new Promise(r => setTimeout(r, 1000));
       
       // 2. Measure BEFORE hiding summary (so we get full size)
       const cardRect = card.getBoundingClientRect();
@@ -802,7 +751,7 @@
       card.style.height = `${targetHeight}px`;
       
       // Wait for expansion (600ms matches CSS transition)
-      await new Promise(r => setTimeout(r, 600));
+      await new Promise(r => setTimeout(r, 2000));
       
       // 4. Fade in new content & Adjust height for content
       card.classList.add('details-visible');
@@ -822,7 +771,7 @@
       expandedCard.classList.remove('details-visible');
       
       // Wait for fade out (400ms)
-      await new Promise(r => setTimeout(r, 400));
+      await new Promise(r => setTimeout(r, 1200));
 
       // 2. Animate back to original position
       // Restore fixed height for animation
@@ -856,7 +805,7 @@
       // Or we can try to animate panel height too.
       
       // Wait for shrink (600ms)
-      await new Promise(r => setTimeout(r, 600));
+      await new Promise(r => setTimeout(r, 2000));
 
       // 3. Cleanup and Fade In Summary
       expandedCard.classList.remove('expanded');
@@ -889,45 +838,6 @@
         closeProject();
       });
     });
-
-    const emailButton = document.querySelector('.social-link.is-email');
-    const copyLabel = emailButton?.querySelector('.copy-label');
-    let copyFeedbackTimeout;
-
-    const showCopyFeedback = (message) => {
-      if (!emailButton || !copyLabel) return;
-      copyLabel.textContent = message;
-      emailButton.classList.add('show-feedback');
-      clearTimeout(copyFeedbackTimeout);
-      copyFeedbackTimeout = setTimeout(() => {
-        emailButton.classList.remove('show-feedback');
-      }, 2000);
-    };
-
-    async function copyEmailToClipboard() {
-      if (!emailButton) return;
-      const email = emailButton.dataset.email;
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(email);
-        } else {
-          const tempInput = document.createElement('textarea');
-          tempInput.value = email;
-          tempInput.setAttribute('readonly', '');
-          tempInput.style.position = 'absolute';
-          tempInput.style.left = '-9999px';
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('copy');
-          document.body.removeChild(tempInput);
-        }
-        showCopyFeedback('Email copied to clipboard');
-      } catch (error) {
-        showCopyFeedback('Copy not supported');
-      }
-    }
-
-    emailButton?.addEventListener('click', copyEmailToClipboard);
 
     window.addEventListener('resize', () => {
         // Reset if resized while expanded to avoid layout issues

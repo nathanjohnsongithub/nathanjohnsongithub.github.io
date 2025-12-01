@@ -3,18 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nathan Johnson — Personal Site</title>
-  <meta name="description" content="Simple and sleek single-page portfolio for Nathan Johnson.">
+  <title>Nathan Johnson — Personal Site (Minimal Monochrome)</title>
+  <meta name="description" content="Simple and sleek single-page portfolio for Nathan Johnson — warm minimal monochrome variant.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #e7dfd3;
-      --text: #4a4a4a;
-      --soft: #ffeded;
-      --accent: #ac9899;
-      --shadow: rgba(74, 74, 74, 0.08);
+      /* Warm Minimal Monochrome palette */
+      --bg: #F6F0E7;         /* Cream - background texture */
+      --text: #7C6E63;       /* Muted Cocoa - body text */
+      --soft: #FBFAF8;       /* Ivory - cards/containers */
+      --accent: #3A3330;     /* Dark Espresso - hero & buttons */
+      --secondary: #7C6E63;  /* Muted Cocoa - secondary text */
+      --shadow: rgba(58, 51, 48, 0.06); /* Dark Espresso shadow */
+      
+      /* Section and card colors */
+      --panel-bg: #D8CFC6;        /* Soft Taupe - section backgrounds (matches icons) */
+      --card-project: #F4EDE3;    /* Warm cream - project cards */
+      --card-timeline: #F4EDE3;   /* Warm cream - timeline cards */
     }
 
     * {
@@ -76,7 +83,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      background: rgba(255,255,255,0.6);
+      background: rgba(251, 250, 248, 0.85);
       color: var(--accent);
       padding: 0.35rem 0.9rem;
       border-radius: 999px;
@@ -88,7 +95,7 @@
       font-weight: 300;
       margin: 0 0 1rem;
       line-height: 1.1;
-      color: var(--text);
+      color: var(--accent);
     }
 
     h2 {
@@ -102,7 +109,7 @@
       margin: 0 0 0.6rem;
       font-size: 1.25rem;
       font-weight: 500;
-      color: #334155;
+      color: var(--accent);
     }
     
     /* Subheading for expanded project details */
@@ -121,7 +128,7 @@
       max-width: 48ch;
       font-size: 1.15rem;
       margin-bottom: 2.5rem;
-      color: #5d5d5d;
+      color: var(--text);
       font-weight: 300;
     }
 
@@ -130,6 +137,7 @@
       flex-wrap: wrap;
       gap: 0.85rem;
       margin-top: 2.5rem;
+      justify-content: center;
     }
 
     .social-link {
@@ -141,16 +149,15 @@
       align-items: center;
       justify-content: center;
       gap: 0.6rem;
-      border: 1px solid rgba(172, 152, 153, 0.4);
-      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(58, 51, 48, 0.15);
+      background: #D8CFC6;
       color: var(--accent);
       cursor: pointer;
-      box-shadow: 0 10px 30px rgba(172, 152, 153, 0.15);
+      box-shadow: 0 10px 30px rgba(58, 51, 48, 0.08);
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
-    .social-link svg,
-    .social-link .icon {
+    .social-link svg {
       width: 1.1rem;
       height: 1.1rem;
       fill: currentColor;
@@ -158,42 +165,45 @@
 
     .social-link:hover,
     .social-link:focus-visible {
-      background: rgba(255,255,255,0.85);
-      box-shadow: 0 15px 35px rgba(172, 152, 153, 0.2);
+      background: #CCC2B5;
+      box-shadow: 0 15px 35px rgba(58, 51, 48, 0.12);
       outline: none;
     }
 
     .social-link.is-email {
-      border-style: solid;
-      background: rgba(255, 255, 255, 0.5);
-      transition: padding-right 0.3s ease, background 0.3s ease, border-color 0.3s ease;
-      overflow: hidden;
+      position: relative;
+      overflow: visible;
     }
 
     .social-link.is-email .copy-label {
-      max-width: 0;
-      opacity: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      transition: max-width 0.3s ease, opacity 0.3s ease, margin-left 0.3s ease;
+      position: absolute;
+      left: calc(100% + 0.5rem);
+      top: 50%;
+      transform: translateY(-50%) translateX(0.4rem);
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      border: 1px dashed rgba(58, 51, 48, 0.3);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 12px 30px rgba(58, 51, 48, 0.1);
       font-size: 0.85rem;
       font-family: inherit;
       font-weight: 500;
       letter-spacing: 0.02em;
       color: var(--text);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
     }
 
     .social-link.is-email.show-feedback {
-      padding-right: 2.25rem;
-      background: rgba(255,255,255,0.85);
-      box-shadow: 0 15px 35px rgba(172, 152, 153, 0.2);
-      border-color: rgba(172, 152, 153, 0.6);
+      background: #CCC2B5;
+      box-shadow: 0 15px 35px rgba(58, 51, 48, 0.15);
     }
 
     .social-link.is-email.show-feedback .copy-label {
-      max-width: 180px;
       opacity: 1;
-      margin-left: 0.6rem;
+      transform: translateY(-50%) translateX(0);
     }
 
     section {
@@ -201,22 +211,22 @@
     }
 
     .panel {
-      background: rgba(255, 255, 255, 0.3);
+      background: var(--panel-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      box-shadow: 0 8px 30px rgba(172, 152, 153, 0.08);
+      border: 1px solid rgba(58, 51, 48, 0.06);
+      box-shadow: 0 8px 30px rgba(58, 51, 48, 0.04);
       padding: clamp(2.5rem, 4vw, 4rem);
       margin-bottom: 3.5rem;
       position: relative;
       overflow: hidden; 
-      will-change: height; /* Hint to browser for smoother expansion */
-      transition: transform 0.5s ease, height 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Updated timing for smoothness */
+      will-change: height;
+      transition: transform 0.5s ease, height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     }
     
     .panel:not(.has-expanded-card):hover {
-        transform: scale(1.01);
+        /* hover effects removed */
     }
     
     .panel.has-expanded-card {
@@ -234,7 +244,7 @@
 
     .section-heading p {
       margin: 0;
-      color: #6e6e6e;
+      color: var(--text);
       font-weight: 300;
     }
 
@@ -257,11 +267,11 @@
     }
 
     .project-card {
-      background: rgba(255, 255, 255, 0.45);
+      background: var(--card-project);
       border-radius: 16px;
       padding: 2rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 2px 8px rgba(58, 51, 48, 0.03);
+      border: 1px solid rgba(58, 51, 48, 0.05);
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -279,9 +289,8 @@
     }
 
     .project-card:not(.expanded):hover {
-      transform: translateY(-4px);
-      background: rgba(255, 255, 255, 0.65);
-      box-shadow: 0 10px 15px -3px rgba(172, 152, 153, 0.1);
+      background: var(--card-project);
+      box-shadow: 0 10px 15px -3px rgba(58, 51, 48, 0.08);
     }
 
     /* --- EXPANDED STATE STYLES --- */
@@ -309,7 +318,7 @@
       /* Position will be handled by JS for animation, then locked here if needed */
       z-index: 10;
       border-radius: 24px; 
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--card-project);
       margin: 0;
       padding: clamp(2rem, 5vw, 4rem);
       overflow-y: auto; /* Allow scrolling if content is too long */
@@ -436,7 +445,7 @@
       top: 0;
       bottom: 0;
       width: 1px;
-      background: rgba(172, 152, 153, 0.3);
+      background: rgba(58, 51, 48, 0.12);
     }
 
     .timeline-item {
@@ -451,25 +460,26 @@
       width: 0.7rem;
       height: 0.7rem;
       border-radius: 50%;
-      background: var(--accent);
-      border: 2px solid #e7dfd3;
+      background: #D8CFC6;
+      border: 2px solid var(--bg);
       position: absolute;
       left: 0.05rem;
       top: 1.5rem;
-      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 0 4px rgba(246, 240, 231, 0.5);
     }
 
     .timeline-content {
-      background: rgba(255, 255, 255, 0.45);
+      background: var(--card-timeline);
       border-radius: 16px;
       padding: 1.5rem;
       width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      transition: background 0.3s ease;
+      border: 1px solid rgba(58, 51, 48, 0.05);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
     
     .timeline-content:hover {
-        background: rgba(255, 255, 255, 0.65);
+        background: var(--card-timeline);
+        box-shadow: 0 4px 12px rgba(58, 51, 48, 0.07);
     }
 
     .timeline-date {
@@ -485,7 +495,7 @@
       text-align: center;
       padding: 3rem 0 1.5rem;
       font-size: 0.85rem;
-      color: #888;
+      color: var(--text);
       position: relative;
       z-index: 1;
     }
@@ -530,13 +540,13 @@
             </svg>
           </a>
           <a class="social-link" href="https://www.linkedin.com/in/nathan-johnson-compsci/" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
-              <path d="M4.5 3.75a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm-1.5 5h3v11.5h-3V8.75Zm6 0h2.91v1.47h.04c.41-.78 1.43-1.6 2.95-1.6 3.16 0 3.75 2.08 3.75 4.78v6.85h-3v-6.1c0-1.45-.02-3.3-2.01-3.3-2.02 0-2.33 1.58-2.33 3.2v6.2h-3V8.75Z" />
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.226.792 24 1.771 24h20.454C23.205 24 24 23.226 24 22.271V1.729C24 .774 23.205 0 22.225 0ZM7.123 20.452H3.56V9h3.563v11.452ZM5.341 7.433a2.063 2.063 0 1 1 0-4.126 2.063 2.063 0 0 1 0 4.126ZM20.452 20.452h-3.555v-5.564c0-1.327-.024-3.036-1.849-3.036-1.85 0-2.133 1.446-2.133 2.942v5.658H9.361V9h3.414v1.561h.048c.476-.9 1.64-1.848 3.376-1.848 3.612 0 4.283 2.377 4.283 5.467v6.272Z" />
             </svg>
           </a>
           <button class="social-link is-email" type="button" data-email="njohnson14@luc.edu" aria-label="Copy email">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.35l9 5.65 9-5.65V7H3zm18 3.15-7.62 4.78a2 2 0 0 1-2.76 0L3 10.15V17a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-6.85z"/>
+              <path d="M2.25 4.5h19.5A2.25 2.25 0 0 1 24 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25H2.25A2.25 2.25 0 0 1 0 17.25V6.75A2.25 2.25 0 0 1 2.25 4.5Zm0 1.5a.75.75 0 0 0-.75.75v.26l10.5 6.36 10.5-6.36V6.75a.75.75 0 0 0-.75-.75H2.25Zm19.5 3.904-7.977 4.84a1.5 1.5 0 0 1-1.546 0L4.25 9.904V17.25c0 .414.336.75.75.75h14a.75.75 0 0 0 .75-.75V9.904Z" />
             </svg>
             <span class="copy-label" aria-hidden="true">Email copied to clipboard</span>
           </button>
@@ -620,7 +630,7 @@
     <section id="timeline" class="panel">
       <div class="section-heading">
         <span class="eyebrow">Experience</span>
-        <h2>Where I’ve been building</h2>
+        <h2>Where I've been building</h2>
         <p>Engineering, research, and leadership work across fintech, HPC, and campus communities.</p>
       </div>
       <div class="timeline">
@@ -668,7 +678,7 @@
             <ul>
               <li>Developed Python-based HPC workflows and integrated C/C++ libraries for performance-critical modules.</li>
               <li>Employed cProfile and mpi4py for benchmarking and parallel execution, boosting distributed performance.</li>
-              <li>Improved multi-node strategies to enhance throughput across the lab’s clusters.</li>
+              <li>Improved multi-node strategies to enhance throughput across the lab's clusters.</li>
             </ul>
           </div>
         </article>
@@ -839,22 +849,6 @@
           expandedCard.style.height = `${initialCardRect.height}px`;
       }
 
-      // Animate panel height back to original if it grew
-      // We don't have the exact original height stored easily, but we can let it be auto?
-      // No, we need to animate it.
-      // Let's just remove the explicit height on projectSection after animation?
-      // Or animate it to a guessed height?
-      // Better: Measure the grid height?
-      // Since the grid items are hidden, the grid height might be collapsed?
-      // No, they are opacity: 0, but still take space?
-      // Wait, I set `pointer-events: none; opacity: 0`. They still take space in flow.
-      // So the grid height should be correct.
-      // Let's measure the natural height of the section.
-      
-      // Temporarily remove height constraint to measure? No that would jump.
-      // Let's just animate the card. The panel height will snap back when we remove explicit height.
-      // Or we can try to animate panel height too.
-      
       // Wait for shrink (600ms)
       await new Promise(r => setTimeout(r, 600));
 
@@ -942,7 +936,7 @@
         }
     });
 
-    // --- FLOW FIELD ANIMATION (Unchanged) ---
+    // --- FLOW FIELD ANIMATION (Warm Minimal Monochrome palette) ---
     const canvas = document.getElementById('waveCanvas');
     const ctx = canvas.getContext('2d');
     const mouse = { x: -1000, y: -1000 };
@@ -954,19 +948,83 @@
     const fadeRate = 0.08; 
 
     const colors = [
-      'rgba(255, 237, 237, 0.8)',
-      'rgba(172, 152, 153, 0.75)',
-      'rgba(236, 210, 207, 0.7)',
-      'rgba(235, 223, 211, 0.7)'
+      'rgba(58, 51, 48, 0.35)',    // Dark Espresso - softer
+      'rgba(124, 110, 99, 0.30)',  // Muted Cocoa - softer
+      'rgba(216, 207, 198, 0.40)', // Soft Taupe - softer
+      'rgba(180, 170, 158, 0.35)'  // Warm Gray - softer
     ];
 
-    const bgColor = 'rgb(235, 223, 211)'; 
+    const bgColor = 'rgb(246, 240, 231)'; // Cream
 
     let width = window.innerWidth;
     let height = window.innerHeight;
     let particles = [];
     let time = 0;
     let animationFrameId;
+
+    // --- REPULSION ZONES for UI elements ---
+    const repulsionZones = [];
+    
+    function updateRepulsionZones() {
+      repulsionZones.length = 0;
+      
+      // Add entire hero section as one natural repulsion zone (shifted left to center on name)
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        const rect = hero.getBoundingClientRect();
+        repulsionZones.push({
+          x: rect.left + rect.width * 0.35,  // Shift left to center more on name
+          y: rect.top + rect.height / 2,
+          width: rect.width * 0.8,
+          height: rect.height,
+          padding: 80,
+          force: 3.5
+        });
+      }
+      
+      // Add footer as a smaller repulsion zone
+      const footer = document.querySelector('footer');
+      if (footer) {
+        const rect = footer.getBoundingClientRect();
+        repulsionZones.push({
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+          width: rect.width * 0.4,
+          height: rect.height,
+          padding: 30,
+          force: 2
+        });
+      }
+    }
+    
+    // Smooth radial repulsion - more natural like mouse interaction
+    function getRepulsionFromZone(px, py, zone) {
+      const halfW = zone.width / 2 + zone.padding;
+      const halfH = zone.height / 2 + zone.padding;
+      
+      // Calculate normalized distance from center
+      const dx = px - zone.x;
+      const dy = py - zone.y;
+      
+      // Use elliptical distance for rectangular zones
+      const normalizedX = dx / halfW;
+      const normalizedY = dy / halfH;
+      const ellipseDist = Math.sqrt(normalizedX * normalizedX + normalizedY * normalizedY);
+      
+      if (ellipseDist < 1) {
+        // Particle is inside the zone - calculate smooth repulsion
+        // Force is stronger near center, fades toward edges (like mouse)
+        const force = (1 - ellipseDist) * zone.force;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        
+        return {
+          x: (dx / dist) * force,
+          y: (dy / dist) * force
+        };
+      }
+      
+      return { x: 0, y: 0 };
+    }
 
     const noise = (x, y, z) => {
       const p = 50 * Math.sin(x * 0.01 + z) + 50 * Math.cos(y * 0.01 + z);
@@ -983,6 +1041,7 @@
       ctx.scale(dpr, dpr);
       
       initParticles();
+      updateRepulsionZones();
       
       ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, width, height);
@@ -1015,6 +1074,7 @@
       update() {
         const angle = noise(this.x * flowScale, this.y * flowScale, time * 0.0005) * Math.PI * 2;
 
+        // Mouse repulsion
         const dx = this.x - mouse.x;
         const dy = this.y - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -1031,6 +1091,13 @@
             
             interactionX = Math.cos(pushAngle) * force * maxForce;
             interactionY = Math.sin(pushAngle) * force * maxForce;
+        }
+        
+        // UI element repulsion (name + social links)
+        for (const zone of repulsionZones) {
+          const repulsion = getRepulsionFromZone(this.x, this.y, zone);
+          interactionX += repulsion.x;
+          interactionY += repulsion.y;
         }
 
         this.x += Math.cos(angle) * speed * this.speedModifier + interactionX;
@@ -1058,7 +1125,7 @@
     }
 
     function animateFlowField() {
-      ctx.fillStyle = `rgba(235, 223, 211, ${fadeRate})`;
+      ctx.fillStyle = `rgba(246, 240, 231, ${fadeRate})`;
       ctx.fillRect(0, 0, width, height);
 
       particles.forEach((particle) => {
@@ -1072,6 +1139,7 @@
 
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('scroll', updateRepulsionZones);
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
     animateFlowField();
@@ -1079,6 +1147,7 @@
     function cleanup() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('scroll', updateRepulsionZones);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('pagehide', cleanup);
