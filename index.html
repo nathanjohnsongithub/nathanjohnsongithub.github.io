@@ -10,11 +10,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #e7dfd3;
-      --text: #4a4a4a;
-      --soft: #ffeded;
-      --accent: #ac9899;
-      --shadow: rgba(74, 74, 74, 0.08);
+      /* Warm Minimal Monochrome palette */
+      --bg: #F6F0E7;         /* Cream - background texture */
+      --text: #7C6E63;       /* Muted Cocoa - body text */
+      --soft: #FBFAF8;       /* Ivory - cards/containers */
+      --accent: #3A3330;     /* Dark Espresso - hero & buttons */
+      --secondary: #7C6E63;  /* Muted Cocoa - secondary text */
+      --shadow: rgba(58, 51, 48, 0.06); /* Dark Espresso shadow */
+      
+      /* Section and card colors */
+      --panel-bg: #f1ede7;        /* Soft Taupe - section backgrounds (matches icons) */
+      --card-project: #f5f0ea;    /* Warm cream - project cards */
+      --card-timeline: #f5f0ea;   /* Warm cream - timeline cards */
     }
 
     * {
@@ -76,7 +83,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      background: rgba(255,255,255,0.6);
+      background: rgba(251, 250, 248, 0.85);
       color: var(--accent);
       padding: 0.35rem 0.9rem;
       border-radius: 999px;
@@ -88,7 +95,7 @@
       font-weight: 300;
       margin: 0 0 1rem;
       line-height: 1.1;
-      color: var(--text);
+      color: var(--accent);
     }
 
     h2 {
@@ -102,7 +109,7 @@
       margin: 0 0 0.6rem;
       font-size: 1.25rem;
       font-weight: 500;
-      color: #334155;
+      color: var(--accent);
     }
     
     /* Subheading for expanded project details */
@@ -121,7 +128,7 @@
       max-width: 48ch;
       font-size: 1.15rem;
       margin-bottom: 2.5rem;
-      color: #5d5d5d;
+      color: var(--text);
       font-weight: 300;
     }
 
@@ -141,11 +148,11 @@
       align-items: center;
       justify-content: center;
       gap: 0.6rem;
-      border: 1px solid rgba(172, 152, 153, 0.4);
-      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(58, 51, 48, 0.15);
+      background: #e3dcd5;
       color: var(--accent);
       cursor: pointer;
-      box-shadow: 0 10px 30px rgba(172, 152, 153, 0.15);
+      box-shadow: 0 10px 30px rgba(58, 51, 48, 0.08);
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
@@ -158,42 +165,55 @@
 
     .social-link:hover,
     .social-link:focus-visible {
-      background: rgba(255,255,255,0.85);
-      box-shadow: 0 15px 35px rgba(172, 152, 153, 0.2);
+      background: #CCC2B5;
+      box-shadow: 0 15px 35px rgba(58, 51, 48, 0.12);
       outline: none;
     }
 
     .social-link.is-email {
-      border-style: solid;
-      background: rgba(255, 255, 255, 0.5);
-      transition: padding-right 0.3s ease, background 0.3s ease, border-color 0.3s ease;
-      overflow: hidden;
+      position: relative;
+      overflow: visible;
+      border-style: solid; /* Keep border style from original but override other props */
     }
 
     .social-link.is-email .copy-label {
-      max-width: 0;
-      opacity: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      transition: max-width 0.3s ease, opacity 0.3s ease, margin-left 0.3s ease;
+      position: absolute;
+      left: calc(100% + 0.5rem);
+      top: 50%;
+      transform: translateY(-50%) translateX(0.4rem);
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      border: 1px dashed rgba(58, 51, 48, 0.3);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 12px 30px rgba(58, 51, 48, 0.1);
       font-size: 0.85rem;
       font-family: inherit;
       font-weight: 500;
       letter-spacing: 0.02em;
       color: var(--text);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      /* Resetting properties from previous version */
+      max-width: unset;
+      margin-left: 0;
     }
 
     .social-link.is-email.show-feedback {
-      padding-right: 2.25rem;
-      background: rgba(255,255,255,0.85);
-      box-shadow: 0 15px 35px rgba(172, 152, 153, 0.2);
-      border-color: rgba(172, 152, 153, 0.6);
+      background: #CCC2B5;
+      box-shadow: 0 15px 35px rgba(58, 51, 48, 0.15);
+      /* Resetting padding from previous version */
+      padding-right: 1.5rem; 
+      border-color: rgba(58, 51, 48, 0.15);
     }
 
     .social-link.is-email.show-feedback .copy-label {
-      max-width: 180px;
       opacity: 1;
-      margin-left: 0.6rem;
+      transform: translateY(-50%) translateX(0);
+      /* Resetting max-width from previous version */
+      max-width: unset;
+      margin-left: 0;
     }
 
     section {
@@ -201,12 +221,12 @@
     }
 
     .panel {
-      background: rgba(255, 255, 255, 0.3);
+      background: var(--panel-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      box-shadow: 0 8px 30px rgba(172, 152, 153, 0.08);
+      border: 1px solid rgba(58, 51, 48, 0.06);
+      box-shadow: 0 8px 30px rgba(58, 51, 48, 0.04);
       padding: clamp(2.5rem, 4vw, 4rem);
       margin-bottom: 3.5rem;
       position: relative;
@@ -215,9 +235,9 @@
       transition: transform 0.5s ease, height 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Updated timing for smoothness */
     }
     
-    .panel:not(.has-expanded-card):hover {
-        transform: scale(1.01);
-    }
+    /* .panel:not(.has-expanded-card):hover {
+        hover effects removed
+    } */
     
     .panel.has-expanded-card {
         transform: none !important;
@@ -234,7 +254,7 @@
 
     .section-heading p {
       margin: 0;
-      color: #6e6e6e;
+      color: var(--text);
       font-weight: 300;
     }
 
@@ -257,11 +277,11 @@
     }
 
     .project-card {
-      background: rgba(255, 255, 255, 0.45);
+      background: var(--card-project);
       border-radius: 16px;
       padding: 2rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 2px 8px rgba(58, 51, 48, 0.03);
+      border: 1px solid rgba(58, 51, 48, 0.05);
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -279,9 +299,8 @@
     }
 
     .project-card:not(.expanded):hover {
-      transform: translateY(-4px);
-      background: rgba(255, 255, 255, 0.65);
-      box-shadow: 0 10px 15px -3px rgba(172, 152, 153, 0.1);
+      background: var(--card-project);
+      box-shadow: 0 10px 15px -3px rgba(58, 51, 48, 0.08);
     }
 
     /* --- EXPANDED STATE STYLES --- */
@@ -309,7 +328,7 @@
       /* Position will be handled by JS for animation, then locked here if needed */
       z-index: 10;
       border-radius: 24px; 
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--card-project);
       margin: 0;
       padding: clamp(2rem, 5vw, 4rem);
       overflow-y: auto; /* Allow scrolling if content is too long */
@@ -424,94 +443,238 @@
 
     .timeline {
       position: relative;
-      padding-left: 2rem;
       max-width: 800px;
       margin: 0 auto;
+      padding: 1rem 0;
     }
 
+    /* The vertical line */
     .timeline::before {
       content: '';
       position: absolute;
-      left: 0.75rem;
+      left: 1.65rem; /* Center of the marker */
       top: 0;
       bottom: 0;
-      width: 1px;
-      background: rgba(172, 152, 153, 0.3);
+      width: 2px;
+      background: rgba(58, 51, 48, 0.08);
+      border-radius: 2px;
     }
 
     .timeline-item {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
       position: relative;
-      padding-left: 1rem;
+      padding-left: 5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .timeline-item:last-child {
+        margin-bottom: 0;
     }
 
     .timeline-marker {
-      width: 0.7rem;
-      height: 0.7rem;
-      border-radius: 50%;
-      background: var(--accent);
-      border: 2px solid #e7dfd3;
       position: absolute;
-      left: 0.05rem;
-      top: 1.5rem;
-      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
+      left: 1rem;
+      top: 2rem; /* Align with the card's top padding roughly */
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      box-shadow: 0 0 0 6px var(--bg); /* Mask the line behind it */
+    }
+    
+    .timeline-marker::after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .timeline-item:hover .timeline-marker {
+        transform: scale(1.1);
+        border-color: var(--accent);
+    }
+    
+    .timeline-item:hover .timeline-marker::after {
+        opacity: 1;
     }
 
     .timeline-content {
-      background: rgba(255, 255, 255, 0.45);
-      border-radius: 16px;
-      padding: 1.5rem;
-      width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      transition: background 0.3s ease;
+      position: relative;
+      background: var(--card-timeline);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(58, 51, 48, 0.04);
+      box-shadow: 0 2px 8px rgba(58, 51, 48, 0.02);
+      /* Kinetic Layering: Smoother easing for lift */
+      transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.2, 0, 0.2, 1);
     }
     
-    .timeline-content:hover {
-        background: rgba(255, 255, 255, 0.65);
+    /* Arrow pointing to timeline marker */
+    .timeline-content::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 2.65rem; /* Aligns with the center of the marker */
+      width: 12px;
+      height: 12px;
+      background: var(--card-timeline);
+      border-left: 1px solid rgba(58, 51, 48, 0.04);
+      border-bottom: 1px solid rgba(58, 51, 48, 0.04);
+      transform: translateY(-50%) rotate(45deg);
+      border-radius: 0 0 0 2px;
+    }
+    
+    .timeline-item:hover .timeline-content {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px -5px rgba(58, 51, 48, 0.1);
+    }
+
+    .timeline-header {
+        margin-bottom: 1.25rem;
+        border-bottom: 1px solid rgba(58, 51, 48, 0.06);
+        padding-bottom: 1rem;
     }
 
     .timeline-date {
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.35rem;
+      display: inline-block;
+      font-size: 0.75rem;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      background: rgba(58, 51, 48, 0.06);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
     }
 
-    footer {
-      text-align: center;
-      padding: 3rem 0 1.5rem;
-      font-size: 0.85rem;
-      color: #888;
+    .timeline-role {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 0.75rem 0 0.25rem;
+      line-height: 1.2;
+      transition: color 0.3s ease;
+    }
+    
+    .timeline-item:hover .timeline-role {
+        color: #1a1614; /* Slightly darker/sharper on hover */
+    }
+
+    .timeline-company {
+      font-size: 0.95rem;
+      color: var(--text);
+      display: block;
+      font-weight: 400;
+      opacity: 0.9;
+    }
+
+    .timeline-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .timeline-list li {
       position: relative;
-      z-index: 1;
+      padding-left: 1.25rem;
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .timeline-list li:last-child {
+        margin-bottom: 0;
     }
 
+    .timeline-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      opacity: 0.5;
+      font-size: 0.9em;
+      top: 0.1em;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .timeline-item:hover .timeline-list li::before {
+        transform: translateX(4px);
+        opacity: 1;
+    }
+
+    .resume-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.2s ease;
+    }
+
+    .resume-button:hover {
+      background: var(--accent);
+      color: var(--bg);
+      box-shadow: 0 4px 12px rgba(58, 51, 48, 0.15);
+    }
+
+    .timeline-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px dashed rgba(58, 51, 48, 0.1);
+    }
+
+    .timeline-tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text);
+      background: rgba(58, 51, 48, 0.05);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .timeline-item:hover .timeline-tag {
+      background: rgba(58, 51, 48, 0.08);
+      color: var(--accent);
+    }
+    
     @media (max-width: 700px) {
-      .hero-socials {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .hero-socials .social-link {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .timeline {
-        padding-left: 1rem;
-      }
-
-      .timeline::before {
-        left: 0.5rem;
-      }
-
-      .timeline-marker {
-        left: 0.1rem;
-      }
+        .timeline {
+            padding-left: 0;
+        }
+        .timeline::before {
+            left: 1rem;
+        }
+        .timeline-item {
+            padding-left: 3rem;
+        }
+        .timeline-marker {
+            left: 0.35rem;
+        }
+        .timeline-content {
+            padding: 1.5rem;
+        }
     }
   </style>
 </head>
@@ -520,7 +683,6 @@
   <main class="page">
     <header id="top">
       <div class="hero">
-        <span class="hero-eyebrow">Portfolio 2025</span>
         <h1>Nathan Johnson</h1>
         <p>Creative Developer crafting digital experiences that feel organic, calm, and human. Moving away from rigid grids into fluid, interactive storytelling.</p>
         <div class="hero-socials" aria-label="Connect with me">
@@ -547,7 +709,7 @@
     <section id="projects" class="panel">
       <div class="section-heading">
         <span class="eyebrow">Selected work</span>
-        <h2>Projects worth sharing</h2>
+        <h2 style="color: var(--accent);">Projects worth sharing</h2>
         <p>Explorations in flow fields, generative design, and user experience.</p>
       </div>
       <div class="project-grid">
@@ -620,68 +782,171 @@
     <section id="timeline" class="panel">
       <div class="section-heading">
         <span class="eyebrow">Experience</span>
-        <h2>Where I’ve been building</h2>
+        <h2 style="color: var(--accent);">Where I’ve been building</h2>
         <p>Engineering, research, and leadership work across fintech, HPC, and campus communities.</p>
+        <a href="Nathan_Johnson_Resume.pdf" target="_blank" class="resume-button">
+          View My Resume
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17l9.2-9.2M17 17V7H7"/>
+          </svg>
+        </a>
       </div>
       <div class="timeline">
+        
         <article class="timeline-item">
-          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-marker" aria-hidden="true"></div>
           <div class="timeline-content">
-            <p class="timeline-date">Jun 2025 – Aug 2025 · Enova International · Chicago, IL</p>
-            <h3>Software Engineering Intern</h3>
-            <ul>
+            <div class="timeline-header">
+              <span class="timeline-date">Jun 2025 – Aug 2025</span>
+              <h3 class="timeline-role">Software Engineering Intern</h3>
+              <span class="timeline-company">Enova International · Chicago, IL</span>
+            </div>
+            <ul class="timeline-list">
               <li>Completed a Small & Medium Business Engineering internship modernizing legacy systems via cloud-native architecture.</li>
               <li>Migrated core business functionality into Go + AWS Lambda microservices backed by Salesforce Apex and Terraform.</li>
               <li>Partnered with cross-functional teams to deliver fault-tolerant, production-ready solutions that scale with the platform.</li>
             </ul>
+            <div class="timeline-tags">
+              <span class="timeline-tag">Go</span>
+              <span class="timeline-tag">AWS Lambda</span>
+              <span class="timeline-tag">Salesforce Apex</span>
+              <span class="timeline-tag">Terraform</span>
+              <span class="timeline-tag">Microservices</span>
+            </div>
           </div>
         </article>
+
         <article class="timeline-item">
-          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-marker" aria-hidden="true"></div>
           <div class="timeline-content">
-            <p class="timeline-date">Jan 2025 – Present · TrueLayer · London, UK</p>
-            <h3>Business Development Intern</h3>
-            <ul>
+            <div class="timeline-header">
+              <span class="timeline-date">Jan 2025 – Apr 2025</span>
+              <h3 class="timeline-role">Business Development Intern</h3>
+              <span class="timeline-company">TrueLayer · London, UK</span>
+            </div>
+            <ul class="timeline-list">
               <li>Support a leading Pay-by-Bank/Open Banking provider by identifying commercial opportunities in fast-moving markets.</li>
               <li>Analyze partner data to surface strategic plays that grow A2A adoption.</li>
               <li>Collaborate across technical and non-technical teams, reinforcing communication and problem-solving skills.</li>
             </ul>
+            <div class="timeline-tags">
+              <span class="timeline-tag">Pay-by-Bank</span>
+              <span class="timeline-tag">Open Banking</span>
+              <span class="timeline-tag">Data Analysis</span>
+              <span class="timeline-tag">Business Development</span>
+            </div>
           </div>
         </article>
+
         <article class="timeline-item">
-          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-marker" aria-hidden="true"></div>
           <div class="timeline-content">
-            <p class="timeline-date">May 2024 – Aug 2024 · Argonne National Laboratory · Lemont, IL</p>
-            <h3>Computational Research Aide — Sophomore</h3>
-            <ul>
-              <li>Accelerated ARCHES HPC workloads by offloading GPU computations using SYCL.</li>
-              <li>Optimized OpenMP parallelism to improve scalability and efficiency across large clusters.</li>
-              <li>Used MAQAO profiling to uncover bottlenecks and implement multi-threaded optimizations.</li>
+            <div class="timeline-header">
+              <span class="timeline-date">May 2024 – Aug 2024</span>
+              <h3 class="timeline-role">Computational Research Aide — Sophomore</h3>
+              <span class="timeline-company">Argonne National Laboratory · Lemont, IL</span>
+            </div>
+            <ul class="timeline-list">
+              <li>Contributed to performance-critical HPC applications (ARCHES project) by offloading GPU computations with SYCL.</li>
+              <li>Optimized parallel workloads using OpenMP, improving scalability and efficiency across large clusters.</li>
+              <li>Conducted profiling (MAQAO) to identify bottlenecks and implemented multi-threaded optimizations.</li>
             </ul>
+            <div class="timeline-tags">
+              <span class="timeline-tag">SYCL</span>
+              <span class="timeline-tag">OpenMP</span>
+              <span class="timeline-tag">GPU</span>
+              <span class="timeline-tag">HPC</span>
+              <span class="timeline-tag">C++</span>
+              <span class="timeline-tag">Performance Profiling</span>
+            </div>
           </div>
         </article>
+
         <article class="timeline-item">
-          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-marker" aria-hidden="true"></div>
           <div class="timeline-content">
-            <p class="timeline-date">May 2023 – Aug 2023 · Argonne National Laboratory · Lemont, IL</p>
-            <h3>Computational Research Aide</h3>
-            <ul>
-              <li>Developed Python-based HPC workflows and integrated C/C++ libraries for performance-critical modules.</li>
-              <li>Employed cProfile and mpi4py for benchmarking and parallel execution, boosting distributed performance.</li>
-              <li>Improved multi-node strategies to enhance throughput across the lab’s clusters.</li>
+            <div class="timeline-header">
+              <span class="timeline-date">Jan 2024 – Present</span>
+              <h3 class="timeline-role">Computer Science Tutor</h3>
+              <span class="timeline-company">Loyola University Chicago · Chicago, IL</span>
+            </div>
+            <ul class="timeline-list">
+              <li>Weekly tutor in the Computer Science Department, supporting students in core curriculum courses.</li>
+              <li>Subjects include Introduction to Computing Tools and Techniques, Discrete Structures, Object-Oriented Programming, Computer Systems, and Data Structures.</li>
             </ul>
+            <div class="timeline-tags">
+              <span class="timeline-tag">Data Structures</span>
+              <span class="timeline-tag">OOP</span>
+              <span class="timeline-tag">Algorithms</span>
+              <span class="timeline-tag">Teaching</span>
+            </div>
           </div>
         </article>
+
         <article class="timeline-item">
-          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-marker" aria-hidden="true"></div>
           <div class="timeline-content">
-            <p class="timeline-date">Aug 2023 – Dec 2024 · Loyola University Chicago · Chicago, IL</p>
-            <h3>Loyola AI Club President</h3>
-            <ul>
+            <div class="timeline-header">
+              <span class="timeline-date">Aug 2023 – Dec 2024</span>
+              <h3 class="timeline-role">Loyola AI Club President</h3>
+              <span class="timeline-company">Loyola University Chicago · Chicago, IL</span>
+            </div>
+            <ul class="timeline-list">
               <li>Led a machine-learning movie recommendation initiative using Pandas, NumPy, and Scikit-learn.</li>
               <li>Organized weekly meetings, competitions, and guest speakers to expand member engagement.</li>
               <li>Grew active membership while strengthening leadership and communication skills.</li>
             </ul>
+            <div class="timeline-tags">
+              <span class="timeline-tag">Machine Learning</span>
+              <span class="timeline-tag">Pandas</span>
+              <span class="timeline-tag">Scikit-learn</span>
+              <span class="timeline-tag">Leadership</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-marker" aria-hidden="true"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-date">May 2023 – Aug 2023</span>
+              <h3 class="timeline-role">Computational Research Aide</h3>
+              <span class="timeline-company">Argonne National Laboratory · Lemont, IL</span>
+            </div>
+            <ul class="timeline-list">
+              <li>Developed Python-based HPC workflows and integrated C/C++ libraries for performance-critical modules.</li>
+              <li>Employed cProfile and mpi4py for benchmarking and parallel execution, boosting distributed performance.</li>
+              <li>Improved multi-node strategies to enhance throughput across the lab’s clusters.</li>
+            </ul>
+            <div class="timeline-tags">
+              <span class="timeline-tag">Python</span>
+              <span class="timeline-tag">HPC</span>
+              <span class="timeline-tag">MPI</span>
+              <span class="timeline-tag">C/C++</span>
+              <span class="timeline-tag">Performance Optimization</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-marker" aria-hidden="true"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-date">Aug 2022 – Expected May 2026</span>
+              <h3 class="timeline-role">B.S. in Computer Science</h3>
+              <span class="timeline-company">Loyola University Chicago · Chicago, IL</span>
+            </div>
+            <ul class="timeline-list">
+              <li><strong>GPA:</strong> 3.92</li>
+              <li><strong>Relevant Coursework:</strong> Data Structures and Algorithms, Discrete Math, Calculus I & II, Linear Algebra, Computer Systems, Programming Languages, Operating Systems, Object-Oriented Design, Machine Learning, Software Engineering.</li>
+              <li><strong>Future Coursework:</strong> Database Programming, NLP.</li>
+            </ul>
+            <div class="timeline-tags">
+              <span class="timeline-tag">Computer Science</span>
+              <span class="timeline-tag">Education</span>
+              <span class="timeline-tag">Data Structures</span>
+              <span class="timeline-tag">Algorithms</span>
+            </div>
           </div>
         </article>
       </div>
@@ -954,13 +1219,13 @@
     const fadeRate = 0.08; 
 
     const colors = [
-      'rgba(255, 237, 237, 0.8)',
-      'rgba(172, 152, 153, 0.75)',
-      'rgba(236, 210, 207, 0.7)',
-      'rgba(235, 223, 211, 0.7)'
+      'rgba(58, 51, 48, 0.35)',    // Dark Espresso - softer
+      'rgba(124, 110, 99, 0.30)',  // Muted Cocoa - softer
+      'rgba(216, 207, 198, 0.40)', // Soft Taupe - softer
+      'rgba(180, 170, 158, 0.35)'  // Warm Gray - softer
     ];
 
-    const bgColor = 'rgb(235, 223, 211)'; 
+    const bgColor = 'rgb(246, 240, 231)'; // Cream 
 
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -1058,7 +1323,7 @@
     }
 
     function animateFlowField() {
-      ctx.fillStyle = `rgba(235, 223, 211, ${fadeRate})`;
+      ctx.fillStyle = `rgba(246, 240, 231, ${fadeRate})`;
       ctx.fillRect(0, 0, width, height);
 
       particles.forEach((particle) => {
