@@ -531,10 +531,28 @@
       transform: translateY(-50%) rotate(45deg);
       border-radius: 0 0 0 2px;
     }
+
+    /* Left-Rail Accent */
+    .timeline-content::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 20px;
+      bottom: 20px;
+      width: 3px;
+      background: var(--accent);
+      opacity: 0.2;
+      transition: opacity 0.3s ease;
+      border-radius: 0 4px 4px 0;
+    }
     
     .timeline-item:hover .timeline-content {
-        transform: translateY(-5px);
+        /* Lift removed, just shadow and accent update */
         box-shadow: 0 20px 40px -5px rgba(58, 51, 48, 0.1);
+    }
+    
+    .timeline-item:hover .timeline-content::after {
+      opacity: 1;
     }
 
     .timeline-header {
@@ -659,6 +677,15 @@
       color: var(--accent);
     }
     
+    footer {
+      text-align: center;
+      padding: 3rem 0 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      position: relative;
+      z-index: 1;
+    }
+    
     @media (max-width: 700px) {
         .timeline {
             padding-left: 0;
@@ -684,7 +711,8 @@
     <header id="top">
       <div class="hero">
         <h1>Nathan Johnson</h1>
-        <p>Creative Developer crafting digital experiences that feel organic, calm, and human. Moving away from rigid grids into fluid, interactive storytelling.</p>
+        <p style="margin-bottom: 0;">Senior at Loyola University Chicago studying Computer Science & Incoming Software Engineer at Enova International</p>
+        <p style="margin-top: 1; margin-bottom: 0;">Passionate about building scalable fintech infrastructure, high-performance computing, and AI-driven solutions.</p>
         <div class="hero-socials" aria-label="Connect with me">
           <a class="social-link" href="https://github.com/nathanjohnsongithub" target="_blank" rel="noreferrer noopener" aria-label="GitHub">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -782,8 +810,8 @@
     <section id="timeline" class="panel">
       <div class="section-heading">
         <span class="eyebrow">Experience</span>
-        <h2 style="color: var(--accent);">Where I’ve been building</h2>
-        <p>Engineering, research, and leadership work across fintech, HPC, and campus communities.</p>
+        <h2 style="color: var(--accent);">Curriculum Vitae</h2>
+        <p>Engineering, research, and leadership work across fintech, Computational Sciences, and campus communities.</p>
         <a href="Nathan_Johnson_Resume.pdf" target="_blank" class="resume-button">
           View My Resume
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -802,7 +830,7 @@
               <span class="timeline-company">Enova International · Chicago, IL</span>
             </div>
             <ul class="timeline-list">
-              <li>Completed a Small & Medium Business Engineering internship modernizing legacy systems via cloud-native architecture.</li>
+              <li>Completed an internship in the Small & Medium Business division modernizing legacy systems via cloud-native architecture.</li>
               <li>Migrated core business functionality into Go + AWS Lambda microservices backed by Salesforce Apex and Terraform.</li>
               <li>Partnered with cross-functional teams to deliver fault-tolerant, production-ready solutions that scale with the platform.</li>
             </ul>
@@ -847,7 +875,7 @@
               <span class="timeline-company">Argonne National Laboratory · Lemont, IL</span>
             </div>
             <ul class="timeline-list">
-              <li>Contributed to performance-critical HPC applications (ARCHES project) by offloading GPU computations with SYCL.</li>
+              <li>Offloaded performance-critical sections of HPC programs to GPUs using SYCL.</li>
               <li>Optimized parallel workloads using OpenMP, improving scalability and efficiency across large clusters.</li>
               <li>Conducted profiling (MAQAO) to identify bottlenecks and implemented multi-threaded optimizations.</li>
             </ul>
@@ -871,7 +899,7 @@
               <span class="timeline-company">Loyola University Chicago · Chicago, IL</span>
             </div>
             <ul class="timeline-list">
-              <li>Weekly tutor in the Computer Science Department, supporting students in core curriculum courses.</li>
+              <li>Weekly tutor in the Computer Science Department, supporting students in Computer Science core courses.</li>
               <li>Subjects include Introduction to Computing Tools and Techniques, Discrete Structures, Object-Oriented Programming, Computer Systems, and Data Structures.</li>
             </ul>
             <div class="timeline-tags">
@@ -879,6 +907,8 @@
               <span class="timeline-tag">OOP</span>
               <span class="timeline-tag">Algorithms</span>
               <span class="timeline-tag">Teaching</span>
+              <span class="timeline-tag">Tutoring</span>
+
             </div>
           </div>
         </article>
@@ -892,14 +922,14 @@
               <span class="timeline-company">Loyola University Chicago · Chicago, IL</span>
             </div>
             <ul class="timeline-list">
-              <li>Led a machine-learning movie recommendation initiative using Pandas, NumPy, and Scikit-learn.</li>
-              <li>Organized weekly meetings, competitions, and guest speakers to expand member engagement.</li>
-              <li>Grew active membership while strengthening leadership and communication skills.</li>
+              <li>Led a machine-learning movie recommendation project utilizing Pandas, NumPy, and Scikit-learn with around 15 active contributors.</li>
+              <li>Organized weekly meetings, competitions, and guest speakers to expand member engagement tripling the active membership.</li>
+              <li>Increased club presence on campus while strengthening leadership and communication skills.</li>
             </ul>
             <div class="timeline-tags">
+              <span class="timeline-tag">Artificial Intelligence</span>
               <span class="timeline-tag">Machine Learning</span>
-              <span class="timeline-tag">Pandas</span>
-              <span class="timeline-tag">Scikit-learn</span>
+              <span class="timeline-tag">Club</span>
               <span class="timeline-tag">Leadership</span>
             </div>
           </div>
@@ -916,12 +946,12 @@
             <ul class="timeline-list">
               <li>Developed Python-based HPC workflows and integrated C/C++ libraries for performance-critical modules.</li>
               <li>Employed cProfile and mpi4py for benchmarking and parallel execution, boosting distributed performance.</li>
-              <li>Improved multi-node strategies to enhance throughput across the lab’s clusters.</li>
+              <li>Researched various Python and C/C++ bindings for interoperability and performance optimization.</li>
             </ul>
             <div class="timeline-tags">
               <span class="timeline-tag">Python</span>
               <span class="timeline-tag">HPC</span>
-              <span class="timeline-tag">MPI</span>
+              <span class="timeline-tag">Research Lab</span>
               <span class="timeline-tag">C/C++</span>
               <span class="timeline-tag">Performance Optimization</span>
             </div>
@@ -937,15 +967,15 @@
               <span class="timeline-company">Loyola University Chicago · Chicago, IL</span>
             </div>
             <ul class="timeline-list">
-              <li><strong>GPA:</strong> 3.92</li>
+              <li><strong>GPA:</strong> 3.93</li>
               <li><strong>Relevant Coursework:</strong> Data Structures and Algorithms, Discrete Math, Calculus I & II, Linear Algebra, Computer Systems, Programming Languages, Operating Systems, Object-Oriented Design, Machine Learning, Software Engineering.</li>
-              <li><strong>Future Coursework:</strong> Database Programming, NLP.</li>
+              <li><strong>Future Coursework:</strong> Database Programming, NLP, Deep Learning.</li>
             </ul>
             <div class="timeline-tags">
               <span class="timeline-tag">Computer Science</span>
               <span class="timeline-tag">Education</span>
-              <span class="timeline-tag">Data Structures</span>
-              <span class="timeline-tag">Algorithms</span>
+              <span class="timeline-tag">University</span>
+              <span class="timeline-tag">DS & Algorithms</span>
             </div>
           </div>
         </article>
