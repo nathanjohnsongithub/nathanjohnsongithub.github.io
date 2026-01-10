@@ -351,6 +351,15 @@
       gap: 0.75rem;
       opacity: 1;
       transition: opacity 0.3s ease;
+      flex: 1; /* Makes the summary fill the card height */
+    }
+
+    /* Normalize title height so descriptions start at the same vertical position */
+    .project-summary h3 {
+      min-height: 3rem; /* Reserves space for ~2 lines of text */
+      line-height: 1.2;
+      display: flex;
+      align-items: flex-start; /* Align text to top */
     }
     
     .project-card.fading-out .project-summary {
