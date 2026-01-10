@@ -781,22 +781,48 @@
         <article class="project-card">
           <button class="close-btn">← Back to projects</button>
           <div class="project-summary">
-            <span class="project-meta">Collaboration</span>
+            <span class="project-meta">Machine Learning</span>
             <h3>Movie Recommendation Website</h3>
-            <p>Brief synopsis for a flagship build. Mention the stack, the problem, and the measurable outcome.</p>
+            <p>A Python-based collaborative filtering engine that scrapes Letterboxd ratings to generate personalized movie recommendations using SVD.</p>
             <a class="project-link" href="#">Learn more</a>
           </div>
           
           <div class="project-details">
              <h3>Movie Recommendation Website</h3>
-             <h4>The Challenge</h4>
-             <p>We needed to redesign the legacy dashboard to improve user retention by 40%. The existing system was cluttered and slow.</p>
-             <br>
-             <h4>The Solution</h4>
-             <p>I implemented a new React-based architecture with server-side rendering to reduce load times. We also introduced a "Zen Mode" to declutter the UI.</p>
-             <br>
+             
+             <h4>Overview</h4>
+             <p>For the Fall 2024 semester Loyola's AI Club completed a Python-based movie recommendation system that scrapes user movie ratings from Letterboxd and generates personalized movie recommendations using collaborative filtering techniques. </p>
+      
+             <h4>My Role</h4>
+             <p>As president of the club and leader of the Model group I was responsible for overseeing the development and implementation of the recommendation algorithms, coordinating data collection efforts, and ensuring the integration of the model with the web application as well as coordinating and collaboration between different teams for my role as president. </p>
+   
              <h4>Tech Stack</h4>
-             <p>Next.js, Tailwind CSS, PostgreSQL, Redis.</p>
+             <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Python</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Flask</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">PostgreSQL</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">scikit-learn</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">TailwindCSS</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Heroku</li>
+             </ul>
+
+             <h4>Model</h4>
+             <p>The recommendation pipeline takes a Letterboxd username, scrapes the user’s movie ratings, and combines them with a large global ratings dataset. A collaborative filtering model (SVD or Baseline using scikit-surprise) is trained on the merged data to predict ratings for movies the user hasn’t seen. Candidates are filtered using a configurable popularity/obscurity threshold, then ranked to return top-N recommendations.</p>
+             <p>In addition, a content-based system uses TF-IDF and cosine similarity on movie metadata (genres, languages, countries) to surface similar films.</p>
+             
+             <h4>Application</h4>
+             <p>A full-stack Flask web application with server-side rendering using Jinja2. The UI is styled with TailwindCSS and enhanced with vanilla JavaScript. PostgreSQL and SQLAlchemy manage users, movies, ratings, and watchlists, with Flask-Login handling authentication and sessions. Cloudinary is used for user profile image storage. The app is production-ready and deployed using Gunicorn in a Heroku-style environment.</p>
+
+             <div style="margin: 2rem 0; display: flex; gap: 1rem;">
+                <a href="https://movierec-f24-e040c420e2f6.herokuapp.com/" target="_blank" rel="noreferrer noopener" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent); color: var(--bg); padding: 0.7rem 1.4rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">
+                    Live Site
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+                <a href="https://github.com/loyolaAI/MovieRec-F24" target="_blank" rel="noreferrer noopener" style="display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 0.7rem 1.4rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">
+                    GitHub
+                    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" stroke="none"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.94.58.11.79-.25.79-.56 0-.28-.01-1.2-.02-2.18-3.2.7-3.88-1.4-3.88-1.4-.53-1.35-1.29-1.72-1.29-1.72-1.06-.73.08-.72.08-.72 1.18.08 1.8 1.22 1.8 1.22 1.04 1.78 2.74 1.27 3.41.97.1-.76.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.72 0-1.27.45-2.31 1.19-3.13-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.19.92-.26 1.9-.4 2.88-.4.98 0 1.96.14 2.88.4 2.2-1.5 3.17-1.19 3.17-1.19.64 1.59.24 2.76.12 3.05.74.82 1.19 1.86 1.19 3.13 0 4.45-2.69 5.42-5.26 5.71.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.68.8.56C20.21 21.39 23.5 17.09 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg>
+                </a>
+             </div>
              
              <div class="project-gallery">
                 <img src="images/projects/movie-rec/MovieScreen.png" alt="Movie Recommendation Screen">
@@ -815,12 +841,29 @@
           </div>
           <div class="project-details">
              <h3>Reddit Story Clipper</h3>
-             <h4>Overview</h4>details">
+             
              <h4>Overview</h4>
-             <p>An open-source library for generating organic noise textures in the browser using WebGL.</p>
-             <br>
-             <h4>Impact</h4>
-             <p>Downloaded over 10k times on npm and used by creative agencies worldwide.</p>
+             <p>An automated content creation pipeline designed to transform text-based Reddit stories into high-engagement short-form video content. This Python tool bridges the gap between text communities and video platforms like TikTok and Instagram Reels by generating complete, narrated videos instantly.</p>
+             
+             <h4>Tech Stack</h4>
+             <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Python</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">MoviePy</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">FFmpeg</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Google Cloud TTS</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">PRAW</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">NLTK</li>
+             </ul>
+
+             <h4>Engineering & Architecture</h4>
+             <ul style="list-style-type: disc; padding-left: 1.2rem; margin-bottom: 1.5rem;">
+                 <li><strong>Content Discovery:</strong> Connects to the Reddit API (via PRAW) to algorithmically identify trending stories based on upvote velocity, sentiment analysis, and subreddit relevance.</li>
+                 <li><strong>Audio Processing:</strong> Converts raw text to high-fidelity speech using Google Cloud TTS. Leverages NLTK for natural sentence chunking and pacing to ensure life-like narration flow.</li>
+                 <li><strong>Video Assembly:</strong> Programmatically configures MoviePy and FFmpeg to layer narrated audio, synchronized dynamic captions, and engaging background footage (e.g., Minecraft parkour) into a single rendered output.</li>
+             </ul>
+
+             <h4>Workflow</h4>
+             <p>The system operates as a configurable CLI tool. Users define target subreddits, voice parameters, and video styles via a centralized YAML configuration file, allowing for batch production of content with consistent branding. The pipeline handles the entire rendering process, outputting polished vertical videos ready for upload.</p>
              
              <div class="project-gallery">
                 <img src="images/projects/tiktok-auto/final_output_0.png" alt="Reddit Story Clipper Output" style="max-width: 400px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
@@ -831,19 +874,34 @@
         <article class="project-card">
           <button class="close-btn">← Back to projects</button>
           <div class="project-summary">
-            <span class="project-meta">Web design</span>
+            <span class="project-meta">Web Application</span>
             <h3>Virtual Couples Scrapbook</h3>
-            <p>Share the most recent collaboration, highlight your role, and tease out the interesting challenge.</p>
+            <p>A personal digital scrapbook explicitly designed to protect and modernize cherished memories, bridging a static legacy photo album with a modern, cloud-based archive.</p>
             <a class="project-link" href="#">Learn more</a>
           </div>
           <div class="project-details">
              <h3>Virtual Couples Scrapbook</h3>
-             <h4>Role</h4>ect-details">
-             <h4>Role</h4>
-             <p>Lead Frontend Developer working with a team of 3 designers and 2 backend engineers.</p>
-             <br>
-             <h4>Outcome</h4>
-             <p>Delivered the MVP two weeks ahead of schedule, securing Series A funding for the startup.</p>
+             
+             <h4>Overview</h4>
+             <p>I built this website as a digital scrapbook for my girlfriend, Hannah — a place to preserve our memories while giving new life to an old, hand-coded archive. What started as a static site evolved into a hybrid web app with a secure backend, allowing us to safely upload new photos, notes, and moments without losing the charm of the original site. It’s private, playful, and designed to grow with us.</p>
+             
+             <h4>Tech Stack</h4>
+             <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">HTML5</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Tailwind CSS</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Vanilla JavaScript</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Node.js (Serverless)</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Supabase</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">PostgreSQL</li>
+             </ul>
+
+             <h4>Engineering & Features</h4>
+             <ul style="list-style-type: disc; padding-left: 1.2rem; margin-bottom: 1.5rem;">
+                 <li><strong>Private Memory Uploads:</strong> A custom password-protected admin area secures all upload routes using hashed credentials and signed session cookies, so adding new memories is simple and safe.</li>
+                 <li><strong>Cloud Migration:</strong> Built an automated pipeline to move legacy images and metadata from local storage into Supabase Storage and a PostgreSQL database, making the scrapbook scalable and future-proof.</li>
+                 <li><strong>Best of Old + New:</strong> The original static pages live alongside dynamically loaded content from the database, blending nostalgia with modern functionality.</li>
+                 <li><strong>Interactive Surprises:</strong> Includes a gamified scavenger hunt that lets Hannah unlock hidden memories through puzzles — because a scrapbook should be fun, not just functional.</li>
+             </ul>
 
             <div class="project-gallery" style="grid-template-columns: 1fr; gap: 2rem;">
               <img src="images/projects/scrapbook/password.png" alt="Virtual Couples Scrapbook Output" style="max-width: 600px; margin: 0 auto;">
@@ -855,23 +913,39 @@
         <article class="project-card">
           <button class="close-btn">← Back to projects</button>
           <div class="project-summary">
-            <span class="project-meta">Experiment</span>
+            <span class="project-meta">Discord Bot</span>
             <h3>Discord Parlay Bot</h3>
-            <p>A space for a new creative coding experiment or a hackathon project.</p>
+            <p>A sophisticated Discord bot that generates optimized sports betting parlays with real-time odds, fair probability analysis, and expected value calculations.</p>
             <a class="project-link" href="#">Learn more</a>
           </div>
           
           <div class="project-details">
              <h3>Discord Parlay Bot</h3>
-             <h4>The Idea</h4>
-             <p>Exploring new algorithms or frameworks to solve a specific problem.</p>
-             <br>
-             <h4>The Result</h4>
-             <p>A working prototype that demonstrates the feasibility of the concept.</p>
+             
+             <h4>Overview</h4>
+             <p>The Discord Parlay Bot bridges the gap between casual sports fandom and analytical betting. Instead of manually scouring sportsbooks for combined bets, users can simply request a parlay directly within their Discord community. The bot doesn't just randomly pick winners; it constructs a three-leg bet based on live market data and performs a quantitative analysis on the wager. It decompiles the sportsbook's odds to determine the "fair" price, calculates the expected return on investment (ROI), and suggests an optimal bet size. Built with a focus on modularity and community management, it serves as an interactive tool for sports communities to discuss and discover value bets together.</p>
+
+             <h4>Tech Stack</h4>
+             <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Python 3.11+</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">discord.py</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">httpx</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">The Odds API</li>
+                <li style="background: rgba(58, 51, 48, 0.05); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem;">Docker</li>
+             </ul>
+
+             <h4>Engineering & Features</h4>
+             <ul style="list-style-type: disc; padding-left: 1.2rem; margin-bottom: 1.5rem;">
+                 <li><strong>On-Demand Parlay Generation:</strong> Users can generate multi-leg parlays instantly via slash commands (/parlay), customizing for sport (NBA, NFL, MLB, NHL), market, and risk tolerance.</li>
+                 <li><strong>Live Odds Integration:</strong> Fetches real-time data from major sportsbooks (FanDuel, DraftKings, etc.) via The Odds API.</li>
+                 <li><strong>Advanced Analytics:</strong> Calculates "Fair Probability," Expected Value (EV+), and provides Kelly Criterion staking recommendations for every generated bet.</li>
+                 <li><strong>Risk Management:</strong> Includes correlation warnings to prevent conflicting parlay legs and configurable daily usage limits based on user roles.</li>
+                 <li><strong>Admin Controls:</strong> Built-in health checks and role-based access limits to manage API usage costs efficiently.</li>
+             </ul>
 
             <div class="project-gallery" style="grid-template-columns: 1fr; gap: 2rem;">
-              <img src="images/projects/parlay-bot/commands.png" alt="Virtual Couples Scrapbook Output" style="max-width: 600px; margin: 0 auto;">
-              <img src="images/projects/parlay-bot/parlay.png" alt="Virtual Couples Scrapbook Output" style="max-width: 600px; margin: 0 auto;">
+              <img src="images/projects/parlay-bot/commands.png" alt="Discord Parlay Bot Commands" style="max-width: 600px; margin: 0 auto;">
+              <img src="images/projects/parlay-bot/parlay.png" alt="Discord Parlay Bot Output" style="max-width: 600px; margin: 0 auto;">
             </div>
           </div>
         </article>
@@ -1314,7 +1388,7 @@
     const ctx = canvas.getContext('2d');
     const mouse = { x: -1000, y: -1000 };
 
-    const particleCount = 4000; 
+    let particleCount = 4000; 
     const particleSize = 1.3;
     const flowScale = 0.003;
     const speed = 1.8; 
@@ -1344,6 +1418,10 @@
       const dpr = window.devicePixelRatio || 1;
       width = window.innerWidth;
       height = window.innerHeight;
+
+      // Adjust particle count based on screen size (approx. 1 particle per 500px^2)
+      particleCount = Math.floor((width * height) / 750);
+
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
