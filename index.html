@@ -113,6 +113,14 @@
     }
     
     /* Subheading for expanded project details */
+    .project-details h3 {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 300;
+        margin: 0 0 2rem;
+        color: var(--accent);
+        line-height: 1.1;
+    }
+
     .project-details h4 {
         font-size: 1.1rem;
         font-weight: 600;
@@ -408,6 +416,34 @@
 
     .project-card.details-visible .project-details {
       opacity: 1;
+    }
+
+    /* Project Images Section */
+    .project-gallery {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .project-gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid rgba(58, 51, 48, 0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .project-gallery img:hover {
+      transform: scale(1.02);
+    }
+    
+    .project-gallery-caption {
+        font-size: 0.8rem;
+        color: var(--secondary);
+        margin-top: 0.5rem;
+        text-align: center;
+        width: 100%;
     }
 
     .project-card.expanded .project-link {
@@ -737,7 +773,7 @@
     <section id="projects" class="panel">
       <div class="section-heading">
         <span class="eyebrow">Selected work</span>
-        <h2 style="color: var(--accent);">Projects worth sharing</h2>
+        <h2 style="color: var(--accent);">Some projects worth sharing</h2>
         <p>Explorations in flow fields, generative design, and user experience.</p>
       </div>
       <div class="project-grid">
@@ -745,13 +781,14 @@
         <article class="project-card">
           <button class="close-btn">← Back to projects</button>
           <div class="project-summary">
-            <span class="project-meta">Case study</span>
-            <h3>Project Alpha</h3>
+            <span class="project-meta">Collaboration</span>
+            <h3>Movie Recommendation Website</h3>
             <p>Brief synopsis for a flagship build. Mention the stack, the problem, and the measurable outcome.</p>
             <a class="project-link" href="#">Learn more</a>
           </div>
           
           <div class="project-details">
+             <h3>Movie Recommendation Website</h3>
              <h4>The Challenge</h4>
              <p>We needed to redesign the legacy dashboard to improve user retention by 40%. The existing system was cluttered and slow.</p>
              <br>
@@ -760,11 +797,11 @@
              <br>
              <h4>Tech Stack</h4>
              <p>Next.js, Tailwind CSS, PostgreSQL, Redis.</p>
-             <h4>The Solution</h4>
-             <p>I implemented a new React-based architecture with server-side rendering to reduce load times. We also introduced a "Zen Mode" to declutter the UI.</p>
-             <br>
-             <h4>Tech Stack</h4>
-             <p>Next.js, Tailwind CSS, PostgreSQL, Redis.</p>
+             
+             <div class="project-gallery">
+                <img src="images/projects/movie-rec/MovieScreen.png" alt="Movie Recommendation Screen">
+                <img src="images/projects/movie-rec/Recommended.png" alt="Recommended Movies View">
+             </div>
           </div>
         </article>
 
@@ -772,35 +809,70 @@
           <button class="close-btn">← Back to projects</button>
           <div class="project-summary">
             <span class="project-meta">Product</span>
-            <h3>Project Beta</h3>
-            <p>Use this slot for an open source tool, personal experiment, or client project you are proud of.</p>
+            <h3>Reddit Story Clipper</h3>
+            <p>An automated pipeline that transforms engaging Reddit stories into vertical video clips with text-to-speech narration and Minecraft parkour background.</p>
             <a class="project-link" href="#">Learn more</a>
           </div>
-          
           <div class="project-details">
+             <h3>Reddit Story Clipper</h3>
+             <h4>Overview</h4>details">
              <h4>Overview</h4>
              <p>An open-source library for generating organic noise textures in the browser using WebGL.</p>
              <br>
              <h4>Impact</h4>
              <p>Downloaded over 10k times on npm and used by creative agencies worldwide.</p>
+             
+             <div class="project-gallery">
+                <img src="images/projects/tiktok-auto/final_output_0.png" alt="Reddit Story Clipper Output" style="max-width: 400px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+             </div>
           </div>
         </article>
 
         <article class="project-card">
           <button class="close-btn">← Back to projects</button>
           <div class="project-summary">
-            <span class="project-meta">Collaboration</span>
-            <h3>Project Gamma</h3>
+            <span class="project-meta">Web design</span>
+            <h3>Virtual Couples Scrapbook</h3>
             <p>Share the most recent collaboration, highlight your role, and tease out the interesting challenge.</p>
             <a class="project-link" href="#">Learn more</a>
           </div>
-          
           <div class="project-details">
+             <h3>Virtual Couples Scrapbook</h3>
+             <h4>Role</h4>ect-details">
              <h4>Role</h4>
              <p>Lead Frontend Developer working with a team of 3 designers and 2 backend engineers.</p>
              <br>
              <h4>Outcome</h4>
              <p>Delivered the MVP two weeks ahead of schedule, securing Series A funding for the startup.</p>
+
+            <div class="project-gallery" style="grid-template-columns: 1fr; gap: 2rem;">
+              <img src="images/projects/scrapbook/password.png" alt="Virtual Couples Scrapbook Output" style="max-width: 600px; margin: 0 auto;">
+              <img src="images/projects/scrapbook/scrapbook.png" alt="Virtual Couples Scrapbook Output" style="max-width: 600px; margin: 0 auto;">
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <button class="close-btn">← Back to projects</button>
+          <div class="project-summary">
+            <span class="project-meta">Experiment</span>
+            <h3>Discord Parlay Bot</h3>
+            <p>A space for a new creative coding experiment or a hackathon project.</p>
+            <a class="project-link" href="#">Learn more</a>
+          </div>
+          
+          <div class="project-details">
+             <h3>Discord Parlay Bot</h3>
+             <h4>The Idea</h4>
+             <p>Exploring new algorithms or frameworks to solve a specific problem.</p>
+             <br>
+             <h4>The Result</h4>
+             <p>A working prototype that demonstrates the feasibility of the concept.</p>
+
+            <div class="project-gallery" style="grid-template-columns: 1fr; gap: 2rem;">
+              <img src="images/projects/parlay-bot/commands.png" alt="Virtual Couples Scrapbook Output" style="max-width: 600px; margin: 0 auto;">
+              <img src="images/projects/parlay-bot/parlay.png" alt="Virtual Couples Scrapbook Output" style="max-width: 600px; margin: 0 auto;">
+            </div>
           </div>
         </article>
 
