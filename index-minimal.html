@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nathan Johnson — Personal Site (Minimal Monochrome)</title>
+  <meta name="description" content="Simple and sleek single-page portfolio for Nathan Johnson — warm minimal monochrome variant.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Warm Minimal Monochrome palette */
+      --bg: #F6F0E7;         /* Cream - background texture */
+      --text: #7C6E63;       /* Muted Cocoa - body text */
+      --soft: #FBFAF8;       /* Ivory - cards/containers */
+      --accent: #3A3330;     /* Dark Espresso - hero & buttons */
+      --secondary: #7C6E63;  /* Muted Cocoa - secondary text */
+      --shadow: rgba(58, 51, 48, 0.06); /* Dark Espresso shadow */
+      
+      /* Section and card colors */
+      --panel-bg: #D8CFC6;        /* Soft Taupe - section backgrounds (matches icons) */
+      --card-project: #F4EDE3;    /* Warm cream - project cards */
+      --card-timeline: #F4EDE3;   /* Warm cream - timeline cards */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+
+    #waveCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem clamp(1.5rem, 4vw, 3rem) 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero {
+      width: 100%;
+      padding-top: 4rem;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(251, 250, 248, 0.85);
+      color: var(--accent);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      margin: 0 0 1rem;
+      line-height: 1.1;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    
+    /* Subheading for expanded project details */
+    .project-details h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 1.5rem 0 0.5rem;
+        color: var(--text);
+    }
+    
+    .project-details p {
+        margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      max-width: 48ch;
+      font-size: 1.15rem;
+      margin-bottom: 2.5rem;
+      color: var(--text);
+      font-weight: 300;
+    }
+
+    .hero-socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 2.5rem;
+      justify-content: center;
+    }
+
+    .social-link {
+      border-radius: 999px;
+      padding: 0.85rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      border: 1px solid rgba(58, 51, 48, 0.15);
+      background: #D8CFC6;
+      color: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(58, 51, 48, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .social-link svg {
+      width: 1.1rem;
+      height: 1.1rem;
+      fill: currentColor;
+    }
+
+    .social-link:hover,
+    .social-link:focus-visible {
+      background: #CCC2B5;
+      box-shadow: 0 15px 35px rgba(58, 51, 48, 0.12);
+      outline: none;
+    }
+
+    .social-link.is-email {
+      position: relative;
+      overflow: visible;
+    }
+
+    .social-link.is-email .copy-label {
+      position: absolute;
+      left: calc(100% + 0.5rem);
+      top: 50%;
+      transform: translateY(-50%) translateX(0.4rem);
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      border: 1px dashed rgba(58, 51, 48, 0.3);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 12px 30px rgba(58, 51, 48, 0.1);
+      font-size: 0.85rem;
+      font-family: inherit;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .social-link.is-email.show-feedback {
+      background: #CCC2B5;
+      box-shadow: 0 15px 35px rgba(58, 51, 48, 0.15);
+    }
+
+    .social-link.is-email.show-feedback .copy-label {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    section {
+      padding: 4rem 0;
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 24px;
+      border: 1px solid rgba(58, 51, 48, 0.06);
+      box-shadow: 0 8px 30px rgba(58, 51, 48, 0.04);
+      padding: clamp(2.5rem, 4vw, 4rem);
+      margin-bottom: 3.5rem;
+      position: relative;
+      overflow: hidden; 
+      will-change: height;
+      transition: transform 0.5s ease, height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    .panel:not(.has-expanded-card):hover {
+        /* hover effects removed */
+    }
+    
+    .panel.has-expanded-card {
+        transform: none !important;
+    }
+
+    .section-heading {
+      max-width: 720px;
+      margin-bottom: 3rem;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--text);
+      font-weight: 300;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: relative;
+    }
+
+    .project-card {
+      background: var(--card-project);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(58, 51, 48, 0.03);
+      border: 1px solid rgba(58, 51, 48, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 1;
+      transition:
+        transform 0.6s cubic-bezier(0.2, 0, 0.2, 1),
+        width 0.6s cubic-bezier(0.2, 0, 0.2, 1),
+        height 0.6s cubic-bezier(0.2, 0, 0.2, 1),
+        top 0.6s cubic-bezier(0.2, 0, 0.2, 1),
+        left 0.6s cubic-bezier(0.2, 0, 0.2, 1),
+        background-color 0.6s ease,
+        box-shadow 0.6s ease,
+        border-radius 0.6s ease;
+    }
+
+    .project-card:not(.expanded):hover {
+      background: var(--card-project);
+      box-shadow: 0 10px 15px -3px rgba(58, 51, 48, 0.08);
+    }
+
+    /* --- EXPANDED STATE STYLES --- */
+    
+    /* Hide other cards when one is expanding/expanded */
+    .project-grid.has-expanded-card .project-card:not(.expanded) {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .panel.has-expanded-card .section-heading {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .panel.has-expanded-card .project-grid {
+      /* Prevent grid collapse from affecting panel momentarily */
+      min-height: 1px; 
+    }
+
+    /* The expanded card takes over */
+    .project-card.expanded {
+      /* Position will be handled by JS for animation, then locked here if needed */
+      z-index: 10;
+      border-radius: 24px; 
+      background: var(--card-project);
+      margin: 0;
+      padding: clamp(2rem, 5vw, 4rem);
+      overflow-y: auto; /* Allow scrolling if content is too long */
+      cursor: default;
+      box-shadow: none;
+      border: none;
+    }
+
+    .project-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    
+    .project-card.fading-out .project-summary {
+      opacity: 0;
+    }
+
+    .project-meta {
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .project-link {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+    }
+
+    .project-link::after {
+      content: '→';
+      transition: transform 0.2s ease;
+      color: var(--accent);
+    }
+
+    .project-card:not(.expanded) .project-link {
+      margin-top: auto;
+    }
+
+    .project-card:not(.expanded):hover .project-link::after {
+      transform: translateX(4px);
+    }
+
+    .project-card.is-fading-summary .project-summary {
+      opacity: 0;
+    }
+
+    .project-card.summary-hidden .project-summary {
+      display: none;
+    }
+
+    .project-card.expanded .project-summary {
+      display: none;
+    }
+
+    .project-details {
+      display: none;
+      opacity: 0;
+      margin-top: 0; /* Reset margin as it's the main content now */
+      border-top: none;
+      padding-top: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .project-card.expanded .project-details {
+      display: block;
+    }
+
+    .project-card.details-visible .project-details {
+      opacity: 1;
+    }
+
+    .project-card.expanded .project-link {
+      display: none;
+    }
+
+    /* Back Button */
+    .close-btn {
+      display: none;
+      margin-bottom: 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .project-card.expanded .close-btn {
+      display: inline-flex;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* --- TIMELINE & REST --- */
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.75rem;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(58, 51, 48, 0.12);
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      padding-left: 1rem;
+    }
+
+    .timeline-marker {
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: #D8CFC6;
+      border: 2px solid var(--bg);
+      position: absolute;
+      left: 0.05rem;
+      top: 1.5rem;
+      box-shadow: 0 0 0 4px rgba(246, 240, 231, 0.5);
+    }
+
+    .timeline-content {
+      background: var(--card-timeline);
+      border-radius: 16px;
+      padding: 1.5rem;
+      width: 100%;
+      border: 1px solid rgba(58, 51, 48, 0.05);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .timeline-content:hover {
+        background: var(--card-timeline);
+        box-shadow: 0 4px 12px rgba(58, 51, 48, 0.07);
+    }
+
+    .timeline-date {
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 0 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 700px) {
+      .hero-socials {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-socials .social-link {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .timeline {
+        padding-left: 1rem;
+      }
+
+      .timeline::before {
+        left: 0.5rem;
+      }
+
+      .timeline-marker {
+        left: 0.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="waveCanvas" aria-hidden="true"></canvas>
+  <main class="page">
+    <header id="top">
+      <div class="hero">
+        <span class="hero-eyebrow">Portfolio 2025</span>
+        <h1>Nathan Johnson</h1>
+        <p>Creative Developer crafting digital experiences that feel organic, calm, and human. Moving away from rigid grids into fluid, interactive storytelling.</p>
+        <div class="hero-socials" aria-label="Connect with me">
+          <a class="social-link" href="https://github.com/nathanjohnsongithub" target="_blank" rel="noreferrer noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.94.58.11.79-.25.79-.56 0-.28-.01-1.2-.02-2.18-3.2.7-3.88-1.4-3.88-1.4-.53-1.35-1.29-1.72-1.29-1.72-1.06-.73.08-.72.08-.72 1.18.08 1.8 1.22 1.8 1.22 1.04 1.78 2.74 1.27 3.41.97.1-.76.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.72 0-1.27.45-2.31 1.19-3.13-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.19.92-.26 1.9-.4 2.88-.4.98 0 1.96.14 2.88.4 2.2-1.5 3.17-1.19 3.17-1.19.64 1.59.24 2.76.12 3.05.74.82 1.19 1.86 1.19 3.13 0 4.45-2.69 5.42-5.26 5.71.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.68.8.56C20.21 21.39 23.5 17.09 23.5 12 23.5 5.65 18.35.5 12 .5Z" />
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.linkedin.com/in/nathan-johnson-compsci/" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.226.792 24 1.771 24h20.454C23.205 24 24 23.226 24 22.271V1.729C24 .774 23.205 0 22.225 0ZM7.123 20.452H3.56V9h3.563v11.452ZM5.341 7.433a2.063 2.063 0 1 1 0-4.126 2.063 2.063 0 0 1 0 4.126ZM20.452 20.452h-3.555v-5.564c0-1.327-.024-3.036-1.849-3.036-1.85 0-2.133 1.446-2.133 2.942v5.658H9.361V9h3.414v1.561h.048c.476-.9 1.64-1.848 3.376-1.848 3.612 0 4.283 2.377 4.283 5.467v6.272Z" />
+            </svg>
+          </a>
+          <button class="social-link is-email" type="button" data-email="njohnson14@luc.edu" aria-label="Copy email">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.25 4.5h19.5A2.25 2.25 0 0 1 24 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25H2.25A2.25 2.25 0 0 1 0 17.25V6.75A2.25 2.25 0 0 1 2.25 4.5Zm0 1.5a.75.75 0 0 0-.75.75v.26l10.5 6.36 10.5-6.36V6.75a.75.75 0 0 0-.75-.75H2.25Zm19.5 3.904-7.977 4.84a1.5 1.5 0 0 1-1.546 0L4.25 9.904V17.25c0 .414.336.75.75.75h14a.75.75 0 0 0 .75-.75V9.904Z" />
+            </svg>
+            <span class="copy-label" aria-hidden="true">Email copied to clipboard</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section id="projects" class="panel">
+      <div class="section-heading">
+        <span class="eyebrow">Selected work</span>
+        <h2>Projects worth sharing</h2>
+        <p>Explorations in flow fields, generative design, and user experience.</p>
+      </div>
+      <div class="project-grid">
+        
+        <article class="project-card">
+          <button class="close-btn">← Back to projects</button>
+          <div class="project-summary">
+            <span class="project-meta">Case study</span>
+            <h3>Project Alpha</h3>
+            <p>Brief synopsis for a flagship build. Mention the stack, the problem, and the measurable outcome.</p>
+            <a class="project-link" href="#">Learn more</a>
+          </div>
+          
+          <div class="project-details">
+             <h4>The Challenge</h4>
+             <p>We needed to redesign the legacy dashboard to improve user retention by 40%. The existing system was cluttered and slow.</p>
+             <br>
+             <h4>The Solution</h4>
+             <p>I implemented a new React-based architecture with server-side rendering to reduce load times. We also introduced a "Zen Mode" to declutter the UI.</p>
+             <br>
+             <h4>Tech Stack</h4>
+             <p>Next.js, Tailwind CSS, PostgreSQL, Redis.</p>
+             <h4>The Solution</h4>
+             <p>I implemented a new React-based architecture with server-side rendering to reduce load times. We also introduced a "Zen Mode" to declutter the UI.</p>
+             <br>
+             <h4>Tech Stack</h4>
+             <p>Next.js, Tailwind CSS, PostgreSQL, Redis.</p>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <button class="close-btn">← Back to projects</button>
+          <div class="project-summary">
+            <span class="project-meta">Product</span>
+            <h3>Project Beta</h3>
+            <p>Use this slot for an open source tool, personal experiment, or client project you are proud of.</p>
+            <a class="project-link" href="#">Learn more</a>
+          </div>
+          
+          <div class="project-details">
+             <h4>Overview</h4>
+             <p>An open-source library for generating organic noise textures in the browser using WebGL.</p>
+             <br>
+             <h4>Impact</h4>
+             <p>Downloaded over 10k times on npm and used by creative agencies worldwide.</p>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <button class="close-btn">← Back to projects</button>
+          <div class="project-summary">
+            <span class="project-meta">Collaboration</span>
+            <h3>Project Gamma</h3>
+            <p>Share the most recent collaboration, highlight your role, and tease out the interesting challenge.</p>
+            <a class="project-link" href="#">Learn more</a>
+          </div>
+          
+          <div class="project-details">
+             <h4>Role</h4>
+             <p>Lead Frontend Developer working with a team of 3 designers and 2 backend engineers.</p>
+             <br>
+             <h4>Outcome</h4>
+             <p>Delivered the MVP two weeks ahead of schedule, securing Series A funding for the startup.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="timeline" class="panel">
+      <div class="section-heading">
+        <span class="eyebrow">Experience</span>
+        <h2>Where I've been building</h2>
+        <p>Engineering, research, and leadership work across fintech, HPC, and campus communities.</p>
+      </div>
+      <div class="timeline">
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">Jun 2025 – Aug 2025 · Enova International · Chicago, IL</p>
+            <h3>Software Engineering Intern</h3>
+            <ul>
+              <li>Completed a Small & Medium Business Engineering internship modernizing legacy systems via cloud-native architecture.</li>
+              <li>Migrated core business functionality into Go + AWS Lambda microservices backed by Salesforce Apex and Terraform.</li>
+              <li>Partnered with cross-functional teams to deliver fault-tolerant, production-ready solutions that scale with the platform.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">Jan 2025 – Present · TrueLayer · London, UK</p>
+            <h3>Business Development Intern</h3>
+            <ul>
+              <li>Support a leading Pay-by-Bank/Open Banking provider by identifying commercial opportunities in fast-moving markets.</li>
+              <li>Analyze partner data to surface strategic plays that grow A2A adoption.</li>
+              <li>Collaborate across technical and non-technical teams, reinforcing communication and problem-solving skills.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">May 2024 – Aug 2024 · Argonne National Laboratory · Lemont, IL</p>
+            <h3>Computational Research Aide — Sophomore</h3>
+            <ul>
+              <li>Accelerated ARCHES HPC workloads by offloading GPU computations using SYCL.</li>
+              <li>Optimized OpenMP parallelism to improve scalability and efficiency across large clusters.</li>
+              <li>Used MAQAO profiling to uncover bottlenecks and implement multi-threaded optimizations.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">May 2023 – Aug 2023 · Argonne National Laboratory · Lemont, IL</p>
+            <h3>Computational Research Aide</h3>
+            <ul>
+              <li>Developed Python-based HPC workflows and integrated C/C++ libraries for performance-critical modules.</li>
+              <li>Employed cProfile and mpi4py for benchmarking and parallel execution, boosting distributed performance.</li>
+              <li>Improved multi-node strategies to enhance throughput across the lab's clusters.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <p class="timeline-date">Aug 2023 – Dec 2024 · Loyola University Chicago · Chicago, IL</p>
+            <h3>Loyola AI Club President</h3>
+            <ul>
+              <li>Led a machine-learning movie recommendation initiative using Pandas, NumPy, and Scikit-learn.</li>
+              <li>Organized weekly meetings, competitions, and guest speakers to expand member engagement.</li>
+              <li>Grew active membership while strengthening leadership and communication skills.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Nathan Johnson.</p>
+  </footer>
+
+  <script>
+    // --- Footer Year ---
+    const year = new Date().getFullYear();
+    document.getElementById('year').textContent = year;
+
+    // --- Project Expansion Logic with staged fades ---
+    const projectSection = document.getElementById('projects');
+    const projectGrid = projectSection.querySelector('.project-grid');
+    let isAnimating = false;
+    let initialCardRect = null; // Store initial position for closing animation
+
+    const toNumber = (value) => Number.parseFloat(value) || 0;
+    const getPanelExtras = () => {
+      const styles = window.getComputedStyle(projectSection);
+      return (
+        toNumber(styles.borderTopWidth) +
+        toNumber(styles.borderBottomWidth)
+      );
+    };
+
+    async function expandProject(card) {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      // 1. Fade out summary and siblings
+      card.classList.add('fading-out');
+      projectGrid.classList.add('has-expanded-card'); // Hides siblings via CSS
+      projectSection.classList.add('has-expanded-card'); // Hides heading
+
+      // Wait for fade out (300ms matches CSS transition)
+      await new Promise(r => setTimeout(r, 300));
+      
+      // 2. Measure BEFORE hiding summary (so we get full size)
+      const cardRect = card.getBoundingClientRect();
+      const gridRect = projectGrid.getBoundingClientRect(); // Use grid as reference
+      
+      // Store for closing
+      initialCardRect = {
+        top: cardRect.top - gridRect.top,
+        left: cardRect.left - gridRect.left,
+        width: cardRect.width,
+        height: cardRect.height
+      };
+
+      // Lock panel height to prevent collapse when card becomes absolute
+      const panelRect = projectSection.getBoundingClientRect();
+      const startPanelHeight = panelRect.height;
+      projectSection.style.height = `${startPanelHeight}px`;
+
+      // Calculate initial position relative to grid
+      const relativeTop = initialCardRect.top;
+      const relativeLeft = initialCardRect.left;
+
+      // Apply fixed positioning state to card to match current visual state
+      // We use inline styles to animate
+      card.style.position = 'absolute';
+      card.style.top = `${relativeTop}px`;
+      card.style.left = `${relativeLeft}px`;
+      card.style.width = `${cardRect.width}px`;
+      card.style.height = `${cardRect.height}px`;
+      card.style.margin = '0';
+      
+      // NOW hide summary so it doesn't interfere with content layout internally
+      // but the card size is already locked by inline styles
+      card.classList.add('summary-hidden');
+      
+      card.classList.add('expanded'); // Changes background, removes shadow, etc.
+
+      // Force reflow
+      void card.offsetWidth;
+
+      // 3. Animate to full size
+      // Target: Fill the entire panel (inside borders)
+      // We need to calculate the position relative to the grid (which is the offset parent)
+      // The target is the top-left of the panel content area.
+      // Since grid is inside panel, we need the offset of grid relative to panel content box.
+      
+      const panelStyle = window.getComputedStyle(projectSection);
+      const panelPaddingTop = parseFloat(panelStyle.paddingTop);
+      const panelPaddingLeft = parseFloat(panelStyle.paddingLeft);
+      const panelBorderTop = parseFloat(panelStyle.borderTopWidth);
+      const panelBorderLeft = parseFloat(panelStyle.borderLeftWidth);
+      
+      // The grid's top relative to the viewport
+      const gridTop = gridRect.top;
+      // The panel's content box top relative to viewport
+      const panelContentTop = panelRect.top + panelBorderTop + panelPaddingTop;
+      
+      // The offset we need to move the card UP to hit the top of the panel content area
+      // relative to the grid's top.
+      // If grid is below panel top (due to heading), this will be negative.
+      const targetTop = panelContentTop - gridTop - panelPaddingTop; // Wait, we want to cover padding too?
+      // The user said "fill the entire project section box".
+      // Usually this means covering the padding too.
+      // So we want to go to (panelRect.top + panelBorderTop) - gridRect.top
+      
+      const targetTopOffset = (panelRect.top + panelBorderTop) - gridRect.top;
+      const targetLeftOffset = (panelRect.left + panelBorderLeft) - gridRect.left;
+      
+      // Target width/height is the full content box of the panel (width - borders)
+      const targetWidth = panelRect.width - parseFloat(panelStyle.borderLeftWidth) - parseFloat(panelStyle.borderRightWidth);
+      // Initial target height is panel height - borders
+      const targetHeight = panelRect.height - parseFloat(panelStyle.borderTopWidth) - parseFloat(panelStyle.borderBottomWidth);
+
+      card.style.top = `${targetTopOffset}px`;
+      card.style.left = `${targetLeftOffset}px`;
+      card.style.width = `${targetWidth}px`;
+      card.style.height = `${targetHeight}px`;
+      
+      // Wait for expansion (600ms matches CSS transition)
+      await new Promise(r => setTimeout(r, 600));
+      
+      // 4. Fade in new content & Adjust height for content
+      card.classList.add('details-visible');
+      
+      // We no longer adjust height for content. The card stays at targetHeight.
+      // Overflow is handled by CSS (overflow-y: auto)
+      
+      isAnimating = false;
+    }
+
+    async function closeProject() {
+      const expandedCard = projectSection.querySelector('.project-card.expanded');
+      if (!expandedCard || isAnimating) return;
+      isAnimating = true;
+
+      // 1. Fade out details
+      expandedCard.classList.remove('details-visible');
+      
+      // Wait for fade out (400ms)
+      await new Promise(r => setTimeout(r, 400));
+
+      // 2. Animate back to original position
+      // Restore fixed height for animation
+      const currentRect = expandedCard.getBoundingClientRect();
+      expandedCard.style.height = `${currentRect.height}px`;
+      
+      // Force reflow
+      void expandedCard.offsetWidth;
+
+      if (initialCardRect) {
+          expandedCard.style.top = `${initialCardRect.top}px`;
+          expandedCard.style.left = `${initialCardRect.left}px`;
+          expandedCard.style.width = `${initialCardRect.width}px`;
+          expandedCard.style.height = `${initialCardRect.height}px`;
+      }
+
+      // Wait for shrink (600ms)
+      await new Promise(r => setTimeout(r, 600));
+
+      // 3. Cleanup and Fade In Summary
+      expandedCard.classList.remove('expanded');
+      expandedCard.classList.remove('summary-hidden');
+      expandedCard.style = ''; // Clear inline styles
+      
+      projectSection.style.height = ''; // Clear panel height
+      projectSection.classList.remove('has-expanded-card');
+      projectGrid.classList.remove('has-expanded-card');
+      
+      // Force reflow to ensure summary is ready to fade in
+      void expandedCard.offsetWidth;
+      
+      expandedCard.classList.remove('fading-out');
+      
+      isAnimating = false;
+    }
+
+    document.querySelectorAll('.project-link').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const card = link.closest('.project-card');
+        expandProject(card);
+      });
+    });
+
+    document.querySelectorAll('.close-btn').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeProject();
+      });
+    });
+
+    const emailButton = document.querySelector('.social-link.is-email');
+    const copyLabel = emailButton?.querySelector('.copy-label');
+    let copyFeedbackTimeout;
+
+    const showCopyFeedback = (message) => {
+      if (!emailButton || !copyLabel) return;
+      copyLabel.textContent = message;
+      emailButton.classList.add('show-feedback');
+      clearTimeout(copyFeedbackTimeout);
+      copyFeedbackTimeout = setTimeout(() => {
+        emailButton.classList.remove('show-feedback');
+      }, 2000);
+    };
+
+    async function copyEmailToClipboard() {
+      if (!emailButton) return;
+      const email = emailButton.dataset.email;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(email);
+        } else {
+          const tempInput = document.createElement('textarea');
+          tempInput.value = email;
+          tempInput.setAttribute('readonly', '');
+          tempInput.style.position = 'absolute';
+          tempInput.style.left = '-9999px';
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
+        }
+        showCopyFeedback('Email copied to clipboard');
+      } catch (error) {
+        showCopyFeedback('Copy not supported');
+      }
+    }
+
+    emailButton?.addEventListener('click', copyEmailToClipboard);
+
+    window.addEventListener('resize', () => {
+        // Reset if resized while expanded to avoid layout issues
+        if (projectSection.classList.contains('has-expanded-card')) {
+             // Ideally we'd recalculate, but for now let's just keep it safe
+             const expandedCard = projectSection.querySelector('.project-card.expanded');
+             if(expandedCard) {
+                 projectSection.style.height = 'auto';
+                 const newHeight = projectSection.getBoundingClientRect().height;
+                 projectSection.style.height = `${newHeight}px`;
+             }
+        }
+    });
+
+    // --- FLOW FIELD ANIMATION (Warm Minimal Monochrome palette) ---
+    const canvas = document.getElementById('waveCanvas');
+    const ctx = canvas.getContext('2d');
+    const mouse = { x: -1000, y: -1000 };
+
+    const particleCount = 4000; 
+    const particleSize = 1.3;
+    const flowScale = 0.003;
+    const speed = 1.8; 
+    const fadeRate = 0.08; 
+
+    const colors = [
+      'rgba(58, 51, 48, 0.35)',    // Dark Espresso - softer
+      'rgba(124, 110, 99, 0.30)',  // Muted Cocoa - softer
+      'rgba(216, 207, 198, 0.40)', // Soft Taupe - softer
+      'rgba(180, 170, 158, 0.35)'  // Warm Gray - softer
+    ];
+
+    const bgColor = 'rgb(246, 240, 231)'; // Cream
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let particles = [];
+    let time = 0;
+    let animationFrameId;
+
+    // --- REPULSION ZONES for UI elements ---
+    const repulsionZones = [];
+    
+    function updateRepulsionZones() {
+      repulsionZones.length = 0;
+      
+      // Add entire hero section as one natural repulsion zone (shifted left to center on name)
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        const rect = hero.getBoundingClientRect();
+        repulsionZones.push({
+          x: rect.left + rect.width * 0.35,  // Shift left to center more on name
+          y: rect.top + rect.height / 2,
+          width: rect.width * 0.8,
+          height: rect.height,
+          padding: 80,
+          force: 3.5
+        });
+      }
+      
+      // Add footer as a smaller repulsion zone
+      const footer = document.querySelector('footer');
+      if (footer) {
+        const rect = footer.getBoundingClientRect();
+        repulsionZones.push({
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+          width: rect.width * 0.4,
+          height: rect.height,
+          padding: 30,
+          force: 2
+        });
+      }
+    }
+    
+    // Smooth radial repulsion - more natural like mouse interaction
+    function getRepulsionFromZone(px, py, zone) {
+      const halfW = zone.width / 2 + zone.padding;
+      const halfH = zone.height / 2 + zone.padding;
+      
+      // Calculate normalized distance from center
+      const dx = px - zone.x;
+      const dy = py - zone.y;
+      
+      // Use elliptical distance for rectangular zones
+      const normalizedX = dx / halfW;
+      const normalizedY = dy / halfH;
+      const ellipseDist = Math.sqrt(normalizedX * normalizedX + normalizedY * normalizedY);
+      
+      if (ellipseDist < 1) {
+        // Particle is inside the zone - calculate smooth repulsion
+        // Force is stronger near center, fades toward edges (like mouse)
+        const force = (1 - ellipseDist) * zone.force;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        
+        return {
+          x: (dx / dist) * force,
+          y: (dy / dist) * force
+        };
+      }
+      
+      return { x: 0, y: 0 };
+    }
+
+    const noise = (x, y, z) => {
+      const p = 50 * Math.sin(x * 0.01 + z) + 50 * Math.cos(y * 0.01 + z);
+      return Math.sin(x * 0.005 + p * 0.01 + z) + Math.cos(y * 0.005 + p * 0.01 + z);
+    };
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+      
+      initParticles();
+      updateRepulsionZones();
+      
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    function handleMouseMove(event) {
+      mouse.x = event.clientX;
+      mouse.y = event.clientY;
+    }
+
+    function handleMouseLeave() {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    }
+
+    class Particle {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(randomizeAge = false) {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.age = randomizeAge ? Math.random() * 100 : 0;
+        this.lifespan = 150 + Math.random() * 150;
+        this.speedModifier = 0.8 + Math.random() * 0.4;
+      }
+
+      update() {
+        const angle = noise(this.x * flowScale, this.y * flowScale, time * 0.0005) * Math.PI * 2;
+
+        // Mouse repulsion
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        let interactionX = 0;
+        let interactionY = 0;
+        
+        const radius = 120; 
+        const maxForce = 3; 
+
+        if (dist < radius) {
+            const force = (radius - dist) / radius;
+            const pushAngle = Math.atan2(dy, dx);
+            
+            interactionX = Math.cos(pushAngle) * force * maxForce;
+            interactionY = Math.sin(pushAngle) * force * maxForce;
+        }
+        
+        // UI element repulsion (name + social links)
+        for (const zone of repulsionZones) {
+          const repulsion = getRepulsionFromZone(this.x, this.y, zone);
+          interactionX += repulsion.x;
+          interactionY += repulsion.y;
+        }
+
+        this.x += Math.cos(angle) * speed * this.speedModifier + interactionX;
+        this.y += Math.sin(angle) * speed * this.speedModifier + interactionY;
+        this.age += 1;
+
+        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height || this.age > this.lifespan) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, particleSize, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < particleCount; i += 1) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animateFlowField() {
+      ctx.fillStyle = `rgba(246, 240, 231, ${fadeRate})`;
+      ctx.fillRect(0, 0, width, height);
+
+      particles.forEach((particle) => {
+        particle.update();
+        particle.draw();
+      });
+
+      time += 1;
+      animationFrameId = requestAnimationFrame(animateFlowField);
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('scroll', updateRepulsionZones);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
+    animateFlowField();
+
+    function cleanup() {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('scroll', updateRepulsionZones);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('pagehide', cleanup);
+      window.removeEventListener('beforeunload', cleanup);
+    }
+
+    window.addEventListener('pagehide', cleanup);
+    window.addEventListener('beforeunload', cleanup);
+  </script>
+</body>
+</html>
