@@ -300,6 +300,8 @@
       gap: 0.5rem;
       position: relative;
       z-index: 1;
+      cursor: pointer; /* Indicates tappable/clickable */
+      will-change: width, height, top, left; /* Hint to browser for performance */
       transition:
         transform 0.6s cubic-bezier(0.2, 0, 0.2, 1),
         width 0.6s cubic-bezier(0.2, 0, 0.2, 1),
@@ -739,6 +741,28 @@
     }
     
     @media (max-width: 700px) {
+        .project-grid.has-expanded-card .project-card:not(.expanded) {
+            display: none;
+        }
+
+        .project-card.expanded {
+            position: relative;
+            top: auto;
+            left: auto;
+            width: 100%;
+            height: auto;
+            overflow: visible;
+            -webkit-overflow-scrolling: auto;
+            overscroll-behavior: auto;
+            padding: 2rem;
+            grid-column: 1 / -1;
+        }
+
+        .project-card.mobile-animating {
+            overflow: hidden;
+            will-change: height;
+        }
+
         .timeline {
             padding-left: 0;
         }
@@ -1163,6 +1187,8 @@
     document.getElementById('year').textContent = year;
 
     // --- Project Expansion Logic with staged fades ---
+    let placeholder = null; // Store placeholder reference
+
     const projectSection = document.getElementById('projects');
     const projectGrid = projectSection.querySelector('.project-grid');
     let isAnimating = false;
@@ -1177,6 +1203,10 @@
       );
     };
 
+    const isMobileLayout = () => window.matchMedia('(max-width: 700px)').matches;
+    const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobileTransitionMs = 600;
+
     async function expandProject(card) {
       if (isAnimating) return;
       isAnimating = true;
@@ -1188,7 +1218,7 @@
 
       // Wait for fade out (300ms matches CSS transition)
       await new Promise(r => setTimeout(r, 300));
-      
+
       // 2. Measure BEFORE hiding summary (so we get full size)
       const cardRect = card.getBoundingClientRect();
       const gridRect = projectGrid.getBoundingClientRect(); // Use grid as reference
@@ -1201,7 +1231,17 @@
         height: cardRect.height
       };
 
+      // Create a placeholder to hold the grid layout
+      placeholder = document.createElement('div');
+      placeholder.className = 'project-card-placeholder';
+      placeholder.style.width = `${cardRect.width}px`;
+      placeholder.style.height = `${cardRect.height}px`;
+      placeholder.style.visibility = 'hidden'; 
+      // Insert placeholder before the card to preserve grid flow
+      card.parentNode.insertBefore(placeholder, card);
+
       // Lock panel height to prevent collapse when card becomes absolute
+      // Note: With placeholder, grid doesn't collapse, but we still need to animate height
       const panelRect = projectSection.getBoundingClientRect();
       const startPanelHeight = panelRect.height;
       projectSection.style.height = `${startPanelHeight}px`;
@@ -1229,51 +1269,70 @@
       void card.offsetWidth;
 
       // 3. Animate to full size
-      // Target: Fill the entire panel (inside borders)
-      // We need to calculate the position relative to the grid (which is the offset parent)
-      // The target is the top-left of the panel content area.
-      // Since grid is inside panel, we need the offset of grid relative to panel content box.
       
       const panelStyle = window.getComputedStyle(projectSection);
       const panelPaddingTop = parseFloat(panelStyle.paddingTop);
-      const panelPaddingLeft = parseFloat(panelStyle.paddingLeft);
+      const panelPaddingBottom = parseFloat(panelStyle.paddingBottom);
       const panelBorderTop = parseFloat(panelStyle.borderTopWidth);
+      const panelBorderBottom = parseFloat(panelStyle.borderBottomWidth);
       const panelBorderLeft = parseFloat(panelStyle.borderLeftWidth);
+      const panelBorderRight = parseFloat(panelStyle.borderRightWidth);
       
-      // The grid's top relative to the viewport
       const gridTop = gridRect.top;
-      // The panel's content box top relative to viewport
-      const panelContentTop = panelRect.top + panelBorderTop + panelPaddingTop;
       
-      // The offset we need to move the card UP to hit the top of the panel content area
-      // relative to the grid's top.
-      // If grid is below panel top (due to heading), this will be negative.
-      const targetTop = panelContentTop - gridTop - panelPaddingTop; // Wait, we want to cover padding too?
-      // The user said "fill the entire project section box".
-      // Usually this means covering the padding too.
-      // So we want to go to (panelRect.top + panelBorderTop) - gridRect.top
-      
+      // Target position: Top-Left of the Panel (covering padding)
       const targetTopOffset = (panelRect.top + panelBorderTop) - gridRect.top;
       const targetLeftOffset = (panelRect.left + panelBorderLeft) - gridRect.left;
       
-      // Target width/height is the full content box of the panel (width - borders)
-      const targetWidth = panelRect.width - parseFloat(panelStyle.borderLeftWidth) - parseFloat(panelStyle.borderRightWidth);
-      // Initial target height is panel height - borders
-      const targetHeight = panelRect.height - parseFloat(panelStyle.borderTopWidth) - parseFloat(panelStyle.borderBottomWidth);
+      // Panel Base Width/Height (inside borders)
+      const panelInnerWidth = panelRect.width - panelBorderLeft - panelBorderRight;
+      const panelInnerHeight = panelRect.height - panelBorderTop - panelBorderBottom;
+
+      // Calculate NEEDED Height for content
+      // We clone the card to measure its natural full-width height
+      // Optimization: On mobile, we might skip precise measurement to avoid thrashing?
+      // But accurate height is needed for the panel transition.
+      // We wrap this in requestAnimationFrame to ensure we are in a clean frame?
+      // Actually, we can just do it. But let's try to remove `will-change` property on clone to save memory?
+      // Clone is not attached to transition.
+      
+      const clone = card.cloneNode(true);
+      clone.style.width = `${panelInnerWidth}px`;
+      clone.style.height = 'auto';
+      clone.style.position = 'absolute';
+      clone.style.visibility = 'hidden';
+      // Remove transitions from clone to avoid any recalc
+      clone.style.transition = 'none'; 
+      clone.classList.add('expanded');
+      clone.classList.remove('fading-out', 'summary-hidden'); 
+      clone.classList.add('details-visible'); 
+      
+      projectSection.appendChild(clone);
+      const neededHeight = clone.scrollHeight;
+      projectSection.removeChild(clone);
+
+      const finalHeight = Math.max(panelInnerHeight, neededHeight);
+      const totalPanelHeight = finalHeight + panelBorderTop + panelBorderBottom;
+
+      // Animate Panel Height if needed
+      projectSection.style.height = `${totalPanelHeight}px`;
+      
+      // Force Reflow before starting animation
+      void card.offsetWidth;
 
       card.style.top = `${targetTopOffset}px`;
       card.style.left = `${targetLeftOffset}px`;
-      card.style.width = `${targetWidth}px`;
-      card.style.height = `${targetHeight}px`;
+      card.style.width = `${panelInnerWidth}px`;
+      card.style.height = `${finalHeight}px`;
       
       // Wait for expansion (600ms matches CSS transition)
       await new Promise(r => setTimeout(r, 600));
       
-      // 4. Fade in new content & Adjust height for content
+      // 4. Fade in new content
       card.classList.add('details-visible');
       
-      // We no longer adjust height for content. The card stays at targetHeight.
-      // Overflow is handled by CSS (overflow-y: auto)
+      // Remove overflow scrolling since we expanded the container
+      card.style.overflowY = 'visible';
       
       isAnimating = false;
     }
@@ -1285,12 +1344,12 @@
 
       // 1. Fade out details
       expandedCard.classList.remove('details-visible');
+      expandedCard.style.overflowY = ''; // Reset overflow
       
       // Wait for fade out (400ms)
       await new Promise(r => setTimeout(r, 400));
 
       // 2. Animate back to original position
-      // Restore fixed height for animation
       const currentRect = expandedCard.getBoundingClientRect();
       expandedCard.style.height = `${currentRect.height}px`;
       
@@ -1303,46 +1362,49 @@
           expandedCard.style.width = `${initialCardRect.width}px`;
           expandedCard.style.height = `${initialCardRect.height}px`;
       }
-
-      // Animate panel height back to original if it grew
-      // We don't have the exact original height stored easily, but we can let it be auto?
-      // No, we need to animate it.
-      // Let's just remove the explicit height on projectSection after animation?
-      // Or animate it to a guessed height?
-      // Better: Measure the grid height?
-      // Since the grid items are hidden, the grid height might be collapsed?
-      // No, they are opacity: 0, but still take space?
-      // Wait, I set `pointer-events: none; opacity: 0`. They still take space in flow.
-      // So the grid height should be correct.
-      // Let's measure the natural height of the section.
       
-      // Temporarily remove height constraint to measure? No that would jump.
-      // Let's just animate the card. The panel height will snap back when we remove explicit height.
-      // Or we can try to animate panel height too.
-      
-      // Wait for shrink (600ms)
+      // Let's just wait for card shrink.
       await new Promise(r => setTimeout(r, 600));
 
-      // 3. Cleanup and Fade In Summary
+      // 3. Cleanup
       expandedCard.classList.remove('expanded');
       expandedCard.classList.remove('summary-hidden');
-      expandedCard.style = ''; // Clear inline styles
+      expandedCard.style = ''; 
       
-      projectSection.style.height = ''; // Clear panel height
+      projectSection.style.height = ''; 
       projectSection.classList.remove('has-expanded-card');
       projectGrid.classList.remove('has-expanded-card');
       
-      // Force reflow to ensure summary is ready to fade in
-      void expandedCard.offsetWidth;
+      // Remove placeholder
+      if (placeholder) {
+          placeholder.remove();
+          placeholder = null;
+      }
       
+      void expandedCard.offsetWidth;
       expandedCard.classList.remove('fading-out');
       
       isAnimating = false;
     }
 
+    // Make the entire card clickable
+    document.querySelectorAll('.project-card').forEach((card) => {
+        card.addEventListener('click', (event) => {
+            // If already expanded, ignore (unless clicking close button which is handled separately)
+            if (card.classList.contains('expanded')) return;
+            
+            // Allow text selection without triggering
+            if (window.getSelection().toString().length > 0) return;
+
+            expandProject(card);
+        });
+    });
+
+    // Keep link listeners for accessibility/keyboard, but stop propagation to avoid double trigger
     document.querySelectorAll('.project-link').forEach((link) => {
       link.addEventListener('click', (event) => {
         event.preventDefault();
+        event.stopPropagation(); // Card listener handles it
         const card = link.closest('.project-card');
         expandProject(card);
       });
@@ -1394,17 +1456,15 @@
 
     emailButton?.addEventListener('click', copyEmailToClipboard);
 
+    let lastWidth = window.innerWidth;
     window.addEventListener('resize', () => {
-        // Reset if resized while expanded to avoid layout issues
-        if (projectSection.classList.contains('has-expanded-card')) {
-             // Ideally we'd recalculate, but for now let's just keep it safe
-             const expandedCard = projectSection.querySelector('.project-card.expanded');
-             if(expandedCard) {
-                 projectSection.style.height = 'auto';
-                 const newHeight = projectSection.getBoundingClientRect().height;
-                 projectSection.style.height = `${newHeight}px`;
-             }
+        const newWidth = window.innerWidth;
+        // Close expanded view only if width changes (e.g. orientation change or desktop resize)
+        // This prevents closing on mobile scroll where only height changes due to address bar
+        if (projectSection.classList.contains('has-expanded-card') && newWidth !== lastWidth) {
+             closeProject();
         }
+        lastWidth = newWidth;
     });
 
     // --- FLOW FIELD ANIMATION (Unchanged) ---
