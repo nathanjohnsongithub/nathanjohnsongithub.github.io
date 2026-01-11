@@ -57,6 +57,11 @@
       text-decoration: none;
     }
 
+    button,
+    a {
+      touch-action: manipulation;
+    }
+
     .page {
       max-width: 1000px;
       margin: 0 auto;
@@ -340,6 +345,8 @@
       margin: 0;
       padding: clamp(2rem, 5vw, 4rem);
       overflow-y: auto; /* Allow scrolling if content is too long */
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
       cursor: default;
       box-shadow: none;
       border: none;
@@ -756,8 +763,16 @@
     <header id="top">
       <div class="hero">
         <h1>Nathan Johnson</h1>
-        <p style="margin-bottom: 0;">Senior at Loyola University Chicago studying Computer Science & Incoming Software Engineer at Enova International</p>
+        <p style="margin-bottom: 0;">Senior at Loyola University Chicago studying Computer Science & Incoming Software Engineer at Enova International.</p>
         <p style="margin-top: 1; margin-bottom: 0;">Passionate about building scalable fintech infrastructure, high-performance computing, and AI-driven solutions.</p>
+        
+        <div style="display: flex; align-items: center; gap: 0.4rem; margin-top: 1.25rem; font-weight: 500; color: var(--accent); font-size: 0.95rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.9;">
+             <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+             <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          Based in Chicago, IL
+        </div>
         <div class="hero-socials" aria-label="Connect with me">
           <a class="social-link" href="https://github.com/nathanjohnsongithub" target="_blank" rel="noreferrer noopener" aria-label="GitHub">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1452,6 +1467,18 @@
       mouse.y = -1000;
     }
 
+    function handleTouchMove(event) {
+      if (!event.touches || event.touches.length === 0) return;
+      const touch = event.touches[0];
+      mouse.x = touch.clientX;
+      mouse.y = touch.clientY;
+    }
+
+    function handleTouchEnd() {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    }
+
     class Particle {
       constructor() {
         this.reset(true);
@@ -1528,6 +1555,10 @@
     window.addEventListener('resize', resizeCanvas);
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('touchstart', handleTouchMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', handleTouchEnd, { passive: true });
     animateFlowField();
 
     function cleanup() {
@@ -1535,6 +1566,10 @@
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('touchstart', handleTouchMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchEnd);
       window.removeEventListener('pagehide', cleanup);
       window.removeEventListener('beforeunload', cleanup);
     }
